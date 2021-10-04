@@ -1,0 +1,23 @@
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃  ╬─┼╦──       ┬─╦┴─╦─    ┬   ──╦─┘╗  ┃  Simple Rules                                                ┃
+┃  │%s┼═══╩══──═┘═┼%s┼══╬══┴══─══┼%s┼  ┃  1. One piece can be placed during each round.               ┃
+┃  ╠┬─╬┼┐        ─╩╦─╝          ┌╬─╬╣  ┃  2. After you place all 11 pieces from your hand,            ┃
+┃  ╠┤  ╚╦┼─┬╬─  ┬ ╔╬─┼─   ┼─╦─═╬┼┘ ║   ┃     you can move any of your own pieces                      ┃
+┃  │║   ┤%s┼┴═══╬═┼%s┼════┼═┼%s┼   ╬┴  ┃     in 1 step movements following the lines.                 ┃
+┃  │║   ╠┼─╝      ╚─┬╝      ╚─┼┤   │   ┃  3. Place three of your pieces in a                          ┃
+┃  ═╬   ┴╬   ┼──╗ ╔┴┼╗─╦┴─╬   ┼┘   ││  ┃     straight line to remove the opponent's pieces.           ┃
+┃   │    ║   ║%s┼═┼%s├═╣%s┼   ║   ╚╬┤  ┃  4. When you have three pieces remaining,                    ┃
+┃  ║│   │║    ┼═╝ ╚─╦┤  ─┬╝   ╠┘   ║├  ┃     you can places your pieces anywhere empty on the board.  ┃
+┃  ╬┘┴╗ ╠┼─╗ ╔┴┼  ╦─┼ ─╦─┼╣ ╦─┼┤ ╔─┼╣  ┃  5. You win when the opponent has less than 3 pieces left.   ┃
+┃  ║%s┼═┼%s┼═┼%s╠═┼%s╠─┤%s┼═┼%s┼═┼%s╠  ┃                                                              ┃
+┃  ╬┬┼╝ ╚╗─╝ ╠╦─╝  ─╦╝ ╚┬─  ╚─╦╣ ╚─┬┤  ┃                                                              ┃
+┃  ┤┼╝  ┌│   ╔┴─  ╦─╬  ╔┴╩╗   ║    ╚┐  ┃                                                              ┃
+┃  ╔╝   ╚╬   ║%s┼─┤%s┼═┼%s┼  ─╬╣   │║  ┃                                                              ┃
+┃  ║│   ╔╣   ╬──╝ ╚╦─╝─┴═┬╝   ║│   ││  ┃                                                              ┃
+┃  ╣│   ┼┴═╗      ╔╬─╗      ╔─┼╗   ┤╬  ┃                                                              ┃
+┃  ║╬  ┌╣%s╬═┼═──═╬%s╬════─═┼%s┼   ║│  ┃                                                              ┃
+┃  ║║ ╔╬┼══╬═╝  ──╩─┬╩──  └─╩─┼┼═╗ ║├  ┃  ┏━━━━━━━━ COMMANDS ━━━━━━━━┓   ┏━━━━━━━━ BOARDS ━━━━━━━━┓   ┃
+┃  ╠┴┬╬╩          ╔─┼╗         ╚═╬─┴╣  ┃  ┃  rules, quit, cyberpunk  ┃   ┃   normal, cyberpunk    ┃   ┃
+┃  │%s┼═══╦══─┼═══┼%s╠══╬══════┼═┼%s┼  ┃  ┗━━━━━━━━━━━━━━━━━━━━━━━━━━┛   ┗━━━━━━━━━━━━━━━━━━━━━━━━┛   ┃
+┃  ╬─┬┴═┘ ┴   ┘ ──╩──╝ ─╩══─┐  └═╩─┬╝  ┃                                                              ┃
+┗━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┻━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┛
