@@ -1,4 +1,12 @@
-{ "difficulty" : "medium" ,
+{ 
+    "fileType":"GAMEFILE",
+    "GAMEDONE": 1,
+    "TPLAYER": "Player1",
+    "FPLAYER": "Player2",
+    "TPCOLOUR": "B",
+    "FPCOLOUR": "W",
+    "GAMESCORE": -5,
+"difficulty" : "medium" ,
 "playerMovesLeft": 193,
  "engineMovesLeft": 194, 
 "placedPlayerPieces": 7, 

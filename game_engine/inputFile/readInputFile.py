@@ -10,6 +10,13 @@ def read_game_state():
     node_info = {}
     
     game_struct = {
+        'fileType': game_data['fileType'],
+        'GAMEDONE': game_data['GAMEDONE'],
+        'TPLAYER': game_data['TPLAYER'],
+        'FPLAYER': game_data['FPLAYER'],
+        'TPCOLOUR': game_data['TPCOLOUR'],
+        'FPCOLOUR': game_data['FPCOLOUR'],
+        'GAMESCORE': game_data['GAMESCORE'],
         'difficulty': game_data['difficulty'],
         'playerMovesLeft': game_data['playerMovesLeft'],
         'engineMovesLeft': game_data['engineMovesLeft'],
@@ -27,3 +34,5 @@ def read_game_state():
     game_struct['nodeInfo'] = node_info
 
     return game_struct
+
+read_game_state()
