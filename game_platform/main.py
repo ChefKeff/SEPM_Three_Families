@@ -25,6 +25,7 @@ def quit_game():
     sys.exit()
 
 
+# ------------------------------ GAME OPTIONS MENU ------------------------------
 def set_ai_easy(game):
     '''Sets the difficulty of the AI to easy.'''
     game.set_ai_difficulty('easy')
@@ -52,6 +53,7 @@ def show_options(game):
         arguments=[game, game, game, None]
     )
 
+# ------------------------------ START SCREEN ------------------------------
 
 def start_screen(game):
     '''Prints the starting screen and prompts user with options.'''

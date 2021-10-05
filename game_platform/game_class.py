@@ -6,6 +6,7 @@ the methods controlling the game logic and order.
 '''
 
 import sys
+import json
 from board_class import Board
 from piece_class import Piece
 from tools import (
@@ -35,6 +36,7 @@ class Game:
         self.b_placements = 0
         self.turns = 0
         self.ai_difficulty = 'easy'
+        self.connections = board_structure['connections']
 
         # Set up rules
         self.max_turns = board_structure['max_turns']
@@ -47,6 +49,59 @@ class Game:
             board_structure['possible_mills']
         )
         self.board_to_print = board_design('default')
+
+    # ----------------------- CREATE JSON GAME FILE ------------------------
+
+    def create_json_file(self):
+        '''Creates a .json file with the game configurations'''
+        data = {}
+        data['difficulty'] = self.ai_difficulty
+        data['playerMovesLeft'] = 100 # TODO: Placeholder, fix this
+        data['engineMovesLeft'] = 100 # TODO: Placeholder, fix this
+
+        # TODO: I took for granted white=player, black=ai
+        w_count, b_count = self.check_pieces_count()
+        data['placedPlayerPieces'] = w_count
+        data['placedEnginePieces'] = b_count
+        data['onhandPlayerPieces'] = self.pieces_in_hand - self.w_placements
+        data['onhandEnginePieces'] = self.pieces_in_hand - self.b_placements
+        data['totalPiecesPerPlayer'] = self.pieces_in_hand
+
+        # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
+        list_of_coordinates = []
+        for i in range(7):
+            if i != 3:
+                for j in range(3):
+                    list_of_coordinates.append([i,j])
+            else:
+                for j in range(7):
+                    list_of_coordinates.append([i,j])
+
+        # Translate each connection to [row, column] format 
+        list_of_connections = []
+        for (i, row) in enumerate(self.connections):
+            innerList = []
+            for (j, number) in enumerate(row):
+                innerList.append(list_of_coordinates[int(number)-1])
+            list_of_connections.append(innerList)
+    
+        # Append to json file
+        data['nodeInfo'] = {}
+        for (i, coordinate) in enumerate(list_of_coordinates):
+            data['nodeInfo'][str(coordinate)] = {}
+            data['nodeInfo'][str(coordinate)]['reachableNodes'] = list_of_connections[i]
+            
+            piece = self.board.find_piece_by_coords(i+1) # Not exactly sure why I need to add 1 here
+            if piece is not None:
+                if piece.color == 'white':
+                    data['nodeInfo'][str(coordinate)]['marking'] = 'P'
+                else:
+                    data['nodeInfo'][str(coordinate)]['marking'] = 'E'
+            else:
+                data['nodeInfo'][str(coordinate)]['marking'] = 'A'
+
+        with open('board_test_output.json', 'w') as outfile:
+            json.dump(data, outfile)
 
     # ----------------------------- START GAME ------------------------------
     def start_game(self):
@@ -169,8 +224,10 @@ class Game:
     def game_logics(self, coords):
         '''Function for collecting logic functions that need to be run every loop.'''
 
+        self.create_json_file()
         self.checking_rows(coords)
         check_win = self.check_draw_and_win()
+
 
         if check_win == 0:
             clear_screen()
