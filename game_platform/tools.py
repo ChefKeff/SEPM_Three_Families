@@ -62,13 +62,13 @@ Returns:
             optionsstring = optionsstring + ">" + choice.capitalize()+"    "
 
     if pieces_count == False:
-        print('┏' + '━'*52 + '┓')
-        print('┃  ' + message + ' '*(50-len(message)) + '┃')
-        print('┣' + '━'*52 + '┫')
-        print('┃' + ' '*52 + '┃')
-        print('┃  ' + optionsstring + ' '*(50-len(optionsstring)) + '┃')
-        print('┃' + ' '*52 + '┃')
-        print('┗' + '━'*52 + '┛')
+        print('┏' + '━'*72 + '┓')
+        print('┃  ' + message + ' '*(70-len(message)) + '┃')
+        print('┣' + '━'*72 + '┫')
+        print('┃' + ' '*72 + '┃')
+        print('┃  ' + optionsstring + ' '*(70-len(optionsstring)) + '┃')
+        print('┃' + ' '*72 + '┃')
+        print('┗' + '━'*72 + '┛')
         
     else:
         if turns % 2  == 1:
@@ -106,7 +106,7 @@ def boxed_output(message=""):
     # Sleep in order to have time to show the error message
     time.sleep(1.5)
 
-def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=True):
+def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=True, arguments=None):
     '''Prompts the user with message and choices and accepts only input existing in choices
 
         Parameters:
@@ -155,7 +155,10 @@ def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=Tru
             continue
 
         if index is not None and index != -1 and callbacks is not None:
-            callbacks[index]()
+            if arguments is not None and len(callbacks) == len(arguments) and arguments[index] is not None:
+                callbacks[index](arguments[index])
+            else:
+                callbacks[index]()
         elif index == -1:
             if len(callbacks) > 0:
                 callbacks[0](answer)

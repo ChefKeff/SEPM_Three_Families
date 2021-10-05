@@ -25,12 +25,6 @@ class Game:
     '''
     The Game class controls the logic of the game.
     '''
-    # Set up game logic
-    whose_turn = "white"
-    stage2 = False
-    w_placements = 0
-    b_placements = 0
-    turns = 0
 
     def __init__(self, board_structure):
         # Set up game logic
@@ -40,6 +34,7 @@ class Game:
         self.w_placements = 0
         self.b_placements = 0
         self.turns = 0
+        self.ai_difficulty = 'easy'
 
         # Set up rules
         self.max_turns = board_structure['max_turns']
@@ -57,6 +52,11 @@ class Game:
     def start_game(self):
         '''Starts the game.'''
         self.game_running = True
+
+    # -------------------------- SET AI DIFFICULTY ---------------------------
+    def set_ai_difficulty(self, level):
+        '''Starts the game.'''
+        self.ai_difficulty = level
 
     # ----------------------------- PRINT BOARD ------------------------------
     def print_board(self):
