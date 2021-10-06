@@ -26,6 +26,14 @@ def quit_game():
 
 
 # ------------------------------ GAME OPTIONS MENU ------------------------------
+def turn_on_ai(game):
+    '''Turns the AI on.'''
+    game.toggle_ai(1)
+
+def turn_off_ai(game):
+    '''Turns the AI off.'''
+    game.toggle_ai(0)
+
 def set_ai_easy(game):
     '''Sets the difficulty of the AI to easy.'''
     game.set_ai_difficulty('easy')
@@ -44,14 +52,26 @@ def go_back():
 
 def show_options(game):
     clear_screen()
-    prompt(
-        'AI difficilty (current setting is '+game.ai_difficulty+'):',
-        ['Easy', 'Medium', 'Hard', 'Back'],
-        ['e', 'm', 'h', 'b'],
-        [set_ai_easy, set_ai_medium, set_ai_hard, go_back],
-        False,
-        arguments=[game, game, game, None]
-    )
+
+    if not game.play_with_ai:
+        prompt(
+            'AI mode is not active. Do you want to turn it on?',
+            ['Yes', 'No', 'Back'],
+            ['y', 'n', 'b'],
+            [turn_on_ai, go_back, go_back],
+            False,
+            arguments=[game, None, None]
+        )
+    
+    if game.play_with_ai:
+        prompt(
+            'AI settings (current setting is '+game.ai_difficulty+'):',
+            ['Easy', 'Medium', 'Hard', 'Turn Off', 'Back'],
+            ['e', 'm', 'h', 'o', 'b'],
+            [set_ai_easy, set_ai_medium, set_ai_hard, turn_off_ai, go_back],
+            False,
+            arguments=[game, game, game, game, None]
+        )
 
 # ------------------------------ START SCREEN ------------------------------
 

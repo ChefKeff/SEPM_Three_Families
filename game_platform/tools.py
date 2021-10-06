@@ -63,13 +63,13 @@ Returns:
             optionsstring = optionsstring + ">" + choice.capitalize()+"    "
 
     if pieces_count == False:
-        print('┏' + '━'*72 + '┓')
-        print('┃  ' + message + ' '*(70-len(message)) + '┃')
-        print('┣' + '━'*72 + '┫')
-        print('┃' + ' '*72 + '┃')
-        print('┃  ' + optionsstring + ' '*(70-len(optionsstring)) + '┃')
-        print('┃' + ' '*72 + '┃')
-        print('┗' + '━'*72 + '┛')
+        print('┏' + '━'*82 + '┓')
+        print('┃  ' + message + ' '*(80-len(message)) + '┃')
+        print('┣' + '━'*82 + '┫')
+        print('┃' + ' '*82 + '┃')
+        print('┃  ' + optionsstring + ' '*(80-len(optionsstring)) + '┃')
+        print('┃' + ' '*82 + '┃')
+        print('┗' + '━'*82 + '┛')
         
     else:
         if turns % 2  == 1:
