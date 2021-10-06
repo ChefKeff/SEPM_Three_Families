@@ -1,11 +1,11 @@
 {
  "fileType": "GAMEFILE",
- "GAMEDONE": 1,
+ "GAMEDONE": 0,
  "TPLAYER": "Player2",
  "FPLAYER": "Player1",
  "TPCOLOUR": "W",
  "FPCOLOUR": "B",
- "GAMESCORE": 1,
+ "GAMESCORE": 0,
  "difficulty": "medium",
  "playerMovesLeft": 193,
  "engineMovesLeft": 193,
@@ -52,7 +52,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[0, 3]": {
    "reachableNodes": [
@@ -65,7 +65,7 @@
      3
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[1, 0]": {
    "reachableNodes": [
@@ -78,7 +78,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[1, 1]": {
    "reachableNodes": [
@@ -172,7 +172,7 @@
      2
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[2, 3]": {
    "reachableNodes": [

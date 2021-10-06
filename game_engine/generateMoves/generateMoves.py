@@ -44,12 +44,12 @@ def generate_place_piece_moves(board: dict(dict(dict())), turn: str):
                 new_board['onhandPlayerPieces'] -= 1
                 new_board['playerMovesLeft'] -= 1 
 
-        if check_rows(turn, new_board)[1]:
-            new_boards = generate_remove_piece_moves(new_board, turn)
-            for new_b in new_boards:
-                boards.append(new_b)
-        else:
-            boards.append(new_board)
+            if check_rows(turn, new_board)[1]:
+                new_boards = generate_remove_piece_moves(new_board, turn)
+                for new_b in new_boards:
+                    boards.append(new_b)
+            else:
+                boards.append(new_board)
     
     return boards
 
