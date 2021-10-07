@@ -48,7 +48,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[0, 4]": {
    "reachableNodes": [
@@ -254,7 +254,7 @@
      2
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[2, 4]": {
    "reachableNodes": [
