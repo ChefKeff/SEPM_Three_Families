@@ -17,7 +17,7 @@ def change_comm_params(move):
     elif score > 0 and win_loss:            # if the engine won!
         move['GAMEDONE'] = 1
         move['GAMESCORE'] = 1
-    elif score < 0 and not win_loss:        # if the player won :(
+    elif score < 0 and win_loss:        # if the player won :(
         move['GAMEDONE'] = 1
         move['GAMESCORE'] = -1
     else:                                   # if the game is not yet done
