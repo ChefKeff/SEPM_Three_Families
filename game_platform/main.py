@@ -6,7 +6,7 @@ This is the main module running the game.
 
 import sys
 import json
-from tools import prompt, clear_screen, show_rules
+from tools import prompt, clear_screen, show_rules, print_ascii
 from game_class import Game
 
 
@@ -50,7 +50,8 @@ def go_back():
     '''Makes user go back from ai difficulty (really fast fix).'''
     return
 
-def show_options(game):
+def show_ai_options(game):
+    '''Shows AI options.'''
     clear_screen()
 
     if not game.play_with_ai:
@@ -73,6 +74,26 @@ def show_options(game):
             arguments=[game, game, game, game, None]
         )
 
+
+def set_players(game):
+    clear_screen()
+    print_ascii('logo.txt')
+    '''Sets the name of the players of the game.'''
+    num_of_players = 10 # TODO: Fix this
+    players = []
+    for i in range(num_of_players):
+        while True:
+            print('Enter name of player '+str(i+1)+':')
+            name = input()
+            
+            if len(name) < 3 or len(name) > 10:
+                print('> Name of player must be between 3 and 10 characters in length!')
+                continue
+            players.append(name)
+            break
+
+    game.set_players(players)
+            
 # ------------------------------ START SCREEN ------------------------------
 
 def start_screen(game):
@@ -80,11 +101,11 @@ def start_screen(game):
     clear_screen()
     prompt(
         'Welcome!, please select an alternative:',
-        ['Start', 'Rules', 'Options', 'Quit'],
-        ['s', 'r', 'o', 'q'],
-        [game.start_game, show_rules, show_options, quit_game],
+        ['Start', 'Rules', 'AI', 'Players', 'Quit'],
+        ['s', 'r', 'o', 'p', 'q'],
+        [game.start_game, show_rules, show_ai_options, set_players, quit_game],
         False,
-        arguments=[None, None, game, None]
+        arguments=[None, None, game, game, None]
     )
     clear_screen()
     if game.game_running:
