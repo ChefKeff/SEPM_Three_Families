@@ -3,6 +3,7 @@
 # Imports
 import random
 import os.path
+import json
 
 # Tournament class
 class Tournament:
@@ -43,7 +44,8 @@ class Tournament:
     def addPlayer(self, playerName, playerAddress, playerID=0):
         # Check if player is new
         for address_ID in self.players.values():
-            if address_ID[0][1] == playerAddress:
+            print(address_ID[0], playerAddress)
+            if address_ID[0] == playerAddress:
                 # if playerAddress in self.players.values():
                 print(playerAddress)
                 # If not, print for logging and return False
@@ -106,12 +108,21 @@ class Tournament:
         # Return dict
         return content
 
-    # Function for handling content of a game file sent between active players
+    # Function for handling content of a game file sent between active
     def handleGameFile(self, filePath):
+        fileContent = {}
+        if "json" in filePath:
+            f = open(filePath, )
+            data = json.load(f)
+            fileContent = data
+        else:
+            fileContent = self.readGameFile(filePath)
+
         # Extract the relevant content without altering the file
-        fileContent = self.readGameFile(filePath)
+        
+        print('Content: ', fileContent)
         # If game is still active, return false (no action required)
-        if fileContent['gamedone'] != True:
+        if fileContent['GAMEFILE']['gamedone'] != True:
             return False
         # Add one to games played
         self.gamesPlayed += 1
@@ -141,7 +152,7 @@ class Tournament:
         self.colours[fileContent['fplayer']].append(fileContent['fpcolour'])
         self.colours[fileContent['tplayer']].append(fileContent['tpcolour'])
         # Return true
-        return True
+        return(True)
 
     # Function for generating a sorted scoreboard dict
     def generateSortedScores(self):
@@ -168,7 +179,7 @@ class Tournament:
             # Assume p1 is valid
             newP1 = False
             # Check if p1 has any new matchups
-            if len(self.matchups[p1]) >= len(self.players.items())-1:
+            if len(self.matchups[p1]) <= len(self.players.items())-1:
                 # If not, find a new p1
                 newP1 = True
 
@@ -192,7 +203,7 @@ class Tournament:
             if p2 in self.matchups[p1]:
                 newP2 = True
             # Check if p2 has any matchups left
-            if len(self.matchups[p2]) >= len(self.players.items())-1:
+            if len(self.matchups[p2]) <= len(self.players.items())-1:
                 newP2 = True
         return {'player1': p1, 'player2': p2}
 
@@ -208,20 +219,53 @@ class Tournament:
             while player2 == player1:
                 player2 = random.choice(list(self.players.keys()))
             # Create dict
-            nextGame = {'player1': player1, 'player1Colour': 'B', 'player2': player2, 'player2Colour': "W"}
+            
+            player1ColorCode, player2ColorCode = self.generateColorCode(player1, player2)
+            nextGame = {'player1': player1, 'player1Colour': self.colorParser(player1ColorCode),
+                        'player2': player2, 'player2Colour': self.colorParser(player2ColorCode)}
             # After this it won't be the first game
             self.firstGame = False
             # Return dict
             return nextGame
         # If  it's not the first game, generate a valid matchup
         nextGame = self.generateNextMatchup()
+        if nextGame == False:
+            return(False)
         # Generate placeholder colours
-        player1ID = self.players[nextGame['player1']][1]
-        player2ID = self.players[nextGame['player1']][1]
-        player1ColorCode = self.matchingColor[player1ID][player2ID]
-        player2ColorCode = 1 - player1ColorCode  # because we just have 2 color.
-        nextGame.update({'player1Colour': self.colorParser(player1ColorCode), 'player2Colour': player2ColorCode})
+        player1ColorCode, player2ColorCode = self.generateColorCode(nextGame['player1'], nextGame['player2'])
+        nextGame.update({'player1Colour': self.colorParser(player1ColorCode),
+                         'player2Colour': self.colorParser(player2ColorCode)})
         return nextGame
+
+    def generateFinalFile(self, filePath):
+        dict = {}
+        dict["ENDFILE"] = {}
+        dict["ENDFILE"]["PLAYERSCORE"] = {}
+        sortedScores = self.generateSortedScores()
+        for player, score in sortedScores.items():
+            dict["ENDFILE"]["PLAYERSCORE"][player] = score
+
+        with open(filePath, "w") as outfile:
+            json.dump(dict, outfile)
+        return True
+        #with open(filePath, 'w+') as f:
+        #    f.write('ENDFILE\n')
+        #    sortedScores = self.generateSortedScores()
+        #    for player, score in sortedScores.items():
+        #        # Add them in order to the file, one line per player
+        #        f.write(f'PLAYERSCORE: {player} {score}\n')
+        #return(True)
+
+    def generateColorCode(self, player1Name, player2Name):
+        player1ID = self.players[player1Name][1]
+        player2ID = self.players[player2Name][1]
+        
+        player1ColorCode = self.matchingColor[player1ID][player2ID]
+        #print(self.matchingColor)
+        #print(player1ID, player2ID)
+        player2ColorCode = 1 - player1ColorCode  # because we just have 2 color.
+        print(player1ColorCode, player2ColorCode)
+        return player1ColorCode, player2ColorCode
 
     def generateMatchColor(self):
         """
@@ -257,35 +301,34 @@ class Tournament:
 
     # Function for generating the tournament data file sent to the players
     def generateTournamentFile(self, filePath):
-        print('In Tournament')
         # Get the sorted scoreboard
         sortedScores = self.generateSortedScores()
         # Generate data about next game
         nextGame = self.generateNextGameData()
-        # Open a writable file
-        with open(filePath, 'w+') as f:
-            print(f'Opened {filePath}')
-            # Add how many games has been played
-            f.write(f'GAMESPLAYED: {self.gamesPlayed}\n')
-            # Iterate over each player in the dict with sorted scores
-            for player, score in sortedScores.items():
-                # Add them in order to the file, one line per player
-                f.write(f'PLAYERSCORE: {player} {score}\n')
-            # Add next players tag
-            f.write('NEXTPLAYERS: ')
-            # Iterate over all key-value pairs in the nextgame dict
-            for key, val in nextGame.items():
-                # If the colour field, add the colour to the player
-                if 'Colour' in key:
-                    f.write(val+' ')
+        print(nextGame)
+        if nextGame == False:
+            self.generateFinalFile(filePath)
+            return(False)
+        #DICT IN ORDER TO MAKE JSON FILE !!!!!
+        dict = {}
+        dict['TOURNAMENTFILE'] = {}
+        dict['TOURNAMENTFILE']["PLAYERSCORE"] = {}
+        #dict["TOURNAMENTFILE"] = "hej"
+        dict["TOURNAMENTFILE"]["GAMESPLAYED"] = str(self.gamesPlayed)
+        for player, score in sortedScores.items():
+            dict["TOURNAMENTFILE"]["PLAYERSCORE"][player] = score
+        nextplayers = ""
+        for key, val in nextGame.items():
+            if 'Colour' in key: 
+                nextplayers = nextplayers + (val+' ')
                 # If not colour field, it's the player field. Add the player
-                else:
-                    f.write(val+':')
-            # Finish next player with a newline
-            f.write('\n')
-        # Close the file and exit function
+            else:
+                nextplayers = nextplayers + (val+':')
+        dict["TOURNAMENTFILE"]["NEXTPLAYERS"] = nextplayers 
+        with open(filePath, "w") as outfile:
+            json.dump(dict, outfile)
+        
         return True
-
 
 def main():
 
@@ -293,7 +336,7 @@ def main():
 
     ### prompt players to initiate game
     tournament = Tournament()
-    tournament.addPlayer('Player1', 12344)
+    tournament.addPlayer('Player1',1234)
     tournament.addPlayer('Player2', 1235)
     tournament.addPlayer('Player3', 1236)
     print(tournament.players)
@@ -307,7 +350,6 @@ def main():
     # store the results in the tournament data in local variable
     # tournament_data += tournament
     # send out tournamnet data
-
 
 if __name__ == '__main__':
     main()
