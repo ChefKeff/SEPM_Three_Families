@@ -1,41 +1,41 @@
 {
  "fileType": "GAMEFILE",
- "GAMEDONE": 1,
- "TPLAYER": "Player1",
- "FPLAYER": "Player2",
- "TPCOLOUR": "B",
- "FPCOLOUR": "W",
- "GAMESCORE": -5,
+ "GAMEDONE": 0,
+ "TPLAYER": "Player2",
+ "FPLAYER": "Player1",
+ "TPCOLOUR": "W",
+ "FPCOLOUR": "B",
+ "GAMESCORE": 0,
  "difficulty": "medium",
  "playerMovesLeft": 193,
  "engineMovesLeft": 193,
- "placedPlayerPieces": 7,
- "placedEnginePieces": 6,
+ "placedPlayerPieces": 5,
+ "placedEnginePieces": 5,
  "onhandPlayerPieces": 0,
  "onhandEnginePieces": 0,
- "totalPiecesPerPlayer": 7,
+ "totalPiecesPerPlayer": 5,
  "nodeInfo": {
   "[0, 0]": {
    "reachableNodes": [
     [
      1,
      0
-    ],
-    [
-     1,
-     1
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[0, 1]": {
    "reachableNodes": [
+    [
+     1,
+     1
+    ],
     [
      0,
      2
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[0, 2]": {
    "reachableNodes": [
@@ -46,6 +46,7 @@
     [
      0,
      1
+<<<<<<< HEAD
     ]
    ],
    "marking": "E"
@@ -68,46 +69,38 @@
     [
      1,
      6
+=======
+>>>>>>> 11521535ca8913a5af6eeafe29df44551477e564
     ],
     [
+     1,
+     1
+    ]
+   ],
+   "marking": "A"
+  },
+  "[0, 3]": {
+   "reachableNodes": [
+    [
      0,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[0, 6]": {
-   "reachableNodes": [
+     2
+    ],
     [
      1,
-     7
+     3
     ]
    ],
-   "marking": "A"
-  },
-  "[0, 7]": {
-   "reachableNodes": [
-    [
-     1,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[0, 12]": {
-   "reachableNodes": [
-    [
-     1,
-     11
-    ]
-   ],
-   "marking": "A"
+   "marking": "E"
   },
   "[1, 0]": {
    "reachableNodes": [
     [
      0,
      0
+    ],
+    [
+     1,
+     1
     ]
    ],
    "marking": "A"
@@ -115,143 +108,73 @@
   "[1, 1]": {
    "reachableNodes": [
     [
-     0,
+     1,
      0
+    ],
+    [
+     0,
+     1
+    ],
+    [
+     0,
+     2
+    ],
+    [
+     1,
+     2
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[1, 2]": {
    "reachableNodes": [
     [
-     2,
-     3
+     1,
+     1
     ],
     [
      0,
      2
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
-  "[1, 5]": {
-   "reachableNodes": [
-    [
-     2,
-     6
-    ],
-    [
-     0,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[1, 6]": {
+  "[1, 3]": {
    "reachableNodes": [
     [
      0,
-     5
+     3
     ],
     [
      2,
-     5
+     3
     ]
    ],
-   "marking": "A"
-  },
-  "[1, 7]": {
-   "reachableNodes": [
-    [
-     0,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[1, 8]": {
-   "reachableNodes": [
-    [
-     2,
-     9
-    ],
-    [
-     0,
-     7
-    ],
-    [
-     2,
-     7
-    ]
-   ],
-   "marking": "A"
-  },
-  "[1, 11]": {
-   "reachableNodes": [
-    [
-     1,
-     12
-    ],
-    [
-     0,
-     12
-    ]
-   ],
-   "marking": "A"
-  },
-  "[1, 12]": {
-   "reachableNodes": [
-    [
-     1,
-     11
-    ],
-    [
-     2,
-     11
-    ]
-   ],
-   "marking": "A"
+   "marking": "E"
   },
   "[2, 0]": {
    "reachableNodes": [
     [
-     3,
+     2,
      1
     ],
     [
-     2,
-     1
+     3,
+     0
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[2, 1]": {
    "reachableNodes": [
     [
      2,
      0
-    ]
-   ],
-   "marking": "A"
-  },
-  "[2, 2]": {
-   "reachableNodes": [
-    [
-     3,
-     2
     ],
     [
      3,
-     3
-    ]
-   ],
-   "marking": "E"
-  },
-  "[2, 3]": {
-   "reachableNodes": [
-    [
-     1,
      2
+<<<<<<< HEAD
     ]
    ],
    "marking": "A"
@@ -306,49 +229,42 @@
     [
      3,
      10
+=======
+>>>>>>> 11521535ca8913a5af6eeafe29df44551477e564
     ],
     [
-     1,
-     8
+     2,
+     2
     ]
    ],
    "marking": "A"
   },
-  "[2, 10]": {
+  "[2, 2]": {
    "reachableNodes": [
     [
      2,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[2, 11]": {
-   "reachableNodes": [
+     1
+    ],
+    [
+     2,
+     3
+    ],
     [
      3,
-     11
-    ],
-    [
-     2,
-     12
-    ],
-    [
-     1,
-     12
-    ],
-    [
-     2,
-     10
+     2
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
-  "[2, 12]": {
+  "[2, 3]": {
    "reachableNodes": [
     [
      2,
-     11
+     2
+    ],
+    [
+     1,
+     3
     ]
    ],
    "marking": "A"
@@ -358,1423 +274,32 @@
     [
      3,
      1
+    ],
+    [
+     2,
+     0
     ]
    ],
-   "marking": "E"
+   "marking": "P"
   },
   "[3, 1]": {
    "reachableNodes": [
     [
-     2,
-     0
-    ],
-    [
      3,
      0
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[3, 2]": {
    "reachableNodes": [
     [
-     3,
-     3
-    ],
-    [
      2,
      2
     ],
     [
-     4,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[3, 3]": {
-   "reachableNodes": [
-    [
-     4,
-     4
-    ],
-    [
      2,
-     4
-    ],
-    [
-     2,
-     2
-    ],
-    [
-     3,
-     2
-    ]
-   ],
-   "marking": "P"
-  },
-  "[3, 4]": {
-   "reachableNodes": [
-    [
-     4,
-     4
-    ],
-    [
-     4,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[3, 5]": {
-   "reachableNodes": [
-    [
-     4,
-     4
-    ]
-   ],
-   "marking": "E"
-  },
-  "[3, 7]": {
-   "reachableNodes": [
-    [
-     4,
-     8
-    ],
-    [
-     2,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[3, 8]": {
-   "reachableNodes": [
-    [
-     4,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[3, 9]": {
-   "reachableNodes": [
-    [
-     4,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[3, 10]": {
-   "reachableNodes": [
-    [
-     2,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[3, 11]": {
-   "reachableNodes": [
-    [
-     4,
-     11
-    ],
-    [
-     2,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 0]": {
-   "reachableNodes": [
-    [
-     5,
      1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 1]": {
-   "reachableNodes": [
-    [
-     5,
-     1
-    ],
-    [
-     3,
-     2
-    ],
-    [
-     5,
-     0
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 3]": {
-   "reachableNodes": [
-    [
-     4,
-     4
-    ],
-    [
-     3,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 4]": {
-   "reachableNodes": [
-    [
-     5,
-     4
-    ],
-    [
-     4,
-     5
-    ],
-    [
-     3,
-     5
-    ],
-    [
-     3,
-     3
-    ],
-    [
-     3,
-     4
-    ],
-    [
-     4,
-     3
-    ],
-    [
-     5,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 5]": {
-   "reachableNodes": [
-    [
-     5,
-     6
-    ],
-    [
-     4,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 6]": {
-   "reachableNodes": [
-    [
-     5,
-     5
-    ]
-   ],
-   "marking": "P"
-  },
-  "[4, 8]": {
-   "reachableNodes": [
-    [
-     5,
-     9
-    ],
-    [
-     3,
-     9
-    ],
-    [
-     3,
-     7
-    ],
-    [
-     5,
-     7
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 9]": {
-   "reachableNodes": [
-    [
-     3,
-     8
-    ]
-   ],
-   "marking": "P"
-  },
-  "[4, 10]": {
-   "reachableNodes": [
-    [
-     5,
-     11
-    ],
-    [
-     5,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 11]": {
-   "reachableNodes": [
-    [
-     5,
-     11
-    ],
-    [
-     3,
-     11
-    ],
-    [
-     5,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[4, 12]": {
-   "reachableNodes": [
-    [
-     5,
-     12
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 0]": {
-   "reachableNodes": [
-    [
-     4,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 1]": {
-   "reachableNodes": [
-    [
-     6,
-     1
-    ],
-    [
-     6,
-     2
-    ],
-    [
-     4,
-     0
-    ],
-    [
-     4,
-     1
-    ],
-    [
-     6,
-     0
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 2]": {
-   "reachableNodes": [
-    [
-     6,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 3]": {
-   "reachableNodes": [
-    [
-     6,
-     3
-    ],
-    [
-     4,
-     4
-    ],
-    [
-     6,
-     2
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 4]": {
-   "reachableNodes": [
-    [
-     6,
-     5
-    ],
-    [
-     5,
-     5
-    ],
-    [
-     4,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 5]": {
-   "reachableNodes": [
-    [
-     4,
-     6
-    ],
-    [
-     5,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 6]": {
-   "reachableNodes": [
-    [
-     6,
-     6
-    ],
-    [
-     4,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 7]": {
-   "reachableNodes": [
-    [
-     6,
-     8
-    ],
-    [
-     4,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 8]": {
-   "reachableNodes": [
-    [
-     6,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 9]": {
-   "reachableNodes": [
-    [
-     4,
-     10
-    ],
-    [
-     4,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 10]": {
-   "reachableNodes": [
-    [
-     4,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 11]": {
-   "reachableNodes": [
-    [
-     5,
-     12
-    ],
-    [
-     4,
-     10
-    ],
-    [
-     4,
-     11
-    ],
-    [
-     6,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[5, 12]": {
-   "reachableNodes": [
-    [
-     6,
-     12
-    ],
-    [
-     4,
-     12
-    ],
-    [
-     5,
-     11
-    ],
-    [
-     6,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 0]": {
-   "reachableNodes": [
-    [
-     5,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 1]": {
-   "reachableNodes": [
-    [
-     7,
-     1
-    ],
-    [
-     6,
-     2
-    ],
-    [
-     5,
-     2
-    ],
-    [
-     5,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 2]": {
-   "reachableNodes": [
-    [
-     7,
-     3
-    ],
-    [
-     5,
-     3
-    ],
-    [
-     5,
-     1
-    ],
-    [
-     6,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 3]": {
-   "reachableNodes": [
-    [
-     5,
-     3
-    ],
-    [
-     7,
-     2
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 4]": {
-   "reachableNodes": [
-    [
-     6,
-     5
-    ],
-    [
-     7,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 5]": {
-   "reachableNodes": [
-    [
-     5,
-     4
-    ],
-    [
-     6,
-     4
-    ],
-    [
-     7,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 6]": {
-   "reachableNodes": [
-    [
-     6,
-     7
-    ],
-    [
-     5,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 7]": {
-   "reachableNodes": [
-    [
-     6,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 8]": {
-   "reachableNodes": [
-    [
-     7,
-     8
-    ],
-    [
-     7,
-     9
-    ],
-    [
-     5,
-     7
-    ],
-    [
-     5,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 9]": {
-   "reachableNodes": [
-    [
-     7,
-     9
-    ],
-    [
-     7,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 10]": {
-   "reachableNodes": [
-    [
-     7,
-     10
-    ],
-    [
-     5,
-     11
-    ]
-   ],
-   "marking": "P"
-  },
-  "[6, 11]": {
-   "reachableNodes": [
-    [
-     6,
-     12
-    ],
-    [
-     5,
-     12
-    ]
-   ],
-   "marking": "A"
-  },
-  "[6, 12]": {
-   "reachableNodes": [
-    [
-     7,
-     12
-    ],
-    [
-     5,
-     12
-    ],
-    [
-     6,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 1]": {
-   "reachableNodes": [
-    [
-     6,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 2]": {
-   "reachableNodes": [
-    [
-     7,
-     3
-    ],
-    [
-     6,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 3]": {
-   "reachableNodes": [
-    [
-     6,
-     4
-    ],
-    [
-     6,
-     2
-    ],
-    [
-     7,
-     2
-    ]
-   ],
-   "marking": "P"
-  },
-  "[7, 4]": {
-   "reachableNodes": [
-    [
-     8,
-     4
-    ],
-    [
-     8,
-     5
-    ],
-    [
-     6,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 5]": {
-   "reachableNodes": [
-    [
-     8,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 6]": {
-   "reachableNodes": [
-    [
-     8,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 8]": {
-   "reachableNodes": [
-    [
-     6,
-     9
-    ],
-    [
-     6,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 9]": {
-   "reachableNodes": [
-    [
-     6,
-     8
-    ],
-    [
-     6,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 10]": {
-   "reachableNodes": [
-    [
-     8,
-     11
-    ],
-    [
-     6,
-     10
-    ],
-    [
-     8,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[7, 12]": {
-   "reachableNodes": [
-    [
-     8,
-     12
-    ],
-    [
-     6,
-     12
-    ],
-    [
-     8,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 2]": {
-   "reachableNodes": [
-    [
-     8,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 3]": {
-   "reachableNodes": [
-    [
-     9,
-     3
-    ],
-    [
-     8,
-     2
-    ],
-    [
-     9,
-     2
-    ]
-   ],
-   "marking": "P"
-  },
-  "[8, 4]": {
-   "reachableNodes": [
-    [
-     7,
-     5
-    ],
-    [
-     7,
-     4
-    ],
-    [
-     9,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 5]": {
-   "reachableNodes": [
-    [
-     9,
-     5
-    ],
-    [
-     7,
-     6
-    ],
-    [
-     7,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 6]": {
-   "reachableNodes": [
-    [
-     9,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 7]": {
-   "reachableNodes": [
-    [
-     8,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 8]": {
-   "reachableNodes": [
-    [
-     8,
-     7
-    ],
-    [
-     9,
-     7
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 9]": {
-   "reachableNodes": [
-    [
-     9,
-     10
-    ],
-    [
-     7,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 10]": {
-   "reachableNodes": [
-    [
-     9,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 11]": {
-   "reachableNodes": [
-    [
-     8,
-     12
-    ],
-    [
-     7,
-     12
-    ],
-    [
-     7,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[8, 12]": {
-   "reachableNodes": [
-    [
-     7,
-     12
-    ],
-    [
-     8,
-     11
-    ],
-    [
-     9,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 0]": {
-   "reachableNodes": [
-    [
-     10,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 1]": {
-   "reachableNodes": [
-    [
-     10,
-     0
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 2]": {
-   "reachableNodes": [
-    [
-     8,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 3]": {
-   "reachableNodes": [
-    [
-     8,
-     4
-    ],
-    [
-     8,
-     3
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 5]": {
-   "reachableNodes": [
-    [
-     8,
-     6
-    ],
-    [
-     8,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 6]": {
-   "reachableNodes": [
-    [
-     9,
-     7
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 7]": {
-   "reachableNodes": [
-    [
-     8,
-     8
-    ],
-    [
-     9,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 9]": {
-   "reachableNodes": [
-    [
-     10,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 10]": {
-   "reachableNodes": [
-    [
-     9,
-     11
-    ],
-    [
-     8,
-     9
-    ],
-    [
-     10,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 11]": {
-   "reachableNodes": [
-    [
-     10,
-     12
-    ],
-    [
-     8,
-     12
-    ],
-    [
-     8,
-     10
-    ],
-    [
-     9,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[9, 12]": {
-   "reachableNodes": [
-    [
-     10,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 0]": {
-   "reachableNodes": [
-    [
-     9,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 1]": {
-   "reachableNodes": [
-    [
-     9,
-     0
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 4]": {
-   "reachableNodes": [
-    [
-     10,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 5]": {
-   "reachableNodes": [
-    [
-     10,
-     4
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 6]": {
-   "reachableNodes": [
-    [
-     10,
-     7
-    ],
-    [
-     11,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 7]": {
-   "reachableNodes": [
-    [
-     10,
-     8
-    ],
-    [
-     10,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 8]": {
-   "reachableNodes": [
-    [
-     10,
-     9
-    ],
-    [
-     10,
-     7
-    ],
-    [
-     11,
-     7
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 9]": {
-   "reachableNodes": [
-    [
-     9,
-     10
-    ],
-    [
-     10,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 10]": {
-   "reachableNodes": [
-    [
-     10,
-     11
-    ],
-    [
-     9,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 11]": {
-   "reachableNodes": [
-    [
-     10,
-     12
-    ],
-    [
-     9,
-     12
-    ],
-    [
-     10,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[10, 12]": {
-   "reachableNodes": [
-    [
-     9,
-     11
-    ],
-    [
-     10,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 1]": {
-   "reachableNodes": [
-    [
-     12,
-     2
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 2]": {
-   "reachableNodes": [
-    [
-     12,
-     3
-    ],
-    [
-     12,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 5]": {
-   "reachableNodes": [
-    [
-     11,
-     6
-    ],
-    [
-     10,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 6]": {
-   "reachableNodes": [
-    [
-     12,
-     7
-    ],
-    [
-     11,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 7]": {
-   "reachableNodes": [
-    [
-     10,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 8]": {
-   "reachableNodes": [
-    [
-     12,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 9]": {
-   "reachableNodes": [
-    [
-     11,
-     10
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 10]": {
-   "reachableNodes": [
-    [
-     11,
-     9
-    ]
-   ],
-   "marking": "A"
-  },
-  "[11, 12]": {
-   "reachableNodes": [
-    [
-     12,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 1]": {
-   "reachableNodes": [
-    [
-     11,
-     2
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 2]": {
-   "reachableNodes": [
-    [
-     11,
-     1
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 3]": {
-   "reachableNodes": [
-    [
-     11,
-     2
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 5]": {
-   "reachableNodes": [
-    [
-     12,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 6]": {
-   "reachableNodes": [
-    [
-     12,
-     5
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 7]": {
-   "reachableNodes": [
-    [
-     12,
-     8
-    ],
-    [
-     11,
-     6
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 8]": {
-   "reachableNodes": [
-    [
-     12,
-     9
-    ],
-    [
-     12,
-     7
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 9]": {
-   "reachableNodes": [
-    [
-     11,
-     8
-    ],
-    [
-     12,
-     8
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 10]": {
-   "reachableNodes": [
-    [
-     12,
-     11
-    ]
-   ],
-   "marking": "A"
-  },
-  "[12, 11]": {
-   "reachableNodes": [
-    [
-     11,
-     12
-    ],
-    [
-     12,
-     10
     ]
    ],
    "marking": "A"

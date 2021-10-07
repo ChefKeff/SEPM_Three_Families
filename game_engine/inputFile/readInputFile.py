@@ -23,16 +23,13 @@ def read_game_state():
         'placedPlayerPieces': game_data['placedPlayerPieces'],
         'placedEnginePieces': game_data['placedEnginePieces'],
         'onhandPlayerPieces': game_data['onhandPlayerPieces'],
-        'onhandEnginePieces': game_data['onhandPlayerPieces'],
+        'onhandEnginePieces': game_data['onhandEnginePieces'],
         'totalPiecesPerPlayer': game_data['totalPiecesPerPlayer']
     }
-
     for node in game_data['nodeInfo']:
         if game_data['nodeInfo'][node]['reachableNodes'] != []:
             node_info[node] = game_data['nodeInfo'][node]
-    
     game_struct['nodeInfo'] = node_info
-
     return game_struct
 
 read_game_state()
