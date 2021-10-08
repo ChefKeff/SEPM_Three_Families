@@ -1,11 +1,11 @@
 {
  "fileType": "GAMEFILE",
- "GAMEDONE": 1,
+ "GAMEDONE": 0,
  "TPLAYER": "Player2",
  "FPLAYER": "Player1",
  "TPCOLOUR": "W",
  "FPCOLOUR": "B",
- "GAMESCORE": 1,
+ "GAMESCORE": 0,
  "difficulty": "medium",
  "playerMovesLeft": 193,
  "engineMovesLeft": 193,
