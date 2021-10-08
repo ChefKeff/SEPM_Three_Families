@@ -14,7 +14,6 @@ def generate_move_create_output(file_name:str="outputFile.json"):
         str -- name of the output file
     """
     move = generate_move()
-    print(move)
     move = change_comm_params(move)
     json_object = json.dumps(move, indent = 1)
     with open(file_name, 'w') as output_file:

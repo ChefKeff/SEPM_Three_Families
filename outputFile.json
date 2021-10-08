@@ -52,7 +52,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[0, 3]": {
    "reachableNodes": [
@@ -65,7 +65,7 @@
      3
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[1, 0]": {
    "reachableNodes": [
@@ -78,7 +78,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[1, 1]": {
    "reachableNodes": [
@@ -172,7 +172,7 @@
      2
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[2, 3]": {
    "reachableNodes": [
