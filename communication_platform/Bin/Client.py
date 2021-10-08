@@ -64,12 +64,9 @@ class Client:
             # Add functionality here.
             return
         elif data['fileType'] == "ERROR_LOG": # QUAN PLEASE FIX
-            #if 'DUPLICATE_NAME' in lines[1]:
-            #        print(lines[2])
-            #        content = lines[2].split()
-            #        self.pname = content[-1]
-            #        f.close()
-            #        os.remove(filePath)
+            if data['errorType'] == "DUPLICATE_NAME":
+                print(data['error_msg_for_client'])
+                #os.remove(filePath)
             return
         elif data['fileType'] == "ENDFILE":
             print('Received endfile!')

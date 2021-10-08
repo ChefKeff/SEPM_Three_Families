@@ -56,12 +56,14 @@ class Server:
             addedPlayerName = self.tournament.addPlayer(name['name'], address, Server.connectedPlayer) # This is the name after a client being added
 
             if addedPlayerName is not False and addedPlayerName != name['name']:
-                errFilePath = f'client_{address}_ErrorLog.txt'
+                dict = {}
+                dict['fileType'] = "ERROR_LOG"
+                dict['errorType'] = "DUPLICATE_NAME"
+                dict['error_msg_for_client'] = f'{name} already taken, new name is {addedPlayerName}'
+                errFilePath = f'client_{address}_ErrorLog.json'
+                with open(errFilePath, "w") as outfile:
+                    json.dump(dict, outfile)
                 # We know that the name has been taken. Now we need to inform the client
-                with open(errFilePath, 'w') as f:
-                    f.write("ERROR_LOG\n")
-                    f.write("DUPLICATE_NAME\n")
-                    f.write(f'{name} already taken, new name is {addedPlayerName}')
                 self.sendFile(clientSocket, errFilePath)
                 os.remove(errFilePath)
                 name['name'] = addedPlayerName
