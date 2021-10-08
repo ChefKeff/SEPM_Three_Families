@@ -35,13 +35,30 @@ class Game:
         self.game_running = False
         self.whose_turn = "white"
         self.stage2 = False
-        self.w_turns = 0
-        self.b_turns = 0
-        self.w_placements = 0
-        self.b_placements = 0
-        self.turns = 0
+        self.total_turns = 0
         self.ai_difficulty = 'easy'
         self.play_with_ai = False
+
+        # Dictionary for the white player
+        self.white_player = {
+            'name': 'White',
+            'color': 'W',
+            'placements': 0,
+            'turns': 0,
+        }
+
+        # Dictionary for the black player
+        self.black_player = {
+            'name': 'Black',
+            'color': 'B',
+            'placements': 0,
+            'turns': 0,
+        }
+
+        # Set to and from player
+        self.to_player = self.black_player
+        self.from_player = self.white_player
+
 
         self.connections = board_structure['connections']
 
@@ -61,49 +78,34 @@ class Game:
 
     def to_json(self):
         '''Creates a .json file with the game configurations'''
-        with open('outputFile.json', 'r') as f:
-            outputFile = json.load(f)
+
         data = {}
         data['difficulty'] = self.ai_difficulty
         data['playerMovesLeft'] = 100 # TODO: Placeholder, fix this
         data['engineMovesLeft'] = 100 # TODO: Placeholder, fix this
 
-        # ADDITION TO JSON FILE (some of these at least):
-        # "fileType": "GAMEFILE",
-        # "GAMEDONE": 0,
-        # "TPLAYER": "Player1",
-        # "FPLAYER": "Player2",
-        # "TPCOLOUR": "B",
-        # "FPCOLOUR": "W",
-        # "GAMESCORE": 0,
-        # "difficulty" : "medium" ,
-        # "playerMovesLeft": 193,
-        # "engineMovesLeft": 194, 
-        # "placedPlayerPieces": 5, 
-        # "placedEnginePieces": 4,
-        # "onhandPlayerPieces": 0,
-        # "onhandEnginePieces": 1, 
-        # "totalPiecesPerPlayer": 5, 
-        # "nodeInfo":
-
         # TODO: I took for granted white=player, black=ai
+
+        # Check how many pieces each player has
         w_count, b_count = self.check_pieces_count()
+
+
         data['fileType'] = 'GAMEFILE'
         data['maxTurns'] = self.max_turns # TODO: Should this also exist in game file ?
         data['GAMEDONE'] = 1 if self.game_done else 0
         # TODO: These I'm unsure of:
-        data['TPLAYER'] = 'player1'
-        data['FPLAYER'] = 'player2'
-        data['TPCOLOUR'] = 'B'
-        data['FPCOLOUR'] = 'W'
+        data['TPLAYER'] = self.to_player['name']
+        data['FPLAYER'] = self.from_player['name']
+        data['TPCOLOUR'] = self.to_player['color']
+        data['FPCOLOUR'] = self.from_player['color']
         data['GAMESCORE'] = self.game_score
         # TODO: Guess the following should work, I haven't tried
-        data['playerMovesLeft'] = self.max_turns - self.w_turns
-        data['engineMovesLeft'] = self.max_turns - self.b_turns
+        data['playerMovesLeft'] = self.max_turns - self.white_player['turns']
+        data['engineMovesLeft'] = self.max_turns - self.black_player['turns']
         data['placedPlayerPieces'] = w_count
-        data['placedEnginePieces'] = b_count #outputFile['placedEnginePieces']
-        data['onhandPlayerPieces'] = self.pieces_in_hand - self.w_placements
-        data['onhandEnginePieces'] = self.pieces_in_hand - self.b_placements #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
+        data['placedEnginePieces'] = b_count
+        data['onhandPlayerPieces'] = self.pieces_in_hand - self.white_player['placements']
+        data['onhandEnginePieces'] = self.pieces_in_hand - self.black_player['placements']
         data['totalPiecesPerPlayer'] = self.pieces_in_hand
 
         # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
@@ -173,6 +175,13 @@ class Game:
         '''Starts the game.'''
         self.game_running = True
 
+    # ------------------------------ SET NAMES -------------------------------
+    def set_player_name(self, color, name):
+        if color.lower() == 'white':
+            self.white_player['name'] = name
+        elif color.lower() == 'black':
+            self.black_player['name'] = name
+
     # -------------------------- SET AI DIFFICULTY ---------------------------
     def set_ai_difficulty(self, level):
         '''Starts the game.'''
@@ -193,14 +202,18 @@ class Game:
 
     def change_turn(self, color):
         '''Change player turn and increments turns.'''
-        self.turns += 1
+        self.total_turns += 1
 
         # In order to keep track of turns each player has made
         # TODO: Does this look valid? Hasn't tested yet.
         if color == 'white':
-            self.b_turns += 1
+            self.black_player['turns'] += 1
+            self.to_player = self.black_player
+            self.from_player = self.white_player
         elif color == 'black':
-            self.w_turns += 1
+            self.white_player['turns'] += 1
+            self.to_player = self.white_player
+            self.from_player = self.black_player
 
         self.whose_turn = color
 
@@ -236,7 +249,7 @@ class Game:
             w_count,
             b_count,
             self.pieces_in_hand,
-            self.turns
+            self.total_turns
         )
 
         if answer == "rules":
@@ -260,7 +273,7 @@ class Game:
         stage2 = self.stage2
 
         # If turns are greater than max turns then it becomes a tie
-        if self.max_turns > 0 and self.turns > self.max_turns:
+        if self.max_turns > 0 and self.total_turns > self.max_turns:
             return True
 
         if not stage2:
@@ -407,7 +420,7 @@ class Game:
             generate_move_create_output()    
             # Update board
             self.from_json()
-            self.b_placements += 1 #TODO: might have to change this
+            self.black_player['placements'] += 1 #TODO: might have to change this
         else:
             piece = Piece(color)
 
@@ -430,9 +443,9 @@ class Game:
                 self.print_board()
 
             if color == "white":
-                self.w_placements += 1
+                self.white_player['placements'] += 1
             else:
-                self.b_placements += 1
+                self.black_player['placements'] += 1
 
             self.game_logics(response)
 
@@ -441,12 +454,12 @@ class Game:
         Method for the place pieces phase which should keep going
         until everyone has placed 11 pieces each.
         '''
-        while self.pieces_in_hand not in (self.w_placements, self.b_placements):
+        while self.pieces_in_hand not in (self.white_player['placements'], self.black_player['placements']):
             # print board
             clear_screen()
             self.print_board()
 
-            # place black and white piece
+            # Place black and white piece
             self.place_piece_aux("white")
             clear_screen()
             self.print_board()
@@ -469,7 +482,7 @@ class Game:
             self.print_board()
             if self.play_with_ai and self.whose_turn == 'black':
                 # Send board to game_engine
-                generate_move_create_output()    
+                generate_move_create_output()   
                 # Update board
                 self.from_json() 
 

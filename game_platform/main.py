@@ -5,33 +5,48 @@ This is the main module running the game.
 '''
 
 import sys
+import time
 import json
-from tools import prompt, clear_screen, show_rules, print_ascii
+from tools import prompt, clear_screen, show_rules, boxed_output
 from game_class import Game
 
-def show_ai_options(game):
-    '''Shows AI options.'''
+
+def setup_names(game):
+    '''Setup the names for the players'''
+    white_player_name = ''
+    black_player_name = ''
+
+    # White Player
+    while True:
+        print('> Enter name for white player:')
+        white_player_name = input()
+        if len(white_player_name) < 2 or len(white_player_name) > 10:
+            boxed_output('Please enter a name between 2 and 10 characters!')
+            continue
+
+        game.set_player_name('white', white_player_name)
+        print('> Name successfully set')
+        break
+
     clear_screen()
 
-    # Ask whether to play against an AI or not
-    prompt(
-        'Who do you want to play against?',
-        ['Other Player', 'AI'],
-        ['p', 'a'],
-        [turn_off_ai, turn_on_ai],
-        False,
-        arguments=[game, game]
-    )
+    # Black Player
+    while True:
+        print('> Enter name for black player:')
+        black_player_name = input()
+        if len(black_player_name) < 2 or len(black_player_name) > 10:
+            boxed_output('Please enter a name between 2 and 10 characters!')
+            continue
+        
+        if game.white_player['name'].lower() == black_player_name.lower():
+            boxed_output('Both players cannot have the same name!')
+            continue
 
-    if game.play_with_ai:
-        prompt(
-            'AI settings (current setting is '+game.ai_difficulty+'):',
-            ['Easy', 'Medium', 'Hard'],
-            ['e', 'm', 'h'],
-            [set_ai_easy, set_ai_medium, set_ai_hard],
-            False,
-            arguments=[game, game, game]
-        )
+        game.set_player_name('black', black_player_name)
+        print('> Name successfully set')
+        time.sleep(2)
+        break
+
 
 
 def play_local(game):
@@ -40,6 +55,9 @@ def play_local(game):
 
     # Ask if user wants to play agains AI or not and difficulty
     show_ai_options(game)
+
+    # Ask names for the two players
+    setup_names(game)
     
 
 def play_online():
@@ -73,6 +91,30 @@ def set_ai_medium(game):
 def set_ai_hard(game):
     '''Sets the difficulty of the AI to hard.'''
     game.set_ai_difficulty('hard')
+
+def show_ai_options(game):
+    '''Shows AI options.'''
+    clear_screen()
+
+    # Ask whether to play against an AI or not
+    prompt(
+        'Who do you want to play against?',
+        ['Other Player', 'AI'],
+        ['p', 'a'],
+        [turn_off_ai, turn_on_ai],
+        False,
+        arguments=[game, game]
+    )
+
+    if game.play_with_ai:
+        prompt(
+            'AI settings (current setting is '+game.ai_difficulty+'):',
+            ['Easy', 'Medium', 'Hard'],
+            ['e', 'm', 'h'],
+            [set_ai_easy, set_ai_medium, set_ai_hard],
+            False,
+            arguments=[game, game, game]
+        )
             
 # ------------------------------ START SCREEN ------------------------------
 
