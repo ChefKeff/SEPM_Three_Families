@@ -6,6 +6,7 @@ the methods controlling the game logic and order.
 '''
 
 import sys
+import json
 from board_class import Board
 from piece_class import Piece
 from tools import (
@@ -25,12 +26,6 @@ class Game:
     '''
     The Game class controls the logic of the game.
     '''
-    # Set up game logic
-    whose_turn = "white"
-    stage2 = False
-    w_placements = 0
-    b_placements = 0
-    turns = 0
 
     def __init__(self, board_structure):
         # Set up game logic
@@ -40,6 +35,10 @@ class Game:
         self.w_placements = 0
         self.b_placements = 0
         self.turns = 0
+        self.play_with_ai = False
+        self.ai_difficulty = 'easy'
+
+        self.connections = board_structure['connections']
 
         # Set up rules
         self.max_turns = board_structure['max_turns']
@@ -53,10 +52,99 @@ class Game:
         )
         self.board_to_print = board_design('default')
 
+    # ----------------------- TO JSON ------------------------
+
+    def to_json(self):
+        '''Creates a .json file with the game configurations'''
+        data = {}
+        data['difficulty'] = self.ai_difficulty
+        data['playerMovesLeft'] = 100 # TODO: Placeholder, fix this
+        data['engineMovesLeft'] = 100 # TODO: Placeholder, fix this
+
+        # TODO: I took for granted white=player, black=ai
+        w_count, b_count = self.check_pieces_count()
+        data['placedPlayerPieces'] = w_count
+        data['placedEnginePieces'] = b_count
+        data['onhandPlayerPieces'] = self.pieces_in_hand - self.w_placements
+        data['onhandEnginePieces'] = self.pieces_in_hand - self.b_placements
+        data['totalPiecesPerPlayer'] = self.pieces_in_hand
+
+        # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
+        list_of_coordinates = []
+        for i in range(7):
+            if i != 3: # Every row with 3 coordinates
+                for j in range(3):
+                    list_of_coordinates.append([i,j])
+            else:
+                for j in range(7): # The middle row with 7 coordinates
+                    list_of_coordinates.append([i,j])
+
+        # Translate each connection to [row, column] format 
+        list_of_connections = []
+        for (i, row) in enumerate(self.connections):
+            innerList = []
+            for (j, number) in enumerate(row):
+                innerList.append(list_of_coordinates[int(number)-1])
+            list_of_connections.append(innerList)
+    
+        # Append to json file
+        data['nodeInfo'] = {}
+        for (i, coordinate) in enumerate(list_of_coordinates):
+            data['nodeInfo'][str(coordinate)] = {}
+            data['nodeInfo'][str(coordinate)]['reachableNodes'] = list_of_connections[i]
+            
+            piece = self.board.find_piece_by_coords(i+1) # Not exactly sure why I need to add 1 here
+            if piece is not None:
+                if piece.color == 'white':
+                    data['nodeInfo'][str(coordinate)]['marking'] = 'P'
+                else:
+                    data['nodeInfo'][str(coordinate)]['marking'] = 'E'
+            else:
+                data['nodeInfo'][str(coordinate)]['marking'] = 'A'
+
+        with open('board_test_output.json', 'w') as outfile:
+            json.dump(data, outfile)
+
+    # ----------------------------- FROM JSON ------------------------------
+    def from_json(self, data=None):
+        '''Updates game configuration/information from json/dictionary.'''
+        if data is None:
+            with open('board_test_output.json', 'r') as f:
+                data = json.load(f)
+
+        nodeList = self.board.node_list
+        nodeInfo = data['nodeInfo']
+        for (i, node) in enumerate(nodeInfo):
+            if nodeInfo[node]['marking'] == 'P':
+                if nodeList[i]['piece'] is None:
+                    nodeList[i]['piece'] = Piece('white')
+                else:
+                    nodeList[i]['piece'].color = 'white'
+            elif nodeInfo[node]['marking']  == 'E': 
+                if nodeList[i]['piece'] is None:
+                    nodeList[i]['piece'] = Piece('black')
+                else:
+                    nodeList[i]['piece'].color = 'black'
+            else:
+                nodeList[i]['piece'] = None
+            
+                
+
     # ----------------------------- START GAME ------------------------------
     def start_game(self):
         '''Starts the game.'''
         self.game_running = True
+
+    # -------------------------- SET AI DIFFICULTY ---------------------------
+    def set_ai_difficulty(self, level):
+        '''Starts the game.'''
+        self.ai_difficulty = level
+
+    # --------------------------------  TOGGLE AI ---------------------------
+    def toggle_ai(self, status):
+        '''Toggles the AI.'''
+        self.play_with_ai = True if status==1 else False
+        print(self.play_with_ai)
 
     # ----------------------------- PRINT BOARD ------------------------------
     def print_board(self):
@@ -169,8 +257,11 @@ class Game:
     def game_logics(self, coords):
         '''Function for collecting logic functions that need to be run every loop.'''
 
+        self.to_json()
+        #self.from_json()
         self.checking_rows(coords)
         check_win = self.check_draw_and_win()
+
 
         if check_win == 0:
             clear_screen()
