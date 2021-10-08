@@ -6,14 +6,41 @@ This is the main module running the game.
 
 import sys
 import json
-from tools import prompt, clear_screen, show_rules
+from tools import prompt, clear_screen, show_rules, print_ascii
 from game_class import Game
 
+def show_ai_options(game):
+    '''Shows AI options.'''
+    clear_screen()
 
-def play_local():
+    # Ask whether to play against an AI or not
+    prompt(
+        'Who do you want to play against?',
+        ['Other Player', 'AI'],
+        ['p', 'a'],
+        [turn_off_ai, turn_on_ai],
+        False,
+        arguments=[game, game]
+    )
+
+    if game.play_with_ai:
+        prompt(
+            'AI settings (current setting is '+game.ai_difficulty+'):',
+            ['Easy', 'Medium', 'Hard'],
+            ['e', 'm', 'h'],
+            [set_ai_easy, set_ai_medium, set_ai_hard],
+            False,
+            arguments=[game, game, game]
+        )
+
+
+def play_local(game):
     '''Starts game in local mode.'''
-    print("Playing Locally")
+    print("Playing Locally")    
 
+    # Ask if user wants to play agains AI or not and difficulty
+    show_ai_options(game)
+    
 
 def play_online():
     '''Starts game in online mode.'''
@@ -26,6 +53,7 @@ def quit_game():
 
 
 # ------------------------------ GAME OPTIONS MENU ------------------------------
+
 def turn_on_ai(game):
     '''Turns the AI on.'''
     game.toggle_ai(1)
@@ -45,34 +73,7 @@ def set_ai_medium(game):
 def set_ai_hard(game):
     '''Sets the difficulty of the AI to hard.'''
     game.set_ai_difficulty('hard')
-
-def go_back():
-    '''Makes user go back from ai difficulty (really fast fix).'''
-    return
-
-def show_options(game):
-    clear_screen()
-
-    if not game.play_with_ai:
-        prompt(
-            'AI mode is not active. Do you want to turn it on?',
-            ['Yes', 'No', 'Back'],
-            ['y', 'n', 'b'],
-            [turn_on_ai, go_back, go_back],
-            False,
-            arguments=[game, None, None]
-        )
-    
-    if game.play_with_ai:
-        prompt(
-            'AI settings (current setting is '+game.ai_difficulty+'):',
-            ['Easy', 'Medium', 'Hard', 'Turn Off', 'Back'],
-            ['e', 'm', 'h', 'o', 'b'],
-            [set_ai_easy, set_ai_medium, set_ai_hard, turn_off_ai, go_back],
-            False,
-            arguments=[game, game, game, game, None]
-        )
-
+            
 # ------------------------------ START SCREEN ------------------------------
 
 def start_screen(game):
@@ -80,11 +81,11 @@ def start_screen(game):
     clear_screen()
     prompt(
         'Welcome!, please select an alternative:',
-        ['Start', 'Rules', 'Options', 'Quit'],
-        ['s', 'r', 'o', 'q'],
-        [game.start_game, show_rules, show_options, quit_game],
+        ['Start', 'Rules', 'Quit'],
+        ['s', 'r', 'o', 'p', 'q'],
+        [game.start_game, show_rules, quit_game],
         False,
-        arguments=[None, None, game, None]
+        arguments=[None, None, None]
     )
     clear_screen()
     if game.game_running:
@@ -93,7 +94,8 @@ def start_screen(game):
             ["Local", "Online"],
             ['l', 'o'],
             [play_local, play_online],
-            False
+            False,
+            arguments=[game, None]
         )
 
 

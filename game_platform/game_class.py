@@ -29,14 +29,18 @@ class Game:
 
     def __init__(self, board_structure):
         # Set up game logic
+        self.game_done = False
+        self.game_score = 0
         self.game_running = False
         self.whose_turn = "white"
         self.stage2 = False
+        self.w_turns = 0
+        self.b_turns = 0
         self.w_placements = 0
         self.b_placements = 0
         self.turns = 0
-        self.play_with_ai = False
         self.ai_difficulty = 'easy'
+        self.play_with_ai = False
 
         self.connections = board_structure['connections']
 
@@ -61,8 +65,38 @@ class Game:
         data['playerMovesLeft'] = 100 # TODO: Placeholder, fix this
         data['engineMovesLeft'] = 100 # TODO: Placeholder, fix this
 
+        # ADDITION TO JSON FILE (some of these at least):
+        # "fileType": "GAMEFILE",
+        # "GAMEDONE": 0,
+        # "TPLAYER": "Player1",
+        # "FPLAYER": "Player2",
+        # "TPCOLOUR": "B",
+        # "FPCOLOUR": "W",
+        # "GAMESCORE": 0,
+        # "difficulty" : "medium" ,
+        # "playerMovesLeft": 193,
+        # "engineMovesLeft": 194, 
+        # "placedPlayerPieces": 5, 
+        # "placedEnginePieces": 4,
+        # "onhandPlayerPieces": 0,
+        # "onhandEnginePieces": 1, 
+        # "totalPiecesPerPlayer": 5, 
+        # "nodeInfo":
+
         # TODO: I took for granted white=player, black=ai
         w_count, b_count = self.check_pieces_count()
+        data['fileType'] = 'GAMEFILE'
+        data['maxTurns'] = self.max_turns # TODO: Should this also exist in game file ?
+        data['GAMEDONE'] = 1 if self.game_done else 0
+        # TODO: These I'm unsure of:
+        # data['TPLAYER'] =
+        # data['FPLAYER'] =
+        # data['TPCOLOUR'] =
+        # data['FPCOLOUR'] =
+        data['GAMESCORE'] = self.game_score
+        # TODO: Guess the following should work, I haven't tried
+        data['playerMovesLeft'] = self.max_turns - self.w_turns
+        data['engineMovesLeft'] = self.max_turns - self.b_turns
         data['placedPlayerPieces'] = w_count
         data['placedEnginePieces'] = b_count
         data['onhandPlayerPieces'] = self.pieces_in_hand - self.w_placements
@@ -156,6 +190,14 @@ class Game:
     def change_turn(self, color):
         '''Change player turn and increments turns.'''
         self.turns += 1
+
+        # In order to keep track of turns each player has made
+        # TODO: Does this look valid? Hasn't tested yet.
+        if color == 'white':
+            self.b_turns += 1
+        elif color == 'black':
+            self.w_turns += 1
+
         self.whose_turn = color
 
     # ----------------------------- PIECE COUNT ------------------------------
@@ -264,16 +306,22 @@ class Game:
 
 
         if check_win == 0:
+            self.game_done = True
+            self.game_score = 1 # TODO: Should this be 1?
             clear_screen()
             print_ascii('white-victory.txt')
             boxed_output("Press <Enter> to exit game")
             sys.exit()
         elif check_win == 1:
+            self.game_done = True
+            self.game_score = -1 # TODO: Should this be -1?
             clear_screen()
             print_ascii('black-victory.txt')
             boxed_output("Press <Enter> to exit game")
             sys.exit()
         elif check_win == 2:
+            self.game_done = True
+            self.game_score = 2 # TODO: Should this be 2?
             clear_screen()
             print_ascii('draw.txt')
             boxed_output("Press <Enter> to exit game")
