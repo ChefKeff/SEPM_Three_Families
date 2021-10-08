@@ -1,5 +1,6 @@
-from changeCommParams import change_comm_params
-from minimax import generate_move
+
+from game_engine.changeCommParams import change_comm_params
+from game_engine.minimax import generate_move
 import json
 
 """ Given that there is an input file named "inputFile.json" formatted in the correct way in the same

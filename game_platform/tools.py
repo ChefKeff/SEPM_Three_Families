@@ -10,8 +10,8 @@ import random
 
 def clear_screen():
     '''Clears the screen from output.'''
-    print('\n'*50)
-    #print()
+    #print('\n'*50)
+    print()
 
 
 def print_ascii(filename):

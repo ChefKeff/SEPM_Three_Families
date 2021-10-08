@@ -4,7 +4,7 @@ def read_game_state():
     """
     Reads the .json-file containing the game state.
     """
-    game_json = open('inputFile.json')
+    game_json = open('../game_platform_input_file.json')
     game_data = json.load(game_json)
     game_struct = {}
     node_info = {}

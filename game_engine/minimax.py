@@ -1,7 +1,7 @@
-from checkRows import check_rows
+from game_engine.checkRows import check_rows
 import random
-from inputFile.readInputFile import read_game_state
-from generateMoves.generateMoves import generate_moves
+from game_engine.inputFile.readInputFile import read_game_state
+from game_engine.generateMoves.generateMoves import generate_moves
 
 
 def determine_move(difficulty: str, worst_board: dict(dict(dict())), best_board: dict(dict(dict()))):
