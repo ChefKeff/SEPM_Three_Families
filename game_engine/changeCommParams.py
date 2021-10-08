@@ -2,6 +2,10 @@ from minimax import evaluate
 
 
 def change_comm_params(move):
+    """
+    A function that actually changes the parameters from the COMM-platform
+    uses. Quite nice :-)
+    """
     current_t_player = move['TPLAYER']
     current_t_col = move['TPCOLOUR']
     move['TPLAYER'] = move['FPLAYER']
@@ -9,19 +13,30 @@ def change_comm_params(move):
     move['TPCOLOUR'] = move['FPCOLOUR']
     move['FPCOLOUR'] = current_t_col
 
-    print(evaluate(move, True))
-    (score, win_loss) = evaluate(move, True)
-    if score == 0 and win_loss:             # If it's a tie
-        move['GAMEDONE'] = 1
-        move['GAMESCORE'] = 0
-    elif score > 0 and win_loss:            # if the engine won!
-        move['GAMEDONE'] = 1
-        move['GAMESCORE'] = 1
-    elif score < 0 and win_loss:        # if the player won :(
-        move['GAMEDONE'] = 1
-        move['GAMESCORE'] = -1
-    else:                                   # if the game is not yet done
-        move['GAMEDONE'] = 0
-        move['GAMESCORE'] = 0
-    
+    (gamescore, gamedone) = check_board_state(move, True)
+    move['GAMESCORE'] = gamescore
+    move['GAMEDONE'] = gamedone
+        
     return move
+
+def check_board_state(board: dict(dict(dict())), is_maximizing_player: bool):
+    """
+    Evaluates the board and determines whether the board is a winning or losing board
+    and changes the gamescore and gamedone parameters.
+
+    """
+
+    value, game_over = evaluate(board, is_maximizing_player)
+    
+    if game_over:
+        if value > 0:
+            gamescore = 1
+            gamedone = 1
+        if value < 0:
+            gamescore = -1
+            gamedone = 1
+    elif not game_over:
+        gamescore = 0
+        gamedone = 0
+
+    return gamescore, gamedone
