@@ -1,1 +1,11 @@
-{"TOURNAMENTFILE": {"PLAYERSCORE": {"Gurk": 0, "Shrey": 0, "Eli": 0}, "GAMESPLAYED": "0", "NEXTPLAYERS": "Gurk:W Eli:B "}}
+{
+    "TOURNAMENTFILE": {
+        "PLAYERSCORE": {
+            "Gurk": 0,
+            "Shrey": 0,
+            "Eli": 0
+        },
+        "GAMESPLAYED": "0",
+        "NEXTPLAYERS": "Gurk:W Eli:B "
+    }
+}
