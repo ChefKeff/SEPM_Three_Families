@@ -122,7 +122,7 @@ class Tournament:
         
         print('Content: ', fileContent)
         # If game is still active, return false (no action required)
-        if fileContent['GAMEFILE']['gamedone'] != True:
+        if fileContent['gamedone'] != True:
             return False
         # Add one to games played
         self.gamesPlayed += 1

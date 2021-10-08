@@ -51,32 +51,35 @@ class Client:
         return print(f'Sent {filePath}')
 
     def handleFile(self, filePath):
-        with open(filePath, 'r+') as f:
-            lines = f.readlines()
-            if 'GAMEFILE' in lines[0]:
-                print('Received a gamefile!')
-                # Add functionality here.
-                return
-            elif 'TOURNAMENTFILE' in lines[0]:
-                print('Received a tournamentfile!')
-                # Add functionality here.
-                return
-            elif 'ERROR_LOG' in lines[0]:
-                if 'DUPLICATE_NAME' in lines[1]:
-                    print(lines[2])
-                    content = lines[2].split()
-                    self.pname = content[-1]
-                    f.close()
-                    os.remove(filePath)
-
-            elif 'ENDFILE' in lines[0]:
-                print('Received endfile!')
-                self.closeClient()
-                # Add functionality here.
-
-            else:
-                print(f'Received unknown file type: {lines[0]}')
+        f = open(filePath, )
+        data = json.load(f)
+        print(data)
+        #fileContent = data
+        if data['fileType'] == "GAMEFILE":
+            print('Received a gamefile!')
+            # Add functionality here.
             return
+        elif data['fileType'] == "TOURNAMENTFILE":
+            print('Received a tournamentfile!')
+            # Add functionality here.
+            return
+        elif data['fileType'] == "ERROR_LOG": # QUAN PLEASE FIX
+            #if 'DUPLICATE_NAME' in lines[1]:
+            #        print(lines[2])
+            #        content = lines[2].split()
+            #        self.pname = content[-1]
+            #        f.close()
+            #        os.remove(filePath)
+            return
+        elif data['fileType'] == "ENDFILE":
+            print('Received endfile!')
+            self.closeClient()
+            # Add functionality here.
+            return
+        else:
+            print(f"Received unknown file type: { data['fileType'] } ")
+            return
+        
 
 
     def listeningThread(self):
