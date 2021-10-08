@@ -39,9 +39,8 @@ class Game:
         self.w_placements = 0
         self.b_placements = 0
         self.turns = 0
-        self.play_with_ai = False
         self.ai_difficulty = 'easy'
-        self.players = []
+        self.play_with_ai = False
 
         self.connections = board_structure['connections']
 
@@ -169,11 +168,6 @@ class Game:
     def start_game(self):
         '''Starts the game.'''
         self.game_running = True
-
-    # ----------------------------- SET PLAYERS ------------------------------
-    def set_players(self, players):
-        '''Sets player of the game.'''
-        self.players = players
 
     # -------------------------- SET AI DIFFICULTY ---------------------------
     def set_ai_difficulty(self, level):
