@@ -1,6 +1,7 @@
 # File containing client classes
 # Imports of external packages
 import socket
+import os
 from _thread import *
 import threading
 import json
@@ -43,14 +44,40 @@ class Client:
             f.write(data)
         return True
 
-    def sendFile(self, msg):
-        self.s.send(msg.encode("utf-8"))
-
     def sendFile(self, filePath):
         with open(filePath, 'rb') as f:
             content = f.read()
             self.s.send(content)
         return print(f'Sent {filePath}')
+
+    def handleFile(self, filePath):
+        with open(filePath, 'r+') as f:
+            lines = f.readlines()
+            if 'GAMEFILE' in lines[0]:
+                print('Received a gamefile!')
+                # Add functionality here.
+                return
+            elif 'TOURNAMENTFILE' in lines[0]:
+                print('Received a tournamentfile!')
+                # Add functionality here.
+                return
+            elif 'ERROR_LOG' in lines[0]:
+                if 'DUPLICATE_NAME' in lines[1]:
+                    print(lines[2])
+                    content = lines[2].split()
+                    self.pname = content[-1]
+                    f.close()
+                    os.remove(filePath)
+
+            elif 'ENDFILE' in lines[0]:
+                print('Received endfile!')
+                self.closeClient()
+                # Add functionality here.
+
+            else:
+                print(f'Received unknown file type: {lines[0]}')
+            return
+
 
     def listeningThread(self):
         while True:
@@ -63,8 +90,9 @@ class Client:
                 break
                 # lock released on exit
 
-            filePath = str(time.localtime())+'.txt'
+            filePath = self.pname+str(time.localtime())+'.txt'
             self.receiveFile(filePath, data)
+            self.handleFile(filePath)
 
             #print_lock.release()
 
@@ -72,20 +100,26 @@ class Client:
 
     def closeClient(self):
         self.s.close()
-        print_lock.release()
 
 def main():
     #addr = str(input('Enter server address: '))
     #port = int(input('Enter server port: '))
     pname = str(input('Enter player name (without blankspaces): '))
+    pname = pname.strip()
     addr = '127.0.0.1'
     port = 2232
 
     #pname='Player1'
     client = Client(addr, port, pname)
     time.sleep(15)
-    print('sending')
-    client.s.send(f'From {pname}.'.encode('ascii'))
+    if client.pname =='p1':
+        print('sending')
+        client.sendFile('testGameFile.txt')
+    time.sleep(5)
+
+    if client.pname =='p2':
+        print('sending')
+        client.sendFile('testGameFile0.txt')
     return
 
 
