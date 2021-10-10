@@ -6,7 +6,10 @@ def change_comm_params(move):
     A function that actually changes the parameters from the COMM-platform
     uses. Quite nice :-)
     """
+    print(move)
+    
     current_t_player = move['TPLAYER']
+    
     current_t_col = move['TPCOLOUR']
     move['TPLAYER'] = move['FPLAYER']
     move['FPLAYER'] = current_t_player

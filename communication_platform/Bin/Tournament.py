@@ -71,40 +71,22 @@ class Tournament:
         'fplayer': "",
         'tplayer': "",
         "gamescore": "",
-        "gamedone": ""}
+        "gamedone": ""
+        }
         # Open gamefile (already received and stored locally)
         # Open with read only
         with open(filePath, 'r+') as f:
-            # Split the file into lines
-            lines = f.readlines()
-            # Iterate over each line
-            for line in lines:
-                # Strip the line of trailing blankspaces
-                line.rstrip()
-                # Split the line into a list of words
-                # Splitting is done on blanksplace as default
-                line = line.split()
-                # If line is empty, skip it
-                if line == []:
-                    continue
-                # Check if line starts with tournament keyword
-                # If so, add information to dict
-                if line[0] == "FPLAYER:":
-                    content['fplayer'] = line[1]
-                if line[0] == "FPCOLOUR:":
-                    content['fpcolour'] = line[1]
-                if line[0] == 'TPLAYER:':
-                    content['tplayer'] = line[1]
-                if line[0] == 'TPCOLOUR:':
-                    content['tpcolour'] = line[1]
-                if line[0] == 'GAMESCORE:':
-                    content['gamescore'] = int(line[1])
-                if line[0] == 'GAMEDONE:':
-                    if line[1] == '1':
-                        content['gamedone'] = True
-                    else:
-                        content['gamedone'] = False
-            # When all lines are read, file is closed
+            data = json.load(f)
+
+            content['fplayer'] = data['FPLAYER']
+            content['fpcolour'] = data['FPCOLOUR']
+            content['tplayer'] = data['TPLAYER']
+            content['tpcolour'] = data['TPCOLOUR']
+            content['gamescore'] = data['GAMESCORE']
+            if data['GAMEDONE'] == '1':
+                content['gamedone'] = True
+            else:
+                content['gamedone'] = False
         # Return dict
         return content
 
@@ -323,8 +305,20 @@ class Tournament:
                 nextplayers = nextplayers + (val+' ')
                 # If not colour field, it's the player field. Add the player
             else:
-                nextplayers = nextplayers + (val+':')
-        dict["NEXTPLAYERS"] = nextplayers 
+                nextplayers = nextplayers + (val+":")
+
+        # "erik:B gabriel:W"
+        sep = nextplayers.strip().split(' ')
+        # ['erik:B', 'gabriel:W']
+
+        next_players_dict = {}
+
+        for p in sep:
+            name_color = p.split(':')
+            next_players_dict[name_color[0]] = name_color[1]
+            
+        # dict["NEXTPLAYERS"] = nextplayers 
+        dict["NEXTPLAYERS"] = next_players_dict
         with open(filePath, "w") as outfile:
             json.dump(dict, outfile)
         
@@ -341,8 +335,8 @@ def main():
     tournament.addPlayer('Player3', 1236)
     print(tournament.players)
     tournament.generateTournamentFile('testTournamentFile.txt')
-    tournament.handleGameFile('testGameFile.txt')
-    tournament.handleGameFile('testGameFile0.txt')
+    #tournament.handleGameFile('testGameFile.txt')
+    #tournament.handleGameFile('testGameFile0.txt')
     print(tournament.scores)
     print(tournament.history)
     print(tournament.colours)

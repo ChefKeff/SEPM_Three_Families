@@ -16,7 +16,7 @@ class Client:
 
         # Set how many bytes to accept from a socket
         self.ID = 0
-        self.bufferSize = 4096
+        self.bufferSize = 4096*4
         # Set playername in game
         self.pname = pname
         # Inititate a Socket
@@ -58,11 +58,13 @@ class Client:
         if data['fileType'] == "GAMEFILE":
             print('Received a gamefile!')
             # Add functionality here.
+            with open('../../game_platform_input_file.json', 'w') as output_file:
+                output_file.write(data)
             return
         elif data['fileType'] == "TOURNAMENTFILE":
             print('Received a tournamentfile!')
             # Add functionality here.
-            return
+            return 
         elif data['fileType'] == "ERROR_LOG": # QUAN PLEASE FIX
             if data['errorType'] == "DUPLICATE_NAME":
                 print(data['error_msg_for_client'])
@@ -83,14 +85,14 @@ class Client:
         while True:
 
             # data received from client
-            data = self.s.recv(1024)
+            data = self.s.recv(1024*8)
             #print("efter data")
             if not data:
                 print('Bye')
                 break
                 # lock released on exit
 
-            filePath = self.pname+str(time.localtime())+'.txt'
+            filePath = "../../game_platform_input_file.json"
             self.receiveFile(filePath, data)
             self.handleFile(filePath)
 
@@ -101,13 +103,13 @@ class Client:
     def closeClient(self):
         self.s.close()
 
-def main():
+def main(pname):
     #addr = str(input('Enter server address: '))
     #port = int(input('Enter server port: '))
-    pname = str(input('Enter player name (without blankspaces): '))
+    pname = pname # str(input('Enter player name (without blankspaces): '))
     pname = pname.strip()
     addr = '127.0.0.1'
-    port = 2232
+    port = int(input('connect to port: ')) # 2232
 
     #pname='Player1'
     client = Client(addr, port, pname)

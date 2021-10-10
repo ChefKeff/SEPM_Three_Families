@@ -7,7 +7,7 @@ import json
 import time
 import os
 
-from Tournament import Tournament
+from communication_platform.Bin.Tournament import Tournament
 
 print_lock = threading.Lock()
 
@@ -50,7 +50,7 @@ class Server:
                 continue
 
             # Print the address for logging purposes
-            name = clientSocket.recv(1024)
+            name = clientSocket.recv(1024*8)
             name = json.loads(name)  # This is the received name
 
             addedPlayerName = self.tournament.addPlayer(name['name'], address, Server.connectedPlayer) # This is the name after a client being added
@@ -127,6 +127,7 @@ class Server:
         with open(filePath, 'r+') as f:
             firstLine = f.readline()
             if 'GAMEFILE' in firstLine:
+                print("Found gamefile")
                 gameDone = self.tournament.handleGameFile(filePath)
                 print(self.tournament.history)
                 for line in f.readlines():
@@ -139,6 +140,10 @@ class Server:
                 print(f'Received unknown file type: {firstLine}')
                 return
         return
+
+def host():
+    main()
+    
 
 
 class Connection:
@@ -154,9 +159,9 @@ class Connection:
         x.start()
 
     def recvThread(self):
-        filePath = 'tempFile.txt'
+        filePath = 'testfile.txt'
         while True:
-            data = self.clientSocket.recv(1024)
+            data = self.clientSocket.recv(1024*8)
             if not data:
                 return
             # self.send(data.decode("utf-8"))
@@ -180,10 +185,12 @@ class Connection:
         print(msg.decode("utf-8"))
 
 
+    
 
 def main():
     print("before initiation")
-    server = Server(2232)
+    server_port = input('Choose server port: ')
+    server = Server(int(server_port))
 
     startGame = False
     while not startGame:
@@ -199,11 +206,10 @@ def main():
         print(server.tournament.players)
         act = input('Options: start - start the game, ref - refresh the count: ')
         if act == 'start':
-            print('Initializing Torunament')
             server.tournament.generateMatchColor()  # this is to predefine color of player for each match
-            print(server.tournament.matchingColor)
+            
             server.sendTournamentFile()
-            server.tournament.handleGameFile("testGameFile.json")
+            #server.tournament.handleGameFile("testGameFile.json")
             #server.tournament.handleGameFile("testGameFile.txt")
             break
         elif act == 'ref':
