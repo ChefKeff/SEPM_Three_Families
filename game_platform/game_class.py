@@ -207,7 +207,7 @@ class Game:
     # ----------------------------- TOGGLE ONLINE ----------------------------
     def set_local_ai(self):
         '''Toggles the local ai attribute.'''
-        self.toggle_online = True
+        self.local_ai = True
 
     # ----------------------------- SET CLIENT -------------------------------
     def set_client(self, client):
@@ -455,7 +455,7 @@ class Game:
         '''Aux function to place_pieces_phase'''
         self.change_turn(color)
         #hantera om det är en människa/spelare online's tur
-        if (self.whose_turn == 'white' and self.white_player['ai_or_online']) or (self.whose_turn == 'black' and self.black_player['ai_or_online']):
+        if not self.local_ai and ((self.whose_turn == 'white' and self.white_player['ai_or_online']) or (self.whose_turn == 'black' and self.black_player['ai_or_online'])):
             # Lyssna efter game file
             # Uppdatera game board
             listening = True
@@ -507,7 +507,8 @@ class Game:
                 self.print_board()
 
             # Sending game state to server
-            self.client.sendFile('../game_platform_input_file.json')
+            if self.online:
+                self.client.sendFile('../game_platform_input_file.json')
 
             if color == "white":
                  self.white_player['placements'] += 1
