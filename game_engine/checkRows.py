@@ -17,51 +17,39 @@ def check_rows(marking: str, board: dict(dict(dict()))):
         # check all the nodes with two or more neighbors
         if len(board['nodeInfo'][node]['reachableNodes']) >= 2 and board['nodeInfo'][node]['marking'] == marking:
             r_nodes = board['nodeInfo'][node]['reachableNodes']
-            for i in range(len(board['nodeInfo'][node]['reachableNodes'])-1):
+            x_counter = y_counter = 0
+            x_reachable = []  
+            y_reachable = []
+            for r_node in r_nodes:
                 if type(node) != list:      # if the node happens not to be a list, make it a list
                     node = json.loads(node)      
-                if r_nodes[i][0] == node[0]:   # gets rows in the x-axis
-                    counter = 0
-                    reachable = []  
-                    for r_node in r_nodes:
-                        if r_node[0] == node[0] and board['nodeInfo'][str(r_node)]['marking'] == marking:
-                            counter += 1
-                        if counter == 1:
-                            reachable = r_node
-                            two_in_a_row = True
-                        if counter == 2:
-                            if marking == 'E':
-                                threes += [[r_node, reachable, node]] 
-                            else:
-                                three_in_a_row = True
-                if r_nodes[i][1] == node[1]:   # gets rows in the y-axis
-                    counter = 0
-                    reachable = []  
-                    for r_node in r_nodes:
-                        if r_node[1] == node[1] and board['nodeInfo'][str(r_node)]['marking'] == marking:
-                            counter += 1
-                        if counter == 1:
-                            reachable = r_node
-                            two_in_a_row = True
-                        if counter == 2:
-                            if marking == 'E':
-                                threes += [[r_node, reachable, node]] 
-                            else:
-                                three_in_a_row = True
+                if r_node[0] == node[0] and board['nodeInfo'][str(r_node)]['marking'] == marking:
+                    x_counter += 1
+                    if x_counter == 1:
+                        x_reachable = r_node
+                        two_in_a_row = True
+                    if x_counter == 2:
+                        if marking == 'E' and [r_node, x_reachable, node] not in threes:
+                            threes += [[r_node, x_reachable, node]]
+                        else:
+                            three_in_a_row = True
+                elif r_node[1] == node[1] and board['nodeInfo'][str(r_node)]['marking'] == marking:
+                    y_counter += 1
+                    if y_counter == 1:
+                        y_reachable = r_node
+                        two_in_a_row = True
+                    if y_counter == 2:
+                        if marking == 'E' and [r_node, y_reachable, node] not in threes:
+                            threes += [[r_node, y_reachable, node]]
+                        else:
+                            three_in_a_row = True
                             
-    
-    #if len(board['engineThrees']) == 0 and len(threes) > 0:
-        #three_in_a_row = True
-        #board['engineThrees'] = [k for k,v in groupby(sorted(threes))]
     if marking == 'E':
         for three in threes:
             if three not in board['engineThrees']:
                 three_in_a_row = True
-                board['engineThrees'] = [k for k,v in groupby(sorted(threes))]
-                print("true")
-            else:
-                three_in_a_row = False
-                print("false")
+                break
+        board['engineThrees'] = threes
 
 
     #board['engineThrees'] = threes
