@@ -1,6 +1,7 @@
 import json
 from game_engine.inputFile.readInputFile import read_game_state
 from copy import deepcopy
+from itertools import groupby
 
 def check_rows(marking: str, board: dict(dict(dict()))):
     """ Returns a list containing two booleans that are true if 
@@ -29,7 +30,10 @@ def check_rows(marking: str, board: dict(dict(dict()))):
                             reachable = r_node
                             two_in_a_row = True
                         if counter == 2:
-                            threes += [[r_node, reachable, node]] 
+                            if marking == 'E':
+                                threes += [[r_node, reachable, node]] 
+                            else:
+                                three_in_a_row = True
                 if r_nodes[i][1] == node[1]:   # gets rows in the y-axis
                     counter = 0
                     reachable = []  
@@ -40,20 +44,32 @@ def check_rows(marking: str, board: dict(dict(dict()))):
                             reachable = r_node
                             two_in_a_row = True
                         if counter == 2:
-                            threes += [[r_node, reachable, node]]
+                            if marking == 'E':
+                                threes += [[r_node, reachable, node]] 
+                            else:
+                                three_in_a_row = True
+                            
     
-    if len(board['engineThrees']) == 0 and len(threes) > 0:
-        three_in_a_row = True
-    else:
+    #if len(board['engineThrees']) == 0 and len(threes) > 0:
+        #three_in_a_row = True
+        #board['engineThrees'] = [k for k,v in groupby(sorted(threes))]
+    if marking == 'E':
         for three in threes:
             if three not in board['engineThrees']:
                 three_in_a_row = True
+                board['engineThrees'] = [k for k,v in groupby(sorted(threes))]
+                print("true")
+            else:
+                three_in_a_row = False
+                print("false")
 
-    if three_in_a_row:    
-        print("\nthrees: ")
-        print(threes)
-        print("\nboard: ")
-        print(board['engineThrees'])
-    board['engineThrees'] = deepcopy(threes)
+
+    #board['engineThrees'] = threes
+    #if three_in_a_row:    
+        #print("\nthrees: ")
+        #print(threes)
+        #print("\nboard: ")
+        #print(board['engineThrees'])
+    #print(board['engineThrees'])
             
     return [two_in_a_row, three_in_a_row]

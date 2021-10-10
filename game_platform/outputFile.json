@@ -7,14 +7,71 @@
  "FPCOLOUR": "B",
  "GAMESCORE": 0,
  "difficulty": "hard",
- "playerMovesLeft": 197,
- "engineMovesLeft": 195,
- "placedPlayerPieces": 2,
- "placedEnginePieces": 4,
- "onhandPlayerPieces": 7,
- "onhandEnginePieces": 7,
+ "playerMovesLeft": 195,
+ "engineMovesLeft": 193,
+ "placedPlayerPieces": 6,
+ "placedEnginePieces": 6,
+ "onhandPlayerPieces": 5,
+ "onhandEnginePieces": 5,
  "totalPiecesPerPlayer": 11,
- "engineThrees": [],
+ "engineThrees": [
+  [
+   [
+    0,
+    2
+   ],
+   [
+    0,
+    0
+   ],
+   [
+    0,
+    1
+   ]
+  ],
+  [
+   [
+    1,
+    1
+   ],
+   [
+    0,
+    0
+   ],
+   [
+    0,
+    1
+   ]
+  ],
+  [
+   [
+    1,
+    2
+   ],
+   [
+    1,
+    0
+   ],
+   [
+    1,
+    1
+   ]
+  ],
+  [
+   [
+    2,
+    1
+   ],
+   [
+    1,
+    0
+   ],
+   [
+    1,
+    1
+   ]
+  ]
+ ],
  "nodeInfo": {
   "[0, 0]": {
    "reachableNodes": [
@@ -103,7 +160,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[1, 2]": {
    "reachableNodes": [
@@ -120,7 +177,7 @@
      5
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[2, 0]": {
    "reachableNodes": [
@@ -167,7 +224,7 @@
      4
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[3, 0]": {
    "reachableNodes": [
@@ -226,7 +283,7 @@
      0
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[3, 3]": {
    "reachableNodes": [
@@ -340,7 +397,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[4, 2]": {
    "reachableNodes": [
@@ -370,7 +427,7 @@
      0
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[5, 1]": {
    "reachableNodes": [
