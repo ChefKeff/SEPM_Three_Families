@@ -1,4 +1,4 @@
-from minimax import evaluate
+from game_engine.minimax import evaluate
 
 
 def change_comm_params(move):

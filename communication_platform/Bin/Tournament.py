@@ -122,7 +122,7 @@ class Tournament:
         
         print('Content: ', fileContent)
         # If game is still active, return false (no action required)
-        if fileContent['GAMEFILE']['gamedone'] != True:
+        if fileContent['gamedone'] != True:
             return False
         # Add one to games played
         self.gamesPlayed += 1
@@ -311,12 +311,12 @@ class Tournament:
             return(False)
         #DICT IN ORDER TO MAKE JSON FILE !!!!!
         dict = {}
-        dict['TOURNAMENTFILE'] = {}
-        dict['TOURNAMENTFILE']["PLAYERSCORE"] = {}
+        dict['fileType'] = 'TOURNAMENTFILE'
+        dict["PLAYERSCORE"] = {}
         #dict["TOURNAMENTFILE"] = "hej"
-        dict["TOURNAMENTFILE"]["GAMESPLAYED"] = str(self.gamesPlayed)
+        dict["GAMESPLAYED"] = str(self.gamesPlayed)
         for player, score in sortedScores.items():
-            dict["TOURNAMENTFILE"]["PLAYERSCORE"][player] = score
+            dict["PLAYERSCORE"][player] = score
         nextplayers = ""
         for key, val in nextGame.items():
             if 'Colour' in key: 
@@ -324,7 +324,7 @@ class Tournament:
                 # If not colour field, it's the player field. Add the player
             else:
                 nextplayers = nextplayers + (val+':')
-        dict["TOURNAMENTFILE"]["NEXTPLAYERS"] = nextplayers 
+        dict["NEXTPLAYERS"] = nextplayers 
         with open(filePath, "w") as outfile:
             json.dump(dict, outfile)
         

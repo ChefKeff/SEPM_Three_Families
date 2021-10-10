@@ -1,7 +1,7 @@
 {
     "no_nodes": 25,
     "pieces_in_hand": 11,
-    "max_turns": 300,
+    "max_turns": 200,
     "connections": [
         [2, 4, 10], 
         [1, 3, 5], 

@@ -34,27 +34,5 @@ def check_rows(marking: str, board: dict(dict(dict()))):
                             two_in_a_row = True
                         if counter == 2:
                             three_in_a_row = True
-                if r_nodes[i][0] == node[0]-1 and r_nodes[i][1] == node[1]-1:   # gets rows diagonally to the left
-                    counter = 1
-                    for r_node in r_nodes:
-                        #if r_node[0] == node[0]-1 and r_node[1] == node[1]-1 and board['nodeInfo'][str(r_node)]['marking'] == marking:
-                        #    counter += 1
-                        if r_node[0] == node[0]+1 and r_node[1] == node[1]+1 and board['nodeInfo'][str(r_node)]['marking'] == marking:
-                            counter += 1
-                        if counter == 1:
-                            two_in_a_row = True
-                        if counter == 2:
-                            three_in_a_row = True
-                if r_nodes[i][0] == node[0]+1 and r_nodes[i][1] == node[1]-1:   # gets rows diagonally to the right
-                    counter = 1
-                    for r_node in r_nodes:
-                        #if r_node[0] == node[0]+1 and r_node[1] == node[1]-1 and board['nodeInfo'][str(r_node)]['marking'] == marking:
-                        #    counter += 1
-                        if r_node[0] == node[0]-1 and r_node[1] == node[1]+1 and board['nodeInfo'][str(r_node)]['marking'] == marking:
-                            counter += 1
-                        if counter == 1:
-                            two_in_a_row = True
-                        if counter == 2:
-                            three_in_a_row = True
             
     return [two_in_a_row, three_in_a_row]

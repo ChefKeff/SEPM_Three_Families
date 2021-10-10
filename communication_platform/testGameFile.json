@@ -1,0 +1,11 @@
+{
+     "fileType": "GAMEFILE",
+     "gamedone" : 0, 
+     "tplayer" : "p1", 
+     "fplayer" : "p2", 
+     "tpcolour" : "B", 
+     "fpcolour" : "W", 
+     "gamscore" : -5, 
+     "test1": 213, 
+     "test2" : 0
+}
