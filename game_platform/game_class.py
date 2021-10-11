@@ -109,7 +109,7 @@ class Game:
         data['GAMEDONE'] = 1 if self.game_done else 0
         # TODO: These I'm unsure of:
         data['TPLAYER'] = self.black_player['name'] if self.whose_turn == 'white' else self.white_player['name']
-        data['FPLAYER'] = self.white_player['name'] if self.whose_turn == 'white' else self.white_player['name']
+        data['FPLAYER'] = self.white_player['name'] if self.whose_turn == 'white' else self.black_player['name']
         data['TPCOLOUR'] = self.black_player['color_single'] if self.whose_turn == 'white' else self.white_player['color_single']
         data['FPCOLOUR'] = self.white_player['color_single'] if self.whose_turn == 'white' else self.white_player['color_single']
         data['GAMESCORE'] = self.game_score
@@ -202,7 +202,7 @@ class Game:
     # ----------------------------- TOGGLE ONLINE ----------------------------
     def set_online(self):
         '''Toggles the online mode attribute.'''
-        self.toggle_online = True
+        self.online = True
 
     # ----------------------------- TOGGLE ONLINE ----------------------------
     def set_local_ai(self):
@@ -462,11 +462,13 @@ class Game:
             while listening:
                 with open('../game_platform_input_file.json', 'r', encoding='utf-8') as file:
                     game_state = json.load(file)
-                    if self.current_player['name'] in game_state['TPLAYER']:
+                    if self.current_player['name'] == game_state['TPLAYER']:
+                        print("TO PLAYERS WAS THIS PLSYER")
                         self.from_json(game_state)
+                        self.print_board()
                         return
                 time.sleep(1)
-                print('Listening for placement move')
+                print('Listening for placement move' + self.current_player['name'] +': ' +game_state['TPLAYER'])
 
             if self.whose_turn == 'white':
                 self.white_player['placements'] += 1 #TODO: might have to change this
@@ -507,7 +509,10 @@ class Game:
                 self.print_board()
 
             # Sending game state to server
+            print("self.online is" + str(self.online))
             if self.online:
+                print("Went in")
+                self.to_json()
                 self.client.sendFile('../game_platform_input_file.json')
 
             if color == "white":

@@ -107,29 +107,32 @@ def join_game(game):
 
     while True:
         tournament = {}
-        with open('tournamentFile.json', 'r', encoding='utf-8') as file:
-            tournament = json.load(file)
-        if name in tournament['NEXTPLAYERS']:
-            color = 'white' if tournament['NEXTPLAYERS'][name] == 'W' else 'black'
-            opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
-            opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
-
-            game.setup_player(color, name, False, None)
-            game.setup_player(opponent_color, opponent_name, True, 'easy')
-            game.set_current_player(color)
-
-            # To json
-            print('Your name ' + name)
-            print('Opponent name ' + opponent_name)
-            game.to_json()
-
-            # Start game
-            client.sendFile('../game_platform_input_file.json')
-            game.start_game()
-            return
+        try:
+            with open('tournamentFile.json', 'r', encoding='utf-8') as file:
+                tournament = json.load(file)
         
+            if name in tournament['NEXTPLAYERS']:
+                color = 'white' if tournament['NEXTPLAYERS'][name] == 'W' else 'black'
+                opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
+                opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
+
+                game.setup_player(color, name, False, None)
+                game.setup_player(opponent_color, opponent_name, True, 'easy')
+                game.set_current_player(color)
+
+                # To json
+                print('Your name ' + name)
+                print('Opponent name ' + opponent_name)
+                game.to_json()
+
+                # Start game
+                client.sendFile('../game_platform_input_file.json')
+                game.start_game()
+                return
+        except Exception:
+            print("found no tournamentFILE ")
         time.sleep(1)
-        print('Waiting for your turn!')
+        print('Waiting in lobby!')
         
     
     

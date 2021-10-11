@@ -125,19 +125,15 @@ class Server:
     def handleFile(self, filePath):
         print('Handling file')
         with open(filePath, 'r+') as f:
-            firstLine = f.readline()
-            if 'GAMEFILE' in firstLine:
-                print("Found gamefile")
-                gameDone = self.tournament.handleGameFile(filePath)
-                print(self.tournament.history)
-                for line in f.readlines():
-                    line = line.split()
-                    if line[0].rstrip() == 'TPLAYER:':
-                        self.sendFile(self.players[line[1].rstrip()], filePath)
-                        print(f'Forwarded gamefile to {line[1].rstrip()}')
-                        return(gameDone)
+            dictionary = json.load(f)
+            
+            if dictionary['fileType'] == 'GAMEFILE':
+                self.sendFile(self.players[dictionary['TPLAYER']], filePath)
+                print('Forwarded gamefile to ' + dictionary['TPLAYER'])
+                return dictionary['GAMEDONE'] == 1
+
             else:
-                print(f'Received unknown file type: {firstLine}')
+                print(f'Received unknown file type ' + dictionary['fileType'])
                 return
         return
 
@@ -159,7 +155,7 @@ class Connection:
         x.start()
 
     def recvThread(self):
-        filePath = 'testfile.txt'
+        filePath = 'receivedFile.json'
         while True:
             data = self.clientSocket.recv(1024*8)
             if not data:

@@ -58,12 +58,14 @@ class Client:
         if data['fileType'] == "GAMEFILE":
             print('Received a gamefile!')
             # Add functionality here.
-            with open('../../game_platform_input_file.json', 'w') as output_file:
-                output_file.write(data)
+            with open('game_platform_input_file.json', 'w') as output_file:
+                output_file.write(json.dumps(data))
             return
         elif data['fileType'] == "TOURNAMENTFILE":
             print('Received a tournamentfile!')
             # Add functionality here.
+            with open('tournamentFile.json', 'w') as outfile:
+                json.dump(data, outfile)
             return 
         elif data['fileType'] == "ERROR_LOG": # QUAN PLEASE FIX
             if data['errorType'] == "DUPLICATE_NAME":
@@ -92,7 +94,7 @@ class Client:
                 break
                 # lock released on exit
 
-            filePath = "../../game_platform_input_file.json"
+            filePath = "../game_platform_input_file.json"
             self.receiveFile(filePath, data)
             self.handleFile(filePath)
 
