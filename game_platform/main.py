@@ -48,6 +48,7 @@ def setup_player(game, color):
                         continue
                     
             else:
+                game.set_current_player(color)
                 game.setup_player(color, name, False, None)
                 return
                     
@@ -121,8 +122,7 @@ def join_game(game):
                 game.set_current_player(color)
 
                 # To json
-                print('Your name ' + name)
-                print('Opponent name ' + opponent_name)
+                
                 game.to_json()
 
                 # Start game
@@ -132,7 +132,7 @@ def join_game(game):
         except Exception:
             print("found no tournamentFILE ")
         time.sleep(1)
-        print('Waiting in lobby!')
+        
         
     
     

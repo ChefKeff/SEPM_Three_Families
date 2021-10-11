@@ -42,7 +42,7 @@ def print_piece_count(w_count=0, b_count=0, pieces_in_hand=0, turns=0):
           (46-len('Turns:') - len(str(turns))) + '┃')
 
 
-def print_boxed_message(message="", choices=[], shortcuts=[], pieces_count = True, w_count=-1, b_count=-1, pieces_in_hand=-1, turns=-1):
+def print_boxed_message(message="", choices=[], shortcuts=[], pieces_count = True, w_count=-1, b_count=-1, pieces_in_hand=-1, turns=-1, game=None):
     '''Prints information box with message and choices
 
 Parameters:
@@ -72,12 +72,14 @@ Returns:
         print('┗' + '━'*82 + '┛')
         
     else:
-        if turns % 2  == 1:
-            w_arrow = [">> ", " <<"]
-            b_arrow = ["   ", "   "]
-        else:
-            w_arrow = ["   ", "   "]
-            b_arrow = [">> ", " <<"]            
+        if game is not None:
+            if game.whose_turn == 'white':
+                w_arrow = [">> ", " <<"]
+                b_arrow = ["   ", "   "]
+            else:
+                w_arrow = ["   ", "   "]
+                b_arrow = [">> ", " <<"]   
+
         
         #print("")
         print('┏' + '━'*70 + '┓ '                                        + '┏' + '━'*28 + '┓')
@@ -107,7 +109,7 @@ def boxed_output(message=""):
     # Sleep in order to have time to show the error message
     time.sleep(1.5)
 
-def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=True, arguments=None):
+def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=True, arguments=None, game=None):
     '''Prompts the user with message and choices and accepts only input existing in choices
 
         Parameters:
@@ -139,7 +141,7 @@ def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=Tru
     while not done:
         index = None
         print_ascii('logo.txt')
-        print_boxed_message(message, choices, shortcuts, has_top)
+        print_boxed_message(message, choices, shortcuts, has_top, game)
 
         answer = input().lower()
 
@@ -169,7 +171,7 @@ def prompt(message="", choices=None, shortcuts=None, callbacks=None, has_top=Tru
         done = True
 
 
-def notification(message="", choices=None, w_count=-1, b_count=-1, pieces_in_hand=-1, turns=-1):
+def notification(message="", choices=None, w_count=-1, b_count=-1, pieces_in_hand=-1, turns=-1, game=None):
     '''Prompts the user with message and choices
 
         Parameters:
@@ -182,7 +184,7 @@ def notification(message="", choices=None, w_count=-1, b_count=-1, pieces_in_han
     '''
     #if w_count != -1 and b_count != -1 and pieces_in_hand != -1 and turns != -1:
         #print_piece_count(w_count, b_count, pieces_in_hand, turns)
-    print_boxed_message(message, choices, [] , True, w_count, b_count, pieces_in_hand, turns)
+    print_boxed_message(message, choices, [] , True, w_count, b_count, pieces_in_hand, turns, game)
     answer = input()
     return answer
 

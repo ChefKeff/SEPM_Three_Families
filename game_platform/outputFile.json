@@ -1,17 +1,17 @@
 {
  "fileType": "GAMEFILE",
  "GAMEDONE": 0,
- "TPLAYER": "jennifer",
- "FPLAYER": "jennifer",
+ "TPLAYER": "erik",
+ "FPLAYER": "ai",
  "TPCOLOUR": "W",
- "FPCOLOUR": "W",
+ "FPCOLOUR": "B",
  "GAMESCORE": 0,
- "difficulty": "easy",
+ "difficulty": "medium",
  "playerMovesLeft": 196,
- "engineMovesLeft": 195,
- "placedPlayerPieces": 3,
- "placedEnginePieces": 5,
- "onhandPlayerPieces": 7,
+ "engineMovesLeft": 194,
+ "placedPlayerPieces": 5,
+ "placedEnginePieces": 2,
+ "onhandPlayerPieces": 6,
  "onhandEnginePieces": 6,
  "totalPiecesPerPlayer": 11,
  "nodeInfo": {
@@ -30,7 +30,7 @@
      0
     ]
    ],
-   "marking": "A"
+   "marking": "E"
   },
   "[0, 1]": {
    "reachableNodes": [
@@ -47,7 +47,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[0, 2]": {
    "reachableNodes": [
@@ -64,7 +64,7 @@
      6
     ]
    ],
-   "marking": "P"
+   "marking": "E"
   },
   "[1, 0]": {
    "reachableNodes": [
@@ -81,7 +81,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[1, 1]": {
    "reachableNodes": [
@@ -102,7 +102,7 @@
      1
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[1, 2]": {
    "reachableNodes": [
@@ -119,7 +119,7 @@
      5
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[2, 0]": {
    "reachableNodes": [
@@ -132,7 +132,7 @@
      2
     ]
    ],
-   "marking": "E"
+   "marking": "A"
   },
   "[2, 1]": {
    "reachableNodes": [
@@ -166,7 +166,7 @@
      4
     ]
    ],
-   "marking": "P"
+   "marking": "A"
   },
   "[3, 0]": {
    "reachableNodes": [
@@ -246,7 +246,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[3, 4]": {
    "reachableNodes": [
@@ -339,7 +339,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[4, 2]": {
    "reachableNodes": [
@@ -390,7 +390,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[5, 2]": {
    "reachableNodes": [
@@ -441,7 +441,7 @@
      2
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[6, 2]": {
    "reachableNodes": [
