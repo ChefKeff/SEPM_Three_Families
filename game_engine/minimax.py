@@ -22,9 +22,6 @@ def determine_move(difficulty: str, worst_board: dict(dict(dict())), best_board:
         else:
             return best_board
     elif difficulty == 'hard':
-        if random.random() < .1:
-            return worst_board
-        else:
             return best_board
 
 

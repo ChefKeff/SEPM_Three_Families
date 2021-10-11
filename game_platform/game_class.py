@@ -123,6 +123,7 @@ class Game:
         data['onhandPlayerPieces'] = self.pieces_in_hand - player['placements']
         data['onhandEnginePieces'] = self.pieces_in_hand -  ai_player['placements'] #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
         data['totalPiecesPerPlayer'] = self.pieces_in_hand
+        data['engineThrees'] = [] if data['engineMovesLeft'] > 197 else outputFile['engineThrees']
 
         # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
         list_of_coordinates = []

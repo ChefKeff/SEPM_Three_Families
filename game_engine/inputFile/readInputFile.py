@@ -24,7 +24,8 @@ def read_game_state():
         'placedEnginePieces': game_data['placedEnginePieces'],
         'onhandPlayerPieces': game_data['onhandPlayerPieces'],
         'onhandEnginePieces': game_data['onhandEnginePieces'],
-        'totalPiecesPerPlayer': game_data['totalPiecesPerPlayer']
+        'totalPiecesPerPlayer': game_data['totalPiecesPerPlayer'],
+        'engineThrees' : game_data['engineThrees']
     }
     for node in game_data['nodeInfo']:
         if game_data['nodeInfo'][node]['reachableNodes'] != []:
