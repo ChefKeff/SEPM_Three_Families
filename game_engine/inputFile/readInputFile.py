@@ -33,6 +33,7 @@ def read_game_state():
             node_info[node] = game_data['nodeInfo'][node]
     game_struct['nodeInfo'] = node_info
     print(game_struct['TPLAYER'])
+    print(game_struct)
     return game_struct
 
 read_game_state()
