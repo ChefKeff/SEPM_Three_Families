@@ -63,6 +63,8 @@ class Client:
         elif data['fileType'] == "TOURNAMENTFILE":
             print('Received a tournamentfile!')
             # Add functionality here.
+            print('TOURNAMENT STATICS \n')
+            print("Tournament Score: " + data['PLAYERSCORE'] + '\n'+ "Games Played: " + data['GAMESPLAYED'] + '\n'+ "Players for the upcoming game are: " + data["NEXTPLAYERS"] + ". Please join the game now.")           
             with open('tournamentFile.json', 'w') as outfile:
                 json.dump(data, outfile)
             return 
@@ -72,7 +74,8 @@ class Client:
                 #os.remove(filePath)
             return
         elif data['fileType'] == "ENDFILE":
-            print('Received endfile!')
+            print('TOURNAMENT HAS ENDED. Thank you for your participation in the UU-game. Following are the results: \n')
+            print(data["PLAYERSCORE"])
             self.closeClient()
             # Add functionality here.
             return
