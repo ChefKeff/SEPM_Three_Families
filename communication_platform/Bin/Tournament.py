@@ -308,13 +308,15 @@ class Tournament:
                 nexTPLAYERs = nexTPLAYERs + (val+":")
 
         # "erik:B gabriel:W"
+        print("nexTPLAYERs", nexTPLAYERs)
         sep = nexTPLAYERs.strip().split(' ')
+        print("sep", sep)
         # ['erik:B', 'gabriel:W']
 
         next_players_dict = {}
-
         for p in sep:
             name_color = p.split(':')
+            print("BINGOBONGO", name_color)
             next_players_dict[name_color[0]] = name_color[1]
             
         # dict["NEXTPLAYERS"] = nexTPLAYERs 

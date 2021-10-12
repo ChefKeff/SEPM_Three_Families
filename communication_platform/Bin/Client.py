@@ -53,6 +53,7 @@ class Client:
     def handleFile(self, filePath):
         f = open(filePath, )
         data = json.load(f)
+        print("PRINFAISNGAOSKDASODASKDAO", data)
         #fileContent = data
         if data['fileType'] == "GAMEFILE":
             print('Received a gamefile!')
@@ -64,7 +65,7 @@ class Client:
             print('Received a tournamentfile!')
             # Add functionality here.
             print('TOURNAMENT STATICS \n')
-            print("Tournament Score: " + data['PLAYERSCORE'] + '\n'+ "Games Played: " + data['GAMESPLAYED'] + '\n'+ "Players for the upcoming game are: " + data["NEXTPLAYERS"] + ". Please join the game now.")           
+            print("Tournament Score: " + str(data['PLAYERSCORE']) + '\n'+ "Games Played: " + data['GAMESPLAYED'] + '\n'+ "Players for the upcoming game are: " + str(data["NEXTPLAYERS"]) + ". Please join the game now.")           
             with open('tournamentFile.json', 'w') as outfile:
                 json.dump(data, outfile)
             return 
