@@ -221,11 +221,11 @@ class Tournament:
 
     def generateFinalFile(self, filePath):
         dict = {}
-        dict["ENDFILE"] = {}
-        dict["ENDFILE"]["PLAYERSCORE"] = {}
+        dict['fileType'] = 'ENDFILE'
+        dict["PLAYERSCORE"] = {}
         sortedScores = self.generateSortedScores()
         for player, score in sortedScores.items():
-            dict["ENDFILE"]["PLAYERSCORE"][player] = score
+            dict["PLAYERSCORE"][player] = score
 
         with open(filePath, "w") as outfile:
             json.dump(dict, outfile)
