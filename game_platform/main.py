@@ -137,8 +137,9 @@ def join_game(game):
         try:
             with open('tournamentFile.json', 'r', encoding='utf-8') as file:
                 tournament = json.load(file)
-        
+            print("whiling")
             if name in tournament['NEXTPLAYERS']:
+                print("iffing")
                 color = 'white' if tournament['NEXTPLAYERS'][name] == 'W' else 'black'
                 opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
                 opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
@@ -149,7 +150,8 @@ def join_game(game):
                 try:
                     ai_diff, ai_name = opponent_name.split('-')
                 except Exception:
-                    pass
+                    print("ai diff exception")
+                print(ai_diff)
                 if ai_diff is not None:
                     game.setup_player(opponent_color, opponent_name, True,
                                       ai_diff.strip(), online_ai=True)
