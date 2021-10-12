@@ -125,6 +125,10 @@ class Game:
         data['onhandPlayerPieces'] = self.pieces_in_hand - player['placements']
         data['onhandEnginePieces'] = self.pieces_in_hand -  ai_player['placements'] #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
         data['totalPiecesPerPlayer'] = self.pieces_in_hand
+        if data['firstMoveDone'] == False:
+            data['engineThrees'] = []
+        else:
+            data['engineThrees'] = data['engineThrees']
 
         # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
         list_of_coordinates = []
@@ -153,9 +157,9 @@ class Game:
             piece = self.board.find_piece_by_coords(i+1) # Not exactly sure why I need to add 1 here
             if piece is not None:
                 if piece.color == 'white':
-                    data['nodeInfo'][str(coordinate)]['marking'] = 'E' if self.black_player['ai_or_online'] else 'P'
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.black_player['name'] if self.black_player['ai_or_online'] else self.white_player['name']
                 else:
-                    data['nodeInfo'][str(coordinate)]['marking'] = 'P' if self.black_player['ai_or_online'] else 'E'
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.white_player['name'] if self.black_player['ai_or_online'] else self.black_player['name']
             else:
                 data['nodeInfo'][str(coordinate)]['marking'] = 'A'
 
@@ -190,12 +194,12 @@ class Game:
         nodeList = self.board.node_list
         nodeInfo = data['nodeInfo']
         for (i, node) in enumerate(nodeInfo):
-            if nodeInfo[node]['marking'] == 'P':
+            if nodeInfo[node]['marking'] == data['FPLAYER']:
                 if nodeList[i]['piece'] is None: 
                     nodeList[i]['piece'] = Piece(player['color'])
                 else:
                     nodeList[i]['piece'].color = player['color']
-            elif nodeInfo[node]['marking']  == 'E':
+            elif nodeInfo[node]['marking']  == data['TPLAYER']:
                 if nodeList[i]['piece'] is None:
                     nodeList[i]['piece'] = Piece(ai_player['color'])
                 else:
