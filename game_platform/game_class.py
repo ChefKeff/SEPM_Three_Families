@@ -155,9 +155,9 @@ class Game:
             piece = self.board.find_piece_by_coords(i+1) # Not exactly sure why I need to add 1 here
             if piece is not None:
                 if piece.color == 'white':
-                    data['nodeInfo'][str(coordinate)]['marking'] = self.black_player['name'] if self.black_player['ai_or_online'] else self.white_player['name']
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.white_player['name']
                 else:
-                    data['nodeInfo'][str(coordinate)]['marking'] = self.white_player['name'] if self.black_player['ai_or_online'] else self.black_player['name']
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.black_player['name']
             else:
                 data['nodeInfo'][str(coordinate)]['marking'] = 'A'
 
@@ -192,12 +192,12 @@ class Game:
         nodeList = self.board.node_list
         nodeInfo = data['nodeInfo']
         for (i, node) in enumerate(nodeInfo):
-            if nodeInfo[node]['marking'] == data['FPLAYER']:
+            if nodeInfo[node]['marking'] == data['TPLAYER']:
                 if nodeList[i]['piece'] is None: 
                     nodeList[i]['piece'] = Piece(player['color'])
                 else:
                     nodeList[i]['piece'].color = player['color']
-            elif nodeInfo[node]['marking']  == data['TPLAYER']:
+            elif nodeInfo[node]['marking']  == data['FPLAYER']:
                 if nodeList[i]['piece'] is None:
                     nodeList[i]['piece'] = Piece(ai_player['color'])
                 else:

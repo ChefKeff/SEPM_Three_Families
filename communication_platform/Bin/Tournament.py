@@ -310,7 +310,6 @@ class Tournament:
         # "erik:B gabriel:W"
         sep = nexTPLAYERs.strip().split(' ')
         # ['erik:B', 'gabriel:W']
-
         next_players_dict = {}
 
         for p in sep:

@@ -11,7 +11,7 @@ def get_phase(player: str, game_state):
     player - 'E' for engine 'P' for player
     game_state - board representing current game state
     """
-    if player == game_state['TPLAYER']:
+    if player == game_state['FPLAYER']:
         if game_state['playerMovesLeft'] == 0:
             return 0
         if game_state['placedPlayerPieces'] < game_state['totalPiecesPerPlayer'] and game_state['onhandPlayerPieces'] > 0:
@@ -20,7 +20,7 @@ def get_phase(player: str, game_state):
             return 2
         if game_state['onhandPlayerPieces'] == 0 and game_state['placedPlayerPieces'] == 3:
             return 3
-    elif player == game_state['FPLAYER']:
+    elif player == game_state['TPLAYER']:
         if game_state['engineMovesLeft'] == 0:
             return 0
         if game_state['placedEnginePieces'] < game_state['totalPiecesPerPlayer'] and game_state['onhandEnginePieces'] > 0:
