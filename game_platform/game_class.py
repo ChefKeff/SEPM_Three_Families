@@ -48,6 +48,7 @@ class Game:
             'placements': 0,
             'ai_or_online': False,
             'difficulty': None,
+            'online_ai': False
         }
 
         self.black_player = {
@@ -57,7 +58,8 @@ class Game:
             'turns': 0,
             'placements': 0,
             'ai_or_online': False,
-            'difficulty': None
+            'difficulty': None,
+            'online_ai': False
         }
 
         # Online mode
@@ -231,18 +233,20 @@ class Game:
         self.game_running = False
 
     # ------------------------------ SETUP NAMES -----------------------------
-    def setup_player(self, color, name, ai_or_online, difficulty):
+    def setup_player(self, color, name, ai_or_online, difficulty, online_ai=False):
         '''Starts the game.'''
         if color.lower() == 'white':
             self.white_player['name'] = name
             if ai_or_online:
                 self.white_player['ai_or_online'] = True
                 self.white_player['difficulty'] = difficulty
+                self.white_player = online_ai
         elif color.lower() == 'black':
             self.black_player['name'] = name
             if ai_or_online:
                 self.black_player['ai_or_online'] = True
                 self.black_player['difficulty'] = difficulty
+                self.black_player = online_ai
 
     # ----------------------------- PRINT BOARD ------------------------------
     def print_board(self):

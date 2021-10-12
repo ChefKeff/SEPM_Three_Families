@@ -1,3 +1,4 @@
+
 '''
 This is the main module running the game.
 
@@ -95,9 +96,34 @@ def get_key(val, my_dict):
 def join_game(game):
     '''For joining a game.'''
     name = str(input('Enter player name (without blankspaces): '))
+    difficulty = None
+    while True:
+        ai = input('Is this an AI? \n Yes(y)    No(n) \n')
+        if ai.lower() == 'y' or ai.lower() == 'yes':
+            while True:
+                difficulty = input('Which difficulty \n Easy(e)    Medium(m)   Hard(h) \n')
+                if difficulty.lower() == 'e' or difficulty.lower() == 'm' or difficulty.lower() == 'h':
+                    if difficulty.lower() == 'e':
+                        difficulty = 'easy'
+                    elif difficulty.lower() == 'm':
+                        difficulty = 'medium'
+                    elif difficulty.lower() == 'h':
+                        difficulty = 'hard'
+                    break_outer = True
+                    break
+                else:
+                    boxed_output('Please enter easy(e), medium(m) or hard(h).')
+                    continue
+        elif ai.lower() == 'n' or ai.lower() == 'no':
+            break
+        if break_outer:
+            break
+
     name = name.strip()
+    if difficulty is not None:
+        name = difficulty + " - " + name
     addr = '127.0.0.1'
-    port = int(input('connect to port: ')) 
+    port = int(input('connect to port: '))
 
     client = Client.Client(addr, port, name)
     game.stop_game()
@@ -116,11 +142,21 @@ def join_game(game):
                 color = 'white' if tournament['NEXTPLAYERS'][name] == 'W' else 'black'
                 opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
                 opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
-
-                game.setup_player(color, name, False, None)
-                game.setup_player(opponent_color, opponent_name, True, 'easy')
+                if difficulty is not None:
+                    game.setup_player(color, name, False, None, online_ai=True)
+                else:
+                    game.setup_player(color, name, False, None, online_ai=False)
+                try:
+                    ai_diff, ai_name = opponent_name.split('-')
+                except Exception:
+                    pass
+                if ai_diff is not None:
+                    game.setup_player(opponent_color, opponent_name, True,
+                                      ai_diff.strip(), online_ai=True)
+                else:
+                    game.setup_player(opponent_color, opponent_name, True, 'easy')
                 game.set_current_player(color)
-
+                print("in here doing stuff")
                 # To json
                 
                 game.to_json()
