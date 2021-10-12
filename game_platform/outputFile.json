@@ -1,20 +1,20 @@
 {
  "fileType": "GAMEFILE",
  "GAMEDONE": 0,
- "TPLAYER": "ai2",
- "FPLAYER": "ai1",
+ "TPLAYER": "dqkwdowqd",
+ "FPLAYER": "hard-qwdoqwkd",
  "TPCOLOUR": "W",
  "FPCOLOUR": "W",
  "GAMESCORE": 0,
  "difficulty": "hard",
- "playerMovesLeft": 198,
- "engineMovesLeft": 196,
- "placedPlayerPieces": 3,
- "placedEnginePieces": 4,
- "onhandPlayerPieces": 9,
- "onhandEnginePieces": 7,
+ "playerMovesLeft": 200,
+ "engineMovesLeft": 198,
+ "placedPlayerPieces": 0,
+ "placedEnginePieces": 2,
+ "onhandPlayerPieces": 11,
+ "onhandEnginePieces": 10,
  "totalPiecesPerPlayer": 11,
- "engineThrees": [],
+ "engineThrees": null,
  "nodeInfo": {
   "[0, 0]": {
    "reachableNodes": [
@@ -31,7 +31,7 @@
      0
     ]
    ],
-   "marking": "ai1"
+   "marking": "dqkwdowqd"
   },
   "[0, 1]": {
    "reachableNodes": [
@@ -48,7 +48,7 @@
      1
     ]
    ],
-   "marking": "ai2"
+   "marking": "A"
   },
   "[0, 2]": {
    "reachableNodes": [
@@ -65,7 +65,7 @@
      6
     ]
    ],
-   "marking": "ai2"
+   "marking": "A"
   },
   "[1, 0]": {
    "reachableNodes": [
@@ -184,7 +184,7 @@
      0
     ]
    ],
-   "marking": "ai1"
+   "marking": "A"
   },
   "[3, 1]": {
    "reachableNodes": [
@@ -226,7 +226,7 @@
      0
     ]
    ],
-   "marking": "E"
+   "marking": "dqkwdowqd"
   },
   "[3, 3]": {
    "reachableNodes": [
@@ -247,7 +247,7 @@
      1
     ]
    ],
-   "marking": "ai2"
+   "marking": "A"
   },
   "[3, 4]": {
    "reachableNodes": [
@@ -268,7 +268,7 @@
      2
     ]
    ],
-   "marking": "ai2"
+   "marking": "A"
   },
   "[3, 5]": {
    "reachableNodes": [
@@ -289,7 +289,7 @@
      2
     ]
    ],
-   "marking": "ai1"
+   "marking": "A"
   },
   "[3, 6]": {
    "reachableNodes": [

@@ -39,7 +39,7 @@ class Game:
         self.turns = 0
         self.client = None
         self.local_ai = False
-
+        self.engineThrees = None
         self.white_player = {
             'name': 'White',
             'color': 'white',
@@ -125,10 +125,7 @@ class Game:
         data['onhandPlayerPieces'] = self.pieces_in_hand - player['placements']
         data['onhandEnginePieces'] = self.pieces_in_hand -  ai_player['placements'] #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
         data['totalPiecesPerPlayer'] = self.pieces_in_hand
-        if data['firstMoveDone'] == False:
-            data['engineThrees'] = []
-        else:
-            data['engineThrees'] = data['engineThrees']
+        data['engineThrees'] = self.engineThrees
 
         # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
         list_of_coordinates = []
@@ -157,9 +154,9 @@ class Game:
             piece = self.board.find_piece_by_coords(i+1) # Not exactly sure why I need to add 1 here
             if piece is not None:
                 if piece.color == 'white':
-                    data['nodeInfo'][str(coordinate)]['marking'] = self.black_player['name'] if self.black_player['ai_or_online'] else self.white_player['name']
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.white_player['name']
                 else:
-                    data['nodeInfo'][str(coordinate)]['marking'] = self.white_player['name'] if self.black_player['ai_or_online'] else self.black_player['name']
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.black_player['name']
             else:
                 data['nodeInfo'][str(coordinate)]['marking'] = 'A'
 
@@ -193,9 +190,10 @@ class Game:
             self.firstMoveDone = data['firstMoveDone']
         nodeList = self.board.node_list
         nodeInfo = data['nodeInfo']
+        self.engineThrees = data['engineThrees']
         for (i, node) in enumerate(nodeInfo):
             if nodeInfo[node]['marking'] == data['FPLAYER']:
-                if nodeList[i]['piece'] is None: 
+                if nodeList[i]['piece'] is None:
                     nodeList[i]['piece'] = Piece(player['color'])
                 else:
                     nodeList[i]['piece'].color = player['color']
@@ -493,7 +491,7 @@ class Game:
         #hantera om det är en lokal ai's tur
         if self.local_ai and ((self.whose_turn == "black" and self.black_player['ai_or_online']) or (self.whose_turn == "white" and self.white_player['ai_or_online'])):
             # Send board to game_engine
-            generate_move_create_output()    
+            generate_move_create_output()
             # Update board
             self.from_json()
 
