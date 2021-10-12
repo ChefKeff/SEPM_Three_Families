@@ -7,12 +7,19 @@ def change_comm_params(move):
     uses. Quite nice :-)
     """
     (gamescore, gamedone) = check_board_state(move, True)
-    current_t_player = move['TPLAYER']
-    current_t_col = move['TPCOLOUR']
-    move['TPLAYER'] = move['FPLAYER']
-    move['FPLAYER'] = current_t_player
-    move['TPCOLOUR'] = move['FPCOLOUR']
-    move['FPCOLOUR'] = current_t_col
+    t_player_ai = f_player_ai = False
+    for diff in ('easy', 'hard', 'medium'):
+        if diff in move['TPLAYER']:
+            t_player_ai = True
+        if diff in move['FPLAYER']:
+            f_player_ai = True
+    if not (t_player_ai and f_player_ai):
+        current_t_player = move['TPLAYER']
+        current_t_col = move['TPCOLOUR']
+        move['TPLAYER'] = move['FPLAYER']
+        move['FPLAYER'] = current_t_player
+        move['TPCOLOUR'] = move['FPCOLOUR']
+        move['FPCOLOUR'] = current_t_col
 
     move['GAMESCORE'] = gamescore
     move['GAMEDONE'] = gamedone

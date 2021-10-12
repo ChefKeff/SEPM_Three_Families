@@ -11,6 +11,8 @@ def determine_move(difficulty: str, worst_board: dict(dict(dict())), best_board:
     worst_board -- board representing the worst possible move
     best_board -- board representing the best possible move
     """
+    print(best_board['TPLAYER'])
+    difficulty = best_board['TPLAYER'].split('-')[0]
     if difficulty == 'easy':
         if random.random() < .9:
             return worst_board
