@@ -1,18 +1,18 @@
 {
  "fileType": "GAMEFILE",
  "GAMEDONE": 0,
- "TPLAYER": "dqkwdowqd",
- "FPLAYER": "hard-qwdoqwkd",
+ "TPLAYER": "uklf",
+ "FPLAYER": "CBD",
  "TPCOLOUR": "W",
  "FPCOLOUR": "W",
  "GAMESCORE": 0,
  "difficulty": "hard",
- "playerMovesLeft": 200,
- "engineMovesLeft": 198,
- "placedPlayerPieces": 0,
- "placedEnginePieces": 2,
- "onhandPlayerPieces": 11,
- "onhandEnginePieces": 10,
+ "playerMovesLeft": 198,
+ "engineMovesLeft": 196,
+ "placedPlayerPieces": 2,
+ "placedEnginePieces": 4,
+ "onhandPlayerPieces": 9,
+ "onhandEnginePieces": 7,
  "totalPiecesPerPlayer": 11,
  "engineThrees": null,
  "nodeInfo": {
@@ -31,7 +31,7 @@
      0
     ]
    ],
-   "marking": "dqkwdowqd"
+   "marking": "CBD"
   },
   "[0, 1]": {
    "reachableNodes": [
@@ -48,7 +48,8 @@
      1
     ]
    ],
-   "marking": "A"
+
+   "marking": "CBD"
   },
   "[0, 2]": {
    "reachableNodes": [
@@ -82,7 +83,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "CBD"
   },
   "[1, 1]": {
    "reachableNodes": [
@@ -103,7 +104,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "uklf"
   },
   "[1, 2]": {
    "reachableNodes": [
@@ -154,7 +155,7 @@
      3
     ]
    ],
-   "marking": "A"
+   "marking": "uklf"
   },
   "[2, 2]": {
    "reachableNodes": [
@@ -247,7 +248,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "uklf"
   },
   "[3, 4]": {
    "reachableNodes": [

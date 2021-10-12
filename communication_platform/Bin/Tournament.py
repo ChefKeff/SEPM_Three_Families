@@ -312,7 +312,6 @@ class Tournament:
         sep = nexTPLAYERs.strip().split(' ')
         print("sep", sep)
         # ['erik:B', 'gabriel:W']
-
         next_players_dict = {}
         for p in sep:
             name_color = p.split(':')

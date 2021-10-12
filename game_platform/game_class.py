@@ -192,12 +192,12 @@ class Game:
         nodeInfo = data['nodeInfo']
         self.engineThrees = data['engineThrees']
         for (i, node) in enumerate(nodeInfo):
-            if nodeInfo[node]['marking'] == data['FPLAYER']:
-                if nodeList[i]['piece'] is None:
+            if nodeInfo[node]['marking'] == data['TPLAYER']:
+                if nodeList[i]['piece'] is None: 
                     nodeList[i]['piece'] = Piece(player['color'])
                 else:
                     nodeList[i]['piece'].color = player['color']
-            elif nodeInfo[node]['marking']  == data['TPLAYER']:
+            elif nodeInfo[node]['marking']  == data['FPLAYER']:
                 if nodeList[i]['piece'] is None:
                     nodeList[i]['piece'] = Piece(ai_player['color'])
                 else:

@@ -6,6 +6,7 @@ def change_comm_params(move):
     A function that actually changes the parameters from the COMM-platform
     uses. Quite nice :-)
     """
+    (gamescore, gamedone) = check_board_state(move, True)
     current_t_player = move['TPLAYER']
     current_t_col = move['TPCOLOUR']
     move['TPLAYER'] = move['FPLAYER']
@@ -13,7 +14,6 @@ def change_comm_params(move):
     move['TPCOLOUR'] = move['FPCOLOUR']
     move['FPCOLOUR'] = current_t_col
 
-    (gamescore, gamedone) = check_board_state(move, True)
     move['GAMESCORE'] = gamescore
     move['GAMEDONE'] = gamedone
         

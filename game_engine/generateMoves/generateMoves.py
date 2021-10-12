@@ -35,11 +35,11 @@ def generate_place_piece_moves(board: dict(dict(dict())), turn: str):
             new_board = deepcopy(board)
 
             new_board['nodeInfo'][str(node)]['marking'] = turn
-            if turn == board['FPLAYER']:
+            if turn == board['TPLAYER']:
                 new_board['placedEnginePieces'] += 1
                 new_board['onhandEnginePieces'] -= 1
                 new_board['engineMovesLeft'] -= 1 
-            elif turn == board['TPLAYER']:
+            elif turn == board['FPLAYER']:
                 new_board['placedPlayerPieces'] += 1
                 new_board['onhandPlayerPieces'] -= 1
                 new_board['playerMovesLeft'] -= 1 
@@ -71,7 +71,7 @@ def generate_move_piece_moves(board: dict(dict(dict())), turn: str):
                     # the currently occupied node
                     new_board['nodeInfo'][str(reachable_node)]['marking'] = turn
                     new_board['nodeInfo'][str(node)]['marking'] = 'A'
-                    if turn == board['FPLAYER']:
+                    if turn == board['TPLAYER']:
                         new_board['engineMovesLeft'] -= 1 
                     else:
                         new_board['playerMovesLeft'] -= 1 
@@ -104,9 +104,9 @@ def generate_move_piece_anywhere_moves(board: dict(dict(dict())), turn: str):
                         # the currently occupied node
                         new_board['nodeInfo'][str(other_node)]['marking'] = turn
                         new_board['nodeInfo'][str(node)]['marking'] = 'A'
-                        if turn == board['FPLAYER']:
+                        if turn == board['TPLAYER']:
                             new_board['engineMovesLeft'] -= 1
-                        elif turn == board['TPLAYER']:
+                        elif turn == board['FPLAYER']:
                             new_board['playerMovesLeft'] -= 1 
 
                         if check_rows(turn, new_board)[1]:
@@ -125,7 +125,7 @@ def generate_remove_piece_moves(board: dict(dict(dict())), turn: str):
         turn -- player we are creating moves for ('P' or 'E')
     """
     boards = []
-    opponent = {board['TPLAYER']:board['FPLAYER'], board['FPLAYER']:board['TPLAYER']}
+    opponent = {board['FPLAYER']:board['TPLAYER'], board['TPLAYER']:board['FPLAYER']}
     for node, node_info in board['nodeInfo'].items():
         if node_info['marking'] == opponent[turn]:
             new_board = deepcopy(board)
