@@ -121,7 +121,7 @@ def join_game(game):
 
     name = name.strip()
     if difficulty is not None:
-        name = difficulty + " - " + name
+        name = difficulty + "-" + name
     addr = '127.0.0.1'
     port = int(input('connect to port: '))
 
@@ -144,17 +144,17 @@ def join_game(game):
                 opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
                 opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
                 if difficulty is not None:
-                    game.setup_player(color, name, False, None, online_ai=True)
+                    game.setup_player(color, name, True, difficulty, True)
                 else:
-                    game.setup_player(color, name, False, None, online_ai=False)
-                try:
+                    game.setup_player(color, name, False, None, False)
+                ai_diff = None
+                if '-' in opponent_name:
                     ai_diff, ai_name = opponent_name.split('-')
-                except Exception:
-                    print("ai diff exception")
+
                 print(ai_diff)
                 if ai_diff is not None:
                     game.setup_player(opponent_color, opponent_name, True,
-                                      ai_diff.strip(), online_ai=True)
+                                      ai_diff.strip(), True)
                 else:
                     game.setup_player(opponent_color, opponent_name, True, 'easy')
                 game.set_current_player(color)
@@ -167,7 +167,8 @@ def join_game(game):
                 client.sendFile('../game_platform_input_file.json')
                 game.start_game()
                 return
-        except Exception:
+        except Exception as e:
+            print(e)
             print("found no tournamentFILE ")
         time.sleep(1)
         

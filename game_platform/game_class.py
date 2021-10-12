@@ -240,13 +240,13 @@ class Game:
             if ai_or_online:
                 self.white_player['ai_or_online'] = True
                 self.white_player['difficulty'] = difficulty
-                self.white_player = online_ai
+                self.white_player['online_ai'] = online_ai
         elif color.lower() == 'black':
             self.black_player['name'] = name
             if ai_or_online:
                 self.black_player['ai_or_online'] = True
                 self.black_player['difficulty'] = difficulty
-                self.black_player = online_ai
+                self.black_player['online_ai'] = online_ai
 
     # ----------------------------- PRINT BOARD ------------------------------
     def print_board(self):
@@ -467,6 +467,8 @@ class Game:
     def place_piece_aux(self):
         '''Aux function to place_pieces_phase'''
         #hantera om det är en människa/spelare online's tur
+        print("black player", self.black_player)
+        print("white player", self.white_player)
         if (not self.local_ai) and (self.whose_turn != self.current_player['color'] and self.online):
             listening = True
             while listening:
@@ -490,6 +492,24 @@ class Game:
             generate_move_create_output()    
             # Update board
             self.from_json()
+
+            if self.whose_turn == 'white':
+                self.white_player['placements'] += 1 #TODO: might have to change this
+            else:
+                self.black_player['placements'] += 1 #TODO: might have to change this
+        elif (self.whose_turn == "black" and self.black_player['ai_or_online'] and self.black_player['online_ai']) \
+             or (self.whose_turn == "white" and self.white_player['ai_or_online'] and self.white_player['online_ai']):
+            # Send board to game_engine
+            print("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+            generate_move_create_output()    
+            # Update board
+            self.from_json()
+
+            # Sending game state to server
+            if self.online:
+                self.firstMoveDone = True
+                self.to_json()
+                self.client.sendFile('../game_platform_input_file.json')
 
             if self.whose_turn == 'white':
                 self.white_player['placements'] += 1 #TODO: might have to change this
