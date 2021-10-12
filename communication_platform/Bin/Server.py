@@ -184,7 +184,7 @@ class Connection:
     
 
 def main():
-    print("before initiation")
+    # print("before initiation")
     server_port = input('Choose server port: ')
     server = Server(int(server_port))
 

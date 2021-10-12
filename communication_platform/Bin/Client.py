@@ -53,7 +53,6 @@ class Client:
     def handleFile(self, filePath):
         f = open(filePath, )
         data = json.load(f)
-        print(data)
         #fileContent = data
         if data['fileType'] == "GAMEFILE":
             print('Received a gamefile!')

@@ -183,8 +183,8 @@ class Game:
             else:
                 with open('../game_platform_input_file.json', 'r') as f:
                     data = json.load(f)
-
-        self.firstMoveDone = data['firstMoveDone']
+        if self.online:
+            self.firstMoveDone = data['firstMoveDone']
         nodeList = self.board.node_list
         nodeInfo = data['nodeInfo']
         for (i, node) in enumerate(nodeInfo):

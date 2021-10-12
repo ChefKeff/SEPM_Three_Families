@@ -1,18 +1,18 @@
 {
  "fileType": "GAMEFILE",
  "GAMEDONE": 0,
- "TPLAYER": "erik",
- "FPLAYER": "ai",
+ "TPLAYER": "test",
+ "FPLAYER": "erik",
  "TPCOLOUR": "W",
- "FPCOLOUR": "B",
+ "FPCOLOUR": "W",
  "GAMESCORE": 0,
- "difficulty": "medium",
- "playerMovesLeft": 196,
- "engineMovesLeft": 194,
- "placedPlayerPieces": 5,
+ "difficulty": "easy",
+ "playerMovesLeft": 200,
+ "engineMovesLeft": 198,
+ "placedPlayerPieces": 1,
  "placedEnginePieces": 2,
- "onhandPlayerPieces": 6,
- "onhandEnginePieces": 6,
+ "onhandPlayerPieces": 11,
+ "onhandEnginePieces": 9,
  "totalPiecesPerPlayer": 11,
  "nodeInfo": {
   "[0, 0]": {
@@ -81,7 +81,7 @@
      1
     ]
    ],
-   "marking": "A"
+   "marking": "P"
   },
   "[1, 1]": {
    "reachableNodes": [
@@ -153,7 +153,7 @@
      3
     ]
    ],
-   "marking": "P"
+   "marking": "A"
   },
   "[2, 2]": {
    "reachableNodes": [
@@ -246,7 +246,7 @@
      1
     ]
    ],
-   "marking": "P"
+   "marking": "A"
   },
   "[3, 4]": {
    "reachableNodes": [
@@ -339,7 +339,7 @@
      1
     ]
    ],
-   "marking": "P"
+   "marking": "A"
   },
   "[4, 2]": {
    "reachableNodes": [
@@ -390,7 +390,7 @@
      1
     ]
    ],
-   "marking": "P"
+   "marking": "A"
   },
   "[5, 2]": {
    "reachableNodes": [
@@ -441,7 +441,7 @@
      2
     ]
    ],
-   "marking": "P"
+   "marking": "A"
   },
   "[6, 2]": {
    "reachableNodes": [

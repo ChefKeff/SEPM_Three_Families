@@ -102,7 +102,7 @@ class Tournament:
 
         # Extract the relevant content without altering the file
         
-        print('Content: ', fileContent)
+        # print('Content: ', fileContent)
         # If game is still active, return false (no action required)
         if fileContent['GAMEDONE'] != True:
             return False
