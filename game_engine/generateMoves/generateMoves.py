@@ -26,7 +26,7 @@ def generate_place_piece_moves(board: dict(dict(dict())), turn: str):
         list containing the game states representing those moves.
         
         board -- dictionary describing current board state
-        turn -- player we are creating moves for ('P' or 'E')
+        turn -- player we are creating moves for player name
     """
     boards = []
     for node, node_info in board['nodeInfo'].items():
@@ -35,11 +35,11 @@ def generate_place_piece_moves(board: dict(dict(dict())), turn: str):
             new_board = deepcopy(board)
 
             new_board['nodeInfo'][str(node)]['marking'] = turn
-            if turn == 'E':
+            if turn == board['FPLAYER']:
                 new_board['placedEnginePieces'] += 1
                 new_board['onhandEnginePieces'] -= 1
                 new_board['engineMovesLeft'] -= 1 
-            elif turn == 'P':
+            elif turn == board['TPLAYER']:
                 new_board['placedPlayerPieces'] += 1
                 new_board['onhandPlayerPieces'] -= 1
                 new_board['playerMovesLeft'] -= 1 
@@ -71,7 +71,7 @@ def generate_move_piece_moves(board: dict(dict(dict())), turn: str):
                     # the currently occupied node
                     new_board['nodeInfo'][str(reachable_node)]['marking'] = turn
                     new_board['nodeInfo'][str(node)]['marking'] = 'A'
-                    if turn == 'E':
+                    if turn == board['FPLAYER']:
                         new_board['engineMovesLeft'] -= 1 
                     else:
                         new_board['playerMovesLeft'] -= 1 
@@ -104,9 +104,9 @@ def generate_move_piece_anywhere_moves(board: dict(dict(dict())), turn: str):
                         # the currently occupied node
                         new_board['nodeInfo'][str(other_node)]['marking'] = turn
                         new_board['nodeInfo'][str(node)]['marking'] = 'A'
-                        if turn == 'E':
+                        if turn == board['FPLAYER']:
                             new_board['engineMovesLeft'] -= 1
-                        elif turn == 'P':
+                        elif turn == board['TPLAYER']:
                             new_board['playerMovesLeft'] -= 1 
 
                         if check_rows(turn, new_board)[1]:
@@ -125,21 +125,21 @@ def generate_remove_piece_moves(board: dict(dict(dict())), turn: str):
         turn -- player we are creating moves for ('P' or 'E')
     """
     boards = []
-    opponent = {'P':'E', 'E':'P'}
+    opponent = {board['TPLAYER']:board['FPLAYER'], board['FPLAYER']:board['TPLAYER']}
     for node, node_info in board['nodeInfo'].items():
         if node_info['marking'] == opponent[turn]:
             new_board = deepcopy(board)
 
             # remove indicated by making the piece available
             new_board['nodeInfo'][str(node)]['marking'] = 'A'
-            if turn == 'E':
+            if turn == board['FPLAYER']:
                 new_board['placedPlayerPieces'] -= 1
-            elif turn == 'P':
+            elif turn == board['TPLAYER']:
                 new_board['placedEnginePieces'] -= 1
             boards.append(new_board)
     return boards
 
-def generate_moves(board: dict(dict(dict())), turn: str='E'):
+def generate_moves(board: dict(dict(dict())), turn: str):
     """ Generates all the possible moves. Returns
         list containing the game states representing those moves.
 

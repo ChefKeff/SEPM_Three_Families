@@ -59,7 +59,7 @@ def minimax(board: dict(dict(dict())), depth: int, is_maximizing_player: bool, a
     else: 
         if is_maximizing_player:
             best_value = -1000
-            for i, newBoard in enumerate(generate_moves(board, 'E')):
+            for i, newBoard in enumerate(generate_moves(board, board['FPLAYER'])):
                 move_value = minimax(newBoard, depth_val+1, not is_maximizing_player, alpha, beta)
                 best_value = max(best_value, move_value)
                 alpha = max(alpha, best_value)
@@ -69,7 +69,7 @@ def minimax(board: dict(dict(dict())), depth: int, is_maximizing_player: bool, a
             return best_value
         else:
             best_value = 1000
-            for i, newBoard in enumerate(generate_moves(board, 'P')):
+            for i, newBoard in enumerate(generate_moves(board, board['TPLAYER'])):
                 move_value = minimax(newBoard, depth_val+1, not is_maximizing_player, alpha, beta)
                 best_value = min(best_value, move_value)
                 beta = min(beta, best_value)
@@ -86,12 +86,12 @@ def evaluate(board: dict(dict(dict())), is_maximizing_player: bool):
         board -- representing current game state
         is_maximizing_player -- representing the player currently making a move at a given recursion
     """
-    two_in_a_row_max, three_in_a_row_max = check_rows('E', board)[0], check_rows('E', board)[1]
-    two_in_a_row_min, three_in_a_row_min = check_rows('P', board)[0], check_rows('P', board)[1]
+    two_in_a_row_max, three_in_a_row_max = check_rows(board['FPLAYER'], board)[0], check_rows(board['FPLAYER'], board)[1]
+    two_in_a_row_min, three_in_a_row_min = check_rows(board['TPLAYER'], board)[0], check_rows(board['TPLAYER'], board)[1]
     # Spelet är oavgjort om båda har slut på drag eller om ingen kan göra nåt.
     if board['playerMovesLeft'] == 0 and board['engineMovesLeft'] == 0:
         return 0, True
-    if len(generate_moves(board,'P')) == 0 and len(generate_moves(board,'E')) == 0:
+    if len(generate_moves(board,board['FPLAYER'])) == 0 and len(generate_moves(board,board['FPLAYER'])) == 0:
         return 0, True
     if is_maximizing_player:
         # Någon har vunnit om den andra spelaren antingen har 0 på hand och färre än 3 på planen
@@ -133,7 +133,7 @@ def find_best_move(board: dict(dict(dict()))):
     worst_value = 1000
     worst_move = None
 
-    for move in generate_moves(board, 'E'):
+    for move in generate_moves(board, board['FPLAYER']):
         move_value = minimax(move, 0, False, best_value, worst_value)
         if move_value > best_value:
             best_value = move_value

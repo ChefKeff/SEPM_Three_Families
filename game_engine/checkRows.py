@@ -4,7 +4,7 @@ def check_rows(marking: str, board: dict(dict(dict()))):
     """ Returns a list containing two booleans that are true if 
     two in a row and three in a row is found on the board
 
-    marking -- 'E' or 'P' for player or engine
+    marking -- player name
     board -- board representing current game state
     """
     two_in_a_row = False
