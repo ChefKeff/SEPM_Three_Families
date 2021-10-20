@@ -39,7 +39,7 @@ def generate_move():
 
 
 
-def minimax(board: dict(dict(dict())), depth: int, is_maximizing_player: bool, alpha: int, beta: int):
+def minimax(board: dict(dict(dict())), depth: int, is_maximizing_player: bool, is_aivsai: bool, alpha: int, beta: int):
     """ Runs the minimax algorithm with alpha beta pruning to find the best possible move value
         given that the search tree has a input depth. returns the value of the move
 
@@ -51,18 +51,21 @@ def minimax(board: dict(dict(dict())), depth: int, is_maximizing_player: bool, a
     """
     depth_val = depth
     value, game_over = evaluate(board, is_maximizing_player)
-    
-    if not depth_val < 3:
-        return value - depth_val
+    if not is_aivsai:
+        if not depth_val < 3:
+            return value - depth_val
 
     if game_over:
-        return value - depth_val
+        if is_aivsai:
+            return value
+        else:
+            return value - depth_val
 
     else: 
         if is_maximizing_player:
             best_value = -1000
             for i, newBoard in enumerate(generate_moves(board, board['TPLAYER'])):
-                move_value = minimax(newBoard, depth_val+1, not is_maximizing_player, alpha, beta)
+                move_value = minimax(newBoard, depth_val+1, not is_maximizing_player, is_aivsai, alpha, beta)
                 best_value = max(best_value, move_value)
                 alpha = max(alpha, best_value)
                 if beta <= alpha:
@@ -72,7 +75,7 @@ def minimax(board: dict(dict(dict())), depth: int, is_maximizing_player: bool, a
         else:
             best_value = 1000
             for i, newBoard in enumerate(generate_moves(board, board['FPLAYER'])):
-                move_value = minimax(newBoard, depth_val+1, not is_maximizing_player, alpha, beta)
+                move_value = minimax(newBoard, depth_val+1, not is_maximizing_player, is_aivsai, alpha, beta)
                 best_value = min(best_value, move_value)
                 beta = min(beta, best_value)
                 if beta <= alpha:
@@ -136,7 +139,7 @@ def find_best_move(board: dict(dict(dict()))):
     worst_move = None
 
     for move in generate_moves(board, board['TPLAYER']):
-        move_value = minimax(move, 0, False, best_value, worst_value)
+        move_value = minimax(move, 0, False, False, best_value, worst_value)
         if move_value > best_value:
             best_value = move_value
             best_move = move 
