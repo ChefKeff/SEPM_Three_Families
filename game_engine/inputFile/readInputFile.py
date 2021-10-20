@@ -1,4 +1,5 @@
 import json
+from game_engine.getEngineThrees import get_engine_threes
 
 def read_game_state():
     """
@@ -29,12 +30,13 @@ def read_game_state():
         'onhandPlayerPieces': game_data['onhandPlayerPieces'],
         'onhandEnginePieces': game_data['onhandEnginePieces'],
         'totalPiecesPerPlayer': game_data['totalPiecesPerPlayer'],
-        'engineThrees': game_data['engineThrees']
+        'engineThrees' : []
     }
     for node in game_data['nodeInfo']:
         if game_data['nodeInfo'][node]['reachableNodes'] != []:
             node_info[node] = game_data['nodeInfo'][node]
     game_struct['nodeInfo'] = node_info
+    game_struct['engineThrees'] = get_engine_threes(game_data['TPLAYER'], game_struct)
     return game_struct
 
 read_game_state()
