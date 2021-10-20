@@ -37,11 +37,11 @@ def setup_player(game, color):
                     difficulty = input('Which difficulty \n Easy(e)    Medium(m)    Hard(h) \n')
                     if difficulty.lower() == 'e' or difficulty.lower() == 'm' or difficulty.lower() == 'h':
                         if difficulty.lower() == 'e':
-                            difficulty = 'easy'
+                            name = 'easy' + '-' + name
                         elif difficulty.lower() == 'm':
-                            difficulty = 'medium'
+                            name = 'medium' + '-' + name
                         elif difficulty.lower() == 'h':
-                            difficulty = 'hard'
+                            name = 'hard' + '-' + name
                         game.setup_player(color, name, True, difficulty)
                         return      
                     else:    

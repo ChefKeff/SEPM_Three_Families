@@ -11,19 +11,26 @@ def determine_move(difficulty: str, worst_board: dict(dict(dict())), best_board:
     worst_board -- board representing the worst possible move
     best_board -- board representing the best possible move
     """
-    print(best_board['TPLAYER'])
+    #print(best_board['TPLAYER'])
     difficulty = best_board['TPLAYER'].split('-')[0]
+    if difficulty not in ['easy', 'medium', 'hard']:
+        difficulty = best_board['FPLAYER'].split('-')[0]
+    #print(best_board['TPLAYER'])
+    print(difficulty)
     if difficulty == 'easy':
+        print("\nin easy: ")
         if random.random() < .9:
             return worst_board
         else:
             return best_board
     elif difficulty == 'medium':
+        print("\nin medium: ")
         if random.random() < .5:
             return worst_board
         else:
             return best_board
     elif difficulty == 'hard':
+        print("\nin hard: ")
         if random.random() < .1:
             return worst_board
         else:
@@ -88,38 +95,53 @@ def evaluate(board: dict(dict(dict())), is_maximizing_player: bool):
         board -- representing current game state
         is_maximizing_player -- representing the player currently making a move at a given recursion
     """
+    #print("\nin evaluate: ")
     two_in_a_row_max, three_in_a_row_max = check_rows(board['TPLAYER'], board)[0], check_rows(board['TPLAYER'], board)[1]
+    #print("\nin evaluate 2: ")
     two_in_a_row_min, three_in_a_row_min = check_rows(board['FPLAYER'], board)[0], check_rows(board['FPLAYER'], board)[1]
+    #print("\nin evaluate 3: ")
     # Spelet är oavgjort om båda har slut på drag eller om ingen kan göra nåt.
     if board['playerMovesLeft'] == 0 and board['engineMovesLeft'] == 0:
+        #print("\nin evaluate 4: ")
         return 0, True
     if len(generate_moves(board,board['FPLAYER'])) == 0 and len(generate_moves(board,board['TPLAYER'])) == 0:
+        #print("\nin evaluate 5: ")
         return 0, True
     if is_maximizing_player:
+        #print("\nin evaluate 6: ")
         # Någon har vunnit om den andra spelaren antingen har 0 på hand och färre än 3 på planen
         # eller inte kan göra ett drag.
         if three_in_a_row_max and board['placedPlayerPieces'] == 3 and board['onhandPlayerPieces'] == 0:
+            #print("\nin evaluate 7: ")
             return 100, True 
         if three_in_a_row_min and board['placedEnginePieces'] == 3 and board['onhandEnginePieces'] == 0:
+            #print("\nin evaluate 8: ")
             return -100, True 
 
         if three_in_a_row_max:
+            #print("\nin evaluate 9: ")
             return 20, False 
         if two_in_a_row_max:
+            #print("\nin evaluate 10: ")
             return 10, False
 
 
     elif not is_maximizing_player:
+        #print("\nin evaluate 11: ")
         # Någon har vunnit om den andra spelaren antingen har 0 på hand och färre än 3 på planen
         # eller inte kan göra ett drag.
         if three_in_a_row_max and board['placedPlayerPieces'] == 3 and board['onhandPlayerPieces'] == 0:
+            #print("\nin evaluate 12: ")
             return 100, True 
         if three_in_a_row_min and board['placedEnginePieces'] == 3 and board['onhandEnginePieces'] == 0:
+            #print("\nin evaluate 13: ")
             return -100, True 
 
         if three_in_a_row_min:
+            #print("\nin evaluate 14: ")
             return -20, False 
         if two_in_a_row_min:
+            #print("\nin evaluate 15: ")
             return -10, False
 
     return 0, False
