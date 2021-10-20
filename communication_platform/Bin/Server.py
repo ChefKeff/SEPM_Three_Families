@@ -32,6 +32,7 @@ class Server:
 
         self.listenThread = threading.Thread(target=self.listenForConnections)
         self.listenThread.start()
+        self.last_sent = None
 
         return
 
@@ -128,9 +129,23 @@ class Server:
             dictionary = json.load(f)
             
             if dictionary['fileType'] == 'GAMEFILE':
-                self.sendFile(self.players[dictionary['TPLAYER']], filePath)
-                print('Forwarded gamefile to ' + dictionary['TPLAYER'])
-                return dictionary['GAMEDONE'] == 1
+
+                ### adding some details to make sure that it's not sent twice to the same player
+                testing = str(self.players[dictionary['TPLAYER']])
+                split_list = testing.split(' ')
+                for element in split_list:
+                    if 'fd' in element:
+                        new_port = element.replace('fd=', '')
+                        new_port = new_port.replace(',', '')
+
+                if self.last_sent == new_port:
+                    return dictionary['GAMEDONE'] == 1
+
+                else:
+                    self.sendFile(self.players[dictionary['TPLAYER']], filePath)
+                    print('Forwarded gamefile to ' + dictionary['TPLAYER'])
+                    self.last_sent = new_port
+                    return dictionary['GAMEDONE'] == 1
 
             else:
                 print(f'Received unknown file type ' + dictionary['fileType'])
