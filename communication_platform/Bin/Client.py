@@ -23,7 +23,24 @@ class Client:
         self.s = socket.socket()
         # Connect to a socket with a given address and port
         # For now it's localhost per default
-        self.s.connect((socket.gethostname(),serverPort))
+
+
+        ### This part checks if the inputted port is valid, esle asks for a valid one
+        def check_connection_to_port(serverPort):
+            try:
+                self.s.connect((socket.gethostname(),int(serverPort))
+                return True
+            except:
+                return False
+
+        while not check_connection_to_port(serverPort):
+            serverPort = input(f'The port {serverPort} is unavailable. Try a different one! \n')
+            try:
+                serverPort = int(serverPort)
+            except ValueError:
+                serverPort = int(input('The port number has to be a number from between 0 and 65535. Try again. \n'))
+
+
         # Receive a file that is sent instantly from the server
         # self.receiveFile(self.s,'testReceive.txt')
         self.s.send(str.encode(json.dumps({'name': self.pname})))
@@ -113,10 +130,15 @@ def main(pname):
     pname = pname # str(input('Enter player name (without blankspaces): '))
     pname = pname.strip()
     addr = '127.0.0.1'
-    port = int(input('connect to port: ')) # 2232
+    #port = int(input('connect to port: ')) # 2232
+    port = input('connect to port: ') # 2232
+
 
     #pname='Player1'
-    client = Client(addr, port, pname)
+    try:
+        client = Client(addr, port, pname)
+    except ConnectionRefusedError:
+        int(input(f'The port {port} is unavailable. Try a different one! \n'))
     time.sleep(15)
     if client.pname =='p1':
         print('sending')
