@@ -1,6 +1,4 @@
-import json
 import random
-from game_engine.getEngineThrees import get_engine_threes
 
 def create_input_file():
     """
@@ -23,6 +21,7 @@ def create_input_file():
     Where reachableNodes contain all the nodes that the current node is connected to, 
     and marking states wether the node is occupied by a player piece (P), engine piece (E) or is available (A)
     """
+
    
     row_length = 13                             # row_length - the length of a row of the (initially) quadratic game board
     player_moves_left = 193                     # amount of moves left for the player      
@@ -103,11 +102,9 @@ def create_input_file():
                 game_board_string += '"' + str(game_board[i][0][0]) + '": ' + '{"reachableNodes": ' + str(game_board[i][0][1]) + ', "marking": "E" }, \n'   
             elif type(game_board[i][1]) != int:
                 game_board_string += '"' + str(game_board[i][0]) + '": ' + '{"reachableNodes": ' + str(game_board[i][1]) + ', "marking": "A" }, \n' 
-                game_board_string += '} }'
-    game_board_string += '"engineThrees": ' + str(get_engine_threes('E', json.loads(game_board_string)))
     game_board_string += '} }'
-    print(game_board_string)
     game_boardFile = open('inputFileTest.json', 'w')     # sends stuff to the .json file :-)
     game_boardFile.write(game_board_string)
 
 
+create_input_file() 
