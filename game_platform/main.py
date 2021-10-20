@@ -53,19 +53,6 @@ def setup_player(game, color):
                 game.setup_player(color, name, False, None)
                 return
                     
-
-def play_local(game):
-    '''Starts game in local mode.'''
-    print("Playing Locally")
-
-    # Set up players
-    setup_player(game, 'white')
-    setup_player(game, 'black')
-
-    # To JSON
-    game.to_json()
-    
-
 def play_online(game):
     '''Starts game in online mode.'''
     print("Playing Online")
@@ -197,11 +184,11 @@ def start_screen(game):
     if game.game_running:
         prompt(
             'Choose an option: ',
-            ["Local", "Online"],
-            ['l', 'o'],
-            [play_local, play_online],
+            ["Online"],
+            ['o'],
+            [play_online],
             False,
-            arguments=[game, game]
+            arguments=[game]
         )
 
 def get_board_structure(filename):
