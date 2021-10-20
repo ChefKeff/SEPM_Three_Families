@@ -139,7 +139,9 @@ class Server:
                         new_port = new_port.replace(',', '')
 
                 if self.last_sent == new_port:
-                    return dictionary['GAMEDONE'] == 1
+                    print('skipping this one')
+                    return
+                    #return dictionary['GAMEDONE'] == 1
 
                 else:
                     self.sendFile(self.players[dictionary['TPLAYER']], filePath)
