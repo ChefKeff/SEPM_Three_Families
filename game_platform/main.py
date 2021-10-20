@@ -1,3 +1,4 @@
+
 '''
 This is the main module running the game.
 
@@ -6,74 +7,179 @@ This is the main module running the game.
 
 import sys
 import json
-from tools import prompt, clear_screen, show_rules, print_ascii
+import time
+from tools import prompt, clear_screen, show_rules, boxed_output, validate_game_input
 from game_class import Game
+from communication_platform.Bin import Server, Client
 
-def show_ai_options(game):
-    '''Shows AI options.'''
+
+def setup_player(game, color):
     clear_screen()
+    
+    while True:
+        print('>Enter name for ' + color + ' player:\n')
+        name = input()
+        
+        if len(name) < 2 or len(name) > 10:
+            boxed_output('Enter a name between 2 and 10 characters.')
+            continue
 
-    # Ask whether to play against an AI or not
-    prompt(
-        'Who do you want to play against?',
-        ['Other Player', 'AI'],
-        ['p', 'a'],
-        [turn_off_ai, turn_on_ai],
-        False,
-        arguments=[game, game]
-    )
+        if color == 'black' and game.white_player['ai_or_online']:
+            game.setup_player(color, name, False, None)
+            return
 
-    if game.play_with_ai:
-        prompt(
-            'AI settings (current setting is '+game.ai_difficulty+'):',
-            ['Easy', 'Medium', 'Hard'],
-            ['e', 'm', 'h'],
-            [set_ai_easy, set_ai_medium, set_ai_hard],
-            False,
-            arguments=[game, game, game]
-        )
+        while True:
+            ai = input('Is this an AI? \n Yes(y)    No(n) \n')
 
+            if ai.lower() == 'y' or ai.lower() == 'yes':
+                game.set_local_ai()
+                while True:
+                    difficulty = input('Which difficulty \n Easy(e)    Medium(m)    Hard(h) \n')
+                    if difficulty.lower() == 'e' or difficulty.lower() == 'm' or difficulty.lower() == 'h':
+                        if difficulty.lower() == 'e':
+                            difficulty = 'easy'
+                        elif difficulty.lower() == 'm':
+                            difficulty = 'medium'
+                        elif difficulty.lower() == 'h':
+                            difficulty = 'hard'
+                        game.setup_player(color, name, True, difficulty)
+                        return      
+                    else:    
+                        boxed_output('Please enter easy(e), medium(m) or hard(h).')
+                        continue
+                    
+            else:
+                game.set_current_player(color)
+                game.setup_player(color, name, False, None)
+                return
+                    
 
 def play_local(game):
     '''Starts game in local mode.'''
-    print("Playing Locally")    
+    print("Playing Locally")
 
-    # Ask if user wants to play agains AI or not and difficulty
-    show_ai_options(game)
+    # Set up players
+    setup_player(game, 'white')
+    setup_player(game, 'black')
+
+    # To JSON
+    game.to_json()
     
 
-def play_online():
+def play_online(game):
     '''Starts game in online mode.'''
     print("Playing Online")
 
+    prompt(
+        'Do you want to host or join a game?:',
+        ['Host', 'Join'],
+        ['h', 'j'],
+        [host_game, join_game],
+        False,
+        arguments=[game, game]
+    )
+    
+def host_game(game):
+    '''For hosting a game.'''
+    
+    game.stop_game()
+    Server.host()
+    
+def get_key(val, my_dict):
+    '''Get key by value.'''
+    for key, value in my_dict.items():
+         if val == value:
+             return key
+ 
+    return "key doesn't exist"
+
+def join_game(game):
+    '''For joining a game.'''
+    name = str(input('Enter player name (without blankspaces): '))
+    difficulty = None
+    while True:
+        ai = input('Is this an AI? \n Yes(y)    No(n) \n')
+        if ai.lower() == 'y' or ai.lower() == 'yes':
+            while True:
+                difficulty = input('Which difficulty \n Easy(e)    Medium(m)   Hard(h) \n')
+                if difficulty.lower() == 'e' or difficulty.lower() == 'm' or difficulty.lower() == 'h':
+                    if difficulty.lower() == 'e':
+                        difficulty = 'easy'
+                    elif difficulty.lower() == 'm':
+                        difficulty = 'medium'
+                    elif difficulty.lower() == 'h':
+                        difficulty = 'hard'
+                    break_outer = True
+                    break
+                else:
+                    boxed_output('Please enter easy(e), medium(m) or hard(h).')
+                    continue
+        elif ai.lower() == 'n' or ai.lower() == 'no':
+            break
+        if break_outer:
+            break
+
+    name = name.strip()
+    if difficulty is not None:
+        name = difficulty + "-" + name
+    addr = '127.0.0.1'
+    port = int(input('connect to port: '))
+
+    client = Client.Client(addr, port, name)
+    game.stop_game()
+    game.set_client(client)
+
+    # Says to game class to play online
+    game.set_online()
+
+    while True:
+        tournament = {}
+        try:
+            with open('tournamentFile.json', 'r', encoding='utf-8') as file:
+                tournament = json.load(file)
+            print("whiling")
+            if name in tournament['NEXTPLAYERS']:
+                print("iffing")
+                color = 'white' if tournament['NEXTPLAYERS'][name] == 'W' else 'black'
+                opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
+                opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
+                if difficulty is not None:
+                    game.setup_player(color, name, True, difficulty, True)
+                else:
+                    game.setup_player(color, name, False, None, False)
+                ai_diff = None
+                if '-' in opponent_name:
+                    ai_diff, ai_name = opponent_name.split('-')
+
+                print(ai_diff)
+                if ai_diff is not None:
+                    game.setup_player(opponent_color, opponent_name, True,
+                                      ai_diff.strip(), True)
+                else:
+                    game.setup_player(opponent_color, opponent_name, True, 'easy')
+                game.set_current_player(color)
+                print("in here doing stuff")
+                # To json
+                
+                game.to_json()
+
+                # Start game
+                client.sendFile('../game_platform_input_file.json')
+                game.start_game()
+                return
+        except Exception as e:
+            print(e)
+            print("found no tournamentFILE ")
+        time.sleep(1)
+        
+        
+    
+    
 
 def quit_game():
     '''Quits the game.'''
     sys.exit()
 
-
-# ------------------------------ GAME OPTIONS MENU ------------------------------
-
-def turn_on_ai(game):
-    '''Turns the AI on.'''
-    game.toggle_ai(1)
-
-def turn_off_ai(game):
-    '''Turns the AI off.'''
-    game.toggle_ai(0)
-
-def set_ai_easy(game):
-    '''Sets the difficulty of the AI to easy.'''
-    game.set_ai_difficulty('easy')
-
-def set_ai_medium(game):
-    '''Sets the difficulty of the AI to medium.'''
-    game.set_ai_difficulty('medium')
-
-def set_ai_hard(game):
-    '''Sets the difficulty of the AI to hard.'''
-    game.set_ai_difficulty('hard')
-            
 # ------------------------------ START SCREEN ------------------------------
 
 def start_screen(game):
@@ -82,7 +188,7 @@ def start_screen(game):
     prompt(
         'Welcome!, please select an alternative:',
         ['Start', 'Rules', 'Quit'],
-        ['s', 'r', 'o', 'p', 'q'],
+        ['s', 'r', 'q'],
         [game.start_game, show_rules, quit_game],
         False,
         arguments=[None, None, None]
@@ -95,9 +201,8 @@ def start_screen(game):
             ['l', 'o'],
             [play_local, play_online],
             False,
-            arguments=[game, None]
+            arguments=[game, game]
         )
-
 
 def get_board_structure(filename):
     '''Fetch board structure from a .json-file.'''

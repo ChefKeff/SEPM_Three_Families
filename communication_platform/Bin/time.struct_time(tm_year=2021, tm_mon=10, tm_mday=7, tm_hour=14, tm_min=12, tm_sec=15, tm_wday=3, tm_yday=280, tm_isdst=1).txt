@@ -1,1 +1,0 @@
-{"TOURNAMENTFILE": {"PLAYERSCORE": {"Erik": 0, "Sebbe": 0}, "GAMESPLAYED": "0", "NEXTPLAYERS": "Sebbe:W Erik:B "}}

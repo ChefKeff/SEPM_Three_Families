@@ -64,47 +64,29 @@ class Tournament:
         return playerName
 
     # Function for reading a game file sent between players
-    # Returns a dict with player names, gamescore and game status
+    # Returns a dict with player names, GAMESCORE and game status
     def readGameFile(self, filePath):
         # Define empty dict
         content = {
-        'fplayer': "",
-        'tplayer': "",
-        "gamescore": "",
-        "gamedone": ""}
+        'FPLAYER': "",
+        'TPLAYER': "",
+        "GAMESCORE": "",
+        "GAMEDONE": ""
+        }
         # Open gamefile (already received and stored locally)
         # Open with read only
         with open(filePath, 'r+') as f:
-            # Split the file into lines
-            lines = f.readlines()
-            # Iterate over each line
-            for line in lines:
-                # Strip the line of trailing blankspaces
-                line.rstrip()
-                # Split the line into a list of words
-                # Splitting is done on blanksplace as default
-                line = line.split()
-                # If line is empty, skip it
-                if line == []:
-                    continue
-                # Check if line starts with tournament keyword
-                # If so, add information to dict
-                if line[0] == "FPLAYER:":
-                    content['fplayer'] = line[1]
-                if line[0] == "FPCOLOUR:":
-                    content['fpcolour'] = line[1]
-                if line[0] == 'TPLAYER:':
-                    content['tplayer'] = line[1]
-                if line[0] == 'TPCOLOUR:':
-                    content['tpcolour'] = line[1]
-                if line[0] == 'GAMESCORE:':
-                    content['gamescore'] = int(line[1])
-                if line[0] == 'GAMEDONE:':
-                    if line[1] == '1':
-                        content['gamedone'] = True
-                    else:
-                        content['gamedone'] = False
-            # When all lines are read, file is closed
+            data = json.load(f)
+
+            content['FPLAYER'] = data['FPLAYER']
+            content['FPCOLOUR'] = data['FPCOLOUR']
+            content['TPLAYER'] = data['TPLAYER']
+            content['TPCOLOUR'] = data['TPCOLOUR']
+            content['GAMESCORE'] = data['GAMESCORE']
+            if data['GAMEDONE'] == '1':
+                content['GAMEDONE'] = True
+            else:
+                content['GAMEDONE'] = False
         # Return dict
         return content
 
@@ -120,37 +102,37 @@ class Tournament:
 
         # Extract the relevant content without altering the file
         
-        print('Content: ', fileContent)
+        # print('Content: ', fileContent)
         # If game is still active, return false (no action required)
-        if fileContent['gamedone'] != True:
+        if fileContent['GAMEDONE'] != True:
             return False
         # Add one to games played
         self.gamesPlayed += 1
         self.history.update({self.gamesPlayed: {
-        "players": [fileContent['fplayer'], fileContent['tplayer']],
-        "score": fileContent['gamescore']
+        "players": [fileContent['FPLAYER'], fileContent['TPLAYER']],
+        "score": fileContent['GAMESCORE']
         }})
         # If game is over and final score is greater than zero, add one point to sending player's score
         # Also update game history
-        if fileContent['gamescore'] > 0:
-            self.scores[fileContent['fplayer']] += self.settings['win']
-            self.scores[fileContent['tplayer']] += self.settings['loss']
+        if fileContent['GAMESCORE'] > 0:
+            self.scores[fileContent['FPLAYER']] += self.settings['win']
+            self.scores[fileContent['TPLAYER']] += self.settings['loss']
 
-            self.history[self.gamesPlayed].update({'winner': fileContent['fplayer']})
+            self.history[self.gamesPlayed].update({'winner': fileContent['FPLAYER']})
         # If final score is lower than zero, add one point to receiving player's score
-        elif fileContent['gamescore'] < 0:
-            self.scores[fileContent['tplayer']] += self.settings['win']
-            self.scores[fileContent['fplayer']] += self.settings['loss']
+        elif fileContent['GAMESCORE'] < 0:
+            self.scores[fileContent['TPLAYER']] += self.settings['win']
+            self.scores[fileContent['FPLAYER']] += self.settings['loss']
 
-            self.history[self.gamesPlayed].update({'winner': fileContent['tplayer']})
-        elif fileContent['gamescore'] == 0:
-            self.scores[fileContent['fplayer']] += self.settings['draw']
-            self.scores[fileContent['tplayer']] += self.settings['draw']
+            self.history[self.gamesPlayed].update({'winner': fileContent['TPLAYER']})
+        elif fileContent['GAMESCORE'] == 0:
+            self.scores[fileContent['FPLAYER']] += self.settings['draw']
+            self.scores[fileContent['TPLAYER']] += self.settings['draw']
 
             self.history[self.gamesPlayed].update({'winner': 'draw'})
         # Update player colours
-        self.colours[fileContent['fplayer']].append(fileContent['fpcolour'])
-        self.colours[fileContent['tplayer']].append(fileContent['tpcolour'])
+        self.colours[fileContent['FPLAYER']].append(fileContent['FPCOLOUR'])
+        self.colours[fileContent['TPLAYER']].append(fileContent['TPCOLOUR'])
         # Return true
         return(True)
 
@@ -239,11 +221,11 @@ class Tournament:
 
     def generateFinalFile(self, filePath):
         dict = {}
-        dict["ENDFILE"] = {}
-        dict["ENDFILE"]["PLAYERSCORE"] = {}
+        dict['fileType'] = 'ENDFILE'
+        dict["PLAYERSCORE"] = {}
         sortedScores = self.generateSortedScores()
         for player, score in sortedScores.items():
-            dict["ENDFILE"]["PLAYERSCORE"][player] = score
+            dict["PLAYERSCORE"][player] = score
 
         with open(filePath, "w") as outfile:
             json.dump(dict, outfile)
@@ -278,11 +260,11 @@ class Tournament:
         result[i][j] = 0 -> players i is white in the match against player j
 
         """
-        numberOfPlayer = len(self.players)
-        result = [[-1 for _ in range(numberOfPlayer)] for _ in range(numberOfPlayer)]
-        for i in range(numberOfPlayer):
+        numberOFPLAYER = len(self.players)
+        result = [[-1 for _ in range(numberOFPLAYER)] for _ in range(numberOFPLAYER)]
+        for i in range(numberOFPLAYER):
             prevNum = i % 2
-            for j in range(numberOfPlayer):
+            for j in range(numberOFPLAYER):
                 if i == j:
                     continue
                 if prevNum == 0:
@@ -317,14 +299,27 @@ class Tournament:
         dict["GAMESPLAYED"] = str(self.gamesPlayed)
         for player, score in sortedScores.items():
             dict["PLAYERSCORE"][player] = score
-        nextplayers = ""
+        nexTPLAYERs = ""
         for key, val in nextGame.items():
             if 'Colour' in key: 
-                nextplayers = nextplayers + (val+' ')
+                nexTPLAYERs = nexTPLAYERs + (val+' ')
                 # If not colour field, it's the player field. Add the player
             else:
-                nextplayers = nextplayers + (val+':')
-        dict["NEXTPLAYERS"] = nextplayers 
+                nexTPLAYERs = nexTPLAYERs + (val+":")
+
+        # "erik:B gabriel:W"
+        print("nexTPLAYERs", nexTPLAYERs)
+        sep = nexTPLAYERs.strip().split(' ')
+        print("sep", sep)
+        # ['erik:B', 'gabriel:W']
+        next_players_dict = {}
+        for p in sep:
+            name_color = p.split(':')
+            print("BINGOBONGO", name_color)
+            next_players_dict[name_color[0]] = name_color[1]
+            
+        # dict["NEXTPLAYERS"] = nexTPLAYERs 
+        dict["NEXTPLAYERS"] = next_players_dict
         with open(filePath, "w") as outfile:
             json.dump(dict, outfile)
         
@@ -341,8 +336,8 @@ def main():
     tournament.addPlayer('Player3', 1236)
     print(tournament.players)
     tournament.generateTournamentFile('testTournamentFile.txt')
-    tournament.handleGameFile('testGameFile.txt')
-    tournament.handleGameFile('testGameFile0.txt')
+    #tournament.handleGameFile('testGameFile.txt')
+    #tournament.handleGameFile('testGameFile0.txt')
     print(tournament.scores)
     print(tournament.history)
     print(tournament.colours)

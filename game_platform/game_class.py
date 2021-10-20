@@ -5,6 +5,7 @@ the methods controlling the game logic and order.
 (C) 2021 Group G
 '''
 import sys
+import time
 sys.path.insert(0, '../')
 import json
 from game_engine.generateOutputFile import generate_move_create_output
@@ -35,13 +36,37 @@ class Game:
         self.game_running = False
         self.whose_turn = "white"
         self.stage2 = False
-        self.w_turns = 0
-        self.b_turns = 0
-        self.w_placements = 0
-        self.b_placements = 0
         self.turns = 0
-        self.ai_difficulty = 'easy'
-        self.play_with_ai = False
+        self.client = None
+        self.local_ai = False
+        self.engineThrees = None
+        self.white_player = {
+            'name': 'White',
+            'color': 'white',
+            'color_single': 'W',
+            'turns': 0,
+            'placements': 0,
+            'ai_or_online': False,
+            'difficulty': None,
+            'online_ai': False
+        }
+
+        self.black_player = {
+            'name': 'Black',
+            'color': 'black',
+            'color_single': 'B',
+            'turns': 0,
+            'placements': 0,
+            'ai_or_online': False,
+            'difficulty': None,
+            'online_ai': False
+        }
+
+        # Online mode
+        self.online = False
+        self.current_player = None
+        self.firstMoveDone = False
+        
 
         self.connections = board_structure['connections']
 
@@ -60,51 +85,53 @@ class Game:
     # ----------------------- TO JSON ------------------------
 
     def to_json(self):
+        
         '''Creates a .json file with the game configurations'''
-        with open('outputFile.json', 'r') as f:
-            outputFile = json.load(f)
+        if not self.white_player['ai_or_online'] and not self.black_player['ai_or_online']:
+            return
+            
+        # ai_player = None
+        # player = None
+        # if self.white_player['ai_or_online']:
+        #     ai_player = self.white_player
+        #     player = self.black_player
+        # elif self.black_player['ai_or_online']:
+        #     ai_player = self.black_player
+        #     player = self.white_player
+        if self.whose_turn == 'white':
+            f_player = self.white_player
+            t_player = self.black_player
+        else:
+            f_player = self.black_player
+            t_player = self.white_player
+        
         data = {}
-        data['difficulty'] = self.ai_difficulty
+        data['fileType'] = 'GAMEFILE'
+        data['difficulty'] = 'easy'
+        #ai_player['difficulty']
         data['playerMovesLeft'] = 100 # TODO: Placeholder, fix this
         data['engineMovesLeft'] = 100 # TODO: Placeholder, fix this
-
-        # ADDITION TO JSON FILE (some of these at least):
-        # "fileType": "GAMEFILE",
-        # "GAMEDONE": 0,
-        # "TPLAYER": "Player1",
-        # "FPLAYER": "Player2",
-        # "TPCOLOUR": "B",
-        # "FPCOLOUR": "W",
-        # "GAMESCORE": 0,
-        # "difficulty" : "medium" ,
-        # "playerMovesLeft": 193,
-        # "engineMovesLeft": 194, 
-        # "placedPlayerPieces": 5, 
-        # "placedEnginePieces": 4,
-        # "onhandPlayerPieces": 0,
-        # "onhandEnginePieces": 1, 
-        # "totalPiecesPerPlayer": 5, 
-        # "nodeInfo":
-
         # TODO: I took for granted white=player, black=ai
         w_count, b_count = self.check_pieces_count()
-        data['fileType'] = 'GAMEFILE'
+        
         data['maxTurns'] = self.max_turns # TODO: Should this also exist in game file ?
+        data['firstMoveDone'] = self.firstMoveDone
         data['GAMEDONE'] = 1 if self.game_done else 0
         # TODO: These I'm unsure of:
-        data['TPLAYER'] = 'player1'
-        data['FPLAYER'] = 'player2'
-        data['TPCOLOUR'] = 'B'
-        data['FPCOLOUR'] = 'W'
+        data['TPLAYER'] = self.black_player['name'] if self.whose_turn == 'white' else self.white_player['name']
+        data['FPLAYER'] = self.white_player['name'] if self.whose_turn == 'white' else self.black_player['name']
+        data['TPCOLOUR'] = self.black_player['color_single'] if self.whose_turn == 'white' else self.white_player['color_single']
+        data['FPCOLOUR'] = self.white_player['color_single'] if self.whose_turn == 'white' else self.black_player['color_single']
         data['GAMESCORE'] = self.game_score
         # TODO: Guess the following should work, I haven't tried
-        data['playerMovesLeft'] = self.max_turns - self.w_turns
-        data['engineMovesLeft'] = self.max_turns - self.b_turns
+        data['playerMovesLeft'] = self.max_turns - f_player['turns']
+        data['engineMovesLeft'] = self.max_turns - t_player['turns']
         data['placedPlayerPieces'] = w_count
         data['placedEnginePieces'] = b_count #outputFile['placedEnginePieces']
-        data['onhandPlayerPieces'] = self.pieces_in_hand - self.w_placements
-        data['onhandEnginePieces'] = self.pieces_in_hand - self.b_placements #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
+        data['onhandPlayerPieces'] = self.pieces_in_hand - f_player['placements']
+        data['onhandEnginePieces'] = self.pieces_in_hand - t_player['placements'] #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
         data['totalPiecesPerPlayer'] = self.pieces_in_hand
+        data['engineThrees'] = self.engineThrees
 
         # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
         list_of_coordinates = []
@@ -123,7 +150,7 @@ class Game:
             for (j, number) in enumerate(row):
                 innerList.append(list_of_coordinates[int(number)-1])
             list_of_connections.append(innerList)
-    
+
         # Append to json file
         data['nodeInfo'] = {}
         for (i, coordinate) in enumerate(list_of_coordinates):
@@ -133,9 +160,9 @@ class Game:
             piece = self.board.find_piece_by_coords(i+1) # Not exactly sure why I need to add 1 here
             if piece is not None:
                 if piece.color == 'white':
-                    data['nodeInfo'][str(coordinate)]['marking'] = 'P'
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.white_player['name']
                 else:
-                    data['nodeInfo'][str(coordinate)]['marking'] = 'E'
+                    data['nodeInfo'][str(coordinate)]['marking'] = self.black_player['name']
             else:
                 data['nodeInfo'][str(coordinate)]['marking'] = 'A'
 
@@ -144,45 +171,93 @@ class Game:
 
     # ----------------------------- FROM JSON ------------------------------
     def from_json(self, data=None):
-        print('FROM JSON')
         '''Updates game configuration/information from json/dictionary.'''
+        if not self.white_player['ai_or_online'] and not self.black_player['ai_or_online']:
+            return
+        
+        # ai_player = None
+        # player = None
+        # if self.white_player['ai_or_online']:
+        #     ai_player = self.white_player
+        #     player = self.black_player
+        # elif self.black_player['ai_or_online']:
+        #     ai_player = self.black_player
+        #     player = self.white_player
         if data is None:
-            with open('outputFile.json', 'r') as f:
-                data = json.load(f)
 
+            if not self.online:
+                with open('outputFile.json', 'r') as f:
+                    print("not self online")
+                    data = json.load(f)
+            else:
+                with open('../game_platform_input_file.json', 'r') as f:
+                    data = json.load(f)
+                    print("DATA IN FROM_JSON", data)
+        if self.online:
+            self.firstMoveDone = data['firstMoveDone']
         nodeList = self.board.node_list
         nodeInfo = data['nodeInfo']
+        tplayer_color = 'white' if data['TPLAYER'] == self.white_player['name'] else 'black'
+        fplayer_color = 'white' if data['FPLAYER'] == self.white_player['name'] else 'black'
+        self.engineThrees = data['engineThrees']
         for (i, node) in enumerate(nodeInfo):
-            if nodeInfo[node]['marking'] == 'P':
+            if nodeInfo[node]['marking'] == data['TPLAYER']:
                 if nodeList[i]['piece'] is None:
-                    nodeList[i]['piece'] = Piece('white')
+                    nodeList[i]['piece'] = Piece(tplayer_color)
                 else:
-                    nodeList[i]['piece'].color = 'white'
-            elif nodeInfo[node]['marking']  == 'E': 
+                    nodeList[i]['piece'].color = tplayer_color
+            elif nodeInfo[node]['marking']  == data['FPLAYER']:
                 if nodeList[i]['piece'] is None:
-                    nodeList[i]['piece'] = Piece('black')
+                    nodeList[i]['piece'] = Piece(fplayer_color)
                 else:
-                    nodeList[i]['piece'].color = 'black'
+                    nodeList[i]['piece'].color = fplayer_color
             else:
                 nodeList[i]['piece'] = None
-            
-                
-
+    
     # ----------------------------- START GAME ------------------------------
     def start_game(self):
         '''Starts the game.'''
         self.game_running = True
 
-    # -------------------------- SET AI DIFFICULTY ---------------------------
-    def set_ai_difficulty(self, level):
-        '''Starts the game.'''
-        self.ai_difficulty = level
+    # ----------------------------- TOGGLE ONLINE ----------------------------
+    def set_online(self):
+        '''Toggles the online mode attribute.'''
+        self.online = True
 
-    # --------------------------------  TOGGLE AI ---------------------------
-    def toggle_ai(self, status):
-        '''Toggles the AI.'''
-        self.play_with_ai = True if status==1 else False
-        print(self.play_with_ai)
+    # ----------------------------- TOGGLE ONLINE ----------------------------
+    def set_local_ai(self):
+        '''Toggles the local ai attribute.'''
+        self.local_ai = True
+
+    # ----------------------------- SET CLIENT -------------------------------
+    def set_client(self, client):
+        '''Sets client for game.'''
+        self.client = client
+    # --------------------------SET CURRENT PLAYER----------------------------
+    def set_current_player(self, color):
+        '''Toggles the online mode attribute.'''
+        self.current_player = self.white_player if color.lower() == 'white' else self.black_player
+
+    # ------------------------------- STOP GAME ------------------------------
+    def stop_game(self):
+        '''Starts the game.'''
+        self.game_running = False
+
+    # ------------------------------ SETUP NAMES -----------------------------
+    def setup_player(self, color, name, ai_or_online, difficulty, online_ai=False):
+        '''Starts the game.'''
+        if color.lower() == 'white':
+            self.white_player['name'] = name
+            if ai_or_online:
+                self.white_player['ai_or_online'] = True
+                self.white_player['difficulty'] = difficulty
+                self.white_player['online_ai'] = online_ai
+        elif color.lower() == 'black':
+            self.black_player['name'] = name
+            if ai_or_online:
+                self.black_player['ai_or_online'] = True
+                self.black_player['difficulty'] = difficulty
+                self.black_player['online_ai'] = online_ai
 
     # ----------------------------- PRINT BOARD ------------------------------
     def print_board(self):
@@ -191,18 +266,19 @@ class Game:
 
     # ----------------------------- CHANGE TURN ------------------------------
 
-    def change_turn(self, color):
+    def change_turn(self):
         '''Change player turn and increments turns.'''
+        
         self.turns += 1
 
         # In order to keep track of turns each player has made
         # TODO: Does this look valid? Hasn't tested yet.
-        if color == 'white':
-            self.b_turns += 1
-        elif color == 'black':
-            self.w_turns += 1
+        if self.whose_turn == 'black':
+            self.black_player['turns'] += 1
+        else:
+            self.white_player['turns'] += 1
 
-        self.whose_turn = color
+        self.whose_turn = 'black' if self.whose_turn == 'white' else 'white'
 
     # ----------------------------- PIECE COUNT ------------------------------
 
@@ -236,7 +312,8 @@ class Game:
             w_count,
             b_count,
             self.pieces_in_hand,
-            self.turns
+            self.turns,
+            self
         )
 
         if answer == "rules":
@@ -360,9 +437,9 @@ class Game:
     def checking_rows(self, coords):
         '''Check whether a player has got 3 in a row with associated actions.'''
         _, node = self.board.find_node_and_index_by_coords(int(coords))
-        if self.play_with_ai and self.whose_turn == "black" and self.board.check_for_row(node):
+
+        if (self.whose_turn == 'black' and self.black_player['ai_or_online']) or (self.whose_turn == 'white' and self.white_player['ai_or_online']):
             return
-        
         if self.board.check_for_row(node):
             clear_screen()
             self.print_board()
@@ -398,18 +475,58 @@ class Game:
 
     # ----------------------------- PLACE PIECE PHASE ------------------------------
 
-    def place_piece_aux(self, color):
+    def place_piece_aux(self):
         '''Aux function to place_pieces_phase'''
-        self.change_turn(color)
-        if self.play_with_ai and self.whose_turn == "black":
-            print('updating board')
+        #hantera om det är en människa/spelare online's tur
+        if (not self.local_ai) and (self.whose_turn != self.current_player['color'] and self.online):
+            listening = True
+            while listening:
+                with open('../game_platform_input_file.json', 'r', encoding='utf-8') as file:
+                    game_state = json.load(file)
+                    #print("game state IIIIII", game_state)
+                    if self.current_player['name'] == game_state['TPLAYER'] and game_state['firstMoveDone']:
+                        #print("GAME STATE IN IF", game_state)
+                        self.from_json(game_state)
+                        self.print_board()
+                        return
+                time.sleep(1)
+                self.print_board()
+                print('Waiting for opponent...')
+
+            if self.whose_turn == 'white':
+                self.white_player['placements'] += 1 #TODO: might have to change this
+            else:
+                self.black_player['placements'] += 1 #TODO: might have to change this
+        #hantera om det är en lokal ai's tur
+        if self.local_ai and ((self.whose_turn == "black" and self.black_player['ai_or_online']) or (self.whose_turn == "white" and self.white_player['ai_or_online'])):
             # Send board to game_engine
-            generate_move_create_output()    
+            generate_move_create_output()
             # Update board
             self.from_json()
-            self.b_placements += 1 #TODO: might have to change this
+
+            if self.whose_turn == 'white':
+                self.white_player['placements'] += 1 #TODO: might have to change this
+            else:
+                self.black_player['placements'] += 1 #TODO: might have to change this
+        elif (self.whose_turn == "black" and self.black_player['ai_or_online'] and self.black_player['online_ai']) \
+             or (self.whose_turn == "white" and self.white_player['ai_or_online'] and self.white_player['online_ai']):
+            # Send board to game_engine
+            generate_move_create_output()
+            # Update board
+            self.from_json()
+
+            # Sending game state to server
+            if self.online:
+                self.firstMoveDone = True
+                self.to_json()
+                self.client.sendFile('../game_platform_input_file.json')
+
+            if self.whose_turn == 'white':
+                self.white_player['placements'] += 1 #TODO: might have to change this
+            else:
+                self.black_player['placements'] += 1 #TODO: might have to change this
         else:
-            piece = Piece(color)
+            piece = Piece(self.whose_turn)
 
             # Check if placement successful, otherwise ask until placement successful
             placed = False
@@ -429,34 +546,45 @@ class Game:
                 clear_screen()
                 self.print_board()
 
-            if color == "white":
-                self.w_placements += 1
+            # Sending game state to server
+            if self.online:
+                self.checking_rows(response)
+                self.firstMoveDone = True
+                self.to_json()
+                self.client.sendFile('../game_platform_input_file.json')
+                
             else:
-                self.b_placements += 1
+                self.game_logics(response)
 
-            self.game_logics(response)
+            if self.whose_turn == 'white':
+                self.white_player['placements'] += 1 #TODO: might have to change this
+            else:
+                self.black_player['placements'] += 1 #TODO: might have to change this
 
     def place_pieces_phase(self):
         '''
         Method for the place pieces phase which should keep going
         until everyone has placed 11 pieces each.
         '''
-        while self.pieces_in_hand not in (self.w_placements, self.b_placements):
+        while self.pieces_in_hand not in (self.white_player['placements'],  self.black_player['placements']):
             # print board
             clear_screen()
             self.print_board()
 
             # place black and white piece
-            self.place_piece_aux("white")
+            self.place_piece_aux()
+            self.change_turn()
             clear_screen()
             self.print_board()
-            self.place_piece_aux("black")
+            self.place_piece_aux()
+            self.change_turn()
 
             # print board after placement
             clear_screen()
             self.print_board()
-
-        self.change_turn("white")
+        
+        # Go to stage 2
+        self.change_turn()
         self.stage2 = True
 
 
@@ -467,12 +595,42 @@ class Game:
         while True:
             clear_screen()
             self.print_board()
-            if self.play_with_ai and self.whose_turn == 'black':
+            if self.local_ai and ((self.whose_turn == 'black' and self.black_player['ai_or_online']) or (self.whose_turn == 'white' and self.white_player['ai_or_online'])):
                 # Send board to game_engine
                 generate_move_create_output()    
                 # Update board
                 self.from_json() 
+            elif (not self.local_ai) and (self.whose_turn != self.current_player['color'] and self.online):
+                listening = True
+                while listening:
+                    with open('../game_platform_input_file.json', 'r', encoding='utf-8') as file:
+                        game_state = json.load(file)
+                        if self.current_player['name'] == game_state['TPLAYER']:
+                            self.from_json(game_state)
+                            self.print_board()
+                            self.change_turn()
+                            listening = False
+                    time.sleep(1)
+                    self.print_board()
+                    print('Waiting for opponent...')
+    
+                continue
+            elif (self.whose_turn == "black" and self.black_player['ai_or_online'] and self.black_player['online_ai']) \
+                 or (self.whose_turn == "white" and self.white_player['ai_or_online'] and self.white_player['online_ai']):
+                # Send board to game_engine
+                generate_move_create_output()
+                # Update board
+                self.from_json()
+                # Sending game state to server
+                if self.online:
+                    self.firstMoveDone = True
+                    self.to_json()
+                    self.client.sendFile('../game_platform_input_file.json')
 
+                if self.whose_turn == 'white':
+                    self.white_player['placements'] += 1 #TODO: might have to change this
+                else:
+                    self.black_player['placements'] += 1 #TODO: might have to change this
             else:
                 piece_to_move_coords = self.game_output(
                     "Enter piece to MOVE ("+self.whose_turn + ")",
@@ -539,14 +697,16 @@ class Game:
                 ):
                     continue
 
-
-            self.game_logics(chosen_coords)
+            # Sending game state to server
+            if self.online:
+                self.checking_rows(chosen_coords)
+                self.to_json()
+                self.client.sendFile('../game_platform_input_file.json')   
+            else:
+                self.game_logics(chosen_coords)
 
             # Change player turn
-            if self.whose_turn == "white":
-                self.change_turn("black")
-            else:
-                self.change_turn("white")
+            self.change_turn()
 
     # ----------------------------- TESTING FUNCTIONS ------------------------------
 

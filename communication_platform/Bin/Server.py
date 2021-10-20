@@ -7,7 +7,7 @@ import json
 import time
 import os
 
-from Tournament import Tournament
+from communication_platform.Bin.Tournament import Tournament
 
 print_lock = threading.Lock()
 
@@ -50,7 +50,7 @@ class Server:
                 continue
 
             # Print the address for logging purposes
-            name = clientSocket.recv(1024)
+            name = clientSocket.recv(1024*8)
             name = json.loads(name)  # This is the received name
 
             addedPlayerName = self.tournament.addPlayer(name['name'], address, Server.connectedPlayer) # This is the name after a client being added
@@ -125,20 +125,21 @@ class Server:
     def handleFile(self, filePath):
         print('Handling file')
         with open(filePath, 'r+') as f:
-            firstLine = f.readline()
-            if 'GAMEFILE' in firstLine:
-                gameDone = self.tournament.handleGameFile(filePath)
-                print(self.tournament.history)
-                for line in f.readlines():
-                    line = line.split()
-                    if line[0].rstrip() == 'TPLAYER:':
-                        self.sendFile(self.players[line[1].rstrip()], filePath)
-                        print(f'Forwarded gamefile to {line[1].rstrip()}')
-                        return(gameDone)
+            dictionary = json.load(f)
+            
+            if dictionary['fileType'] == 'GAMEFILE':
+                self.sendFile(self.players[dictionary['TPLAYER']], filePath)
+                print('Forwarded gamefile to ' + dictionary['TPLAYER'])
+                return dictionary['GAMEDONE'] == 1
+
             else:
-                print(f'Received unknown file type: {firstLine}')
+                print(f'Received unknown file type ' + dictionary['fileType'])
                 return
         return
+
+def host():
+    main()
+    
 
 
 class Connection:
@@ -154,9 +155,9 @@ class Connection:
         x.start()
 
     def recvThread(self):
-        filePath = 'tempFile.txt'
+        filePath = 'receivedFile.json'
         while True:
-            data = self.clientSocket.recv(1024)
+            data = self.clientSocket.recv(1024*8)
             if not data:
                 return
             # self.send(data.decode("utf-8"))
@@ -180,10 +181,12 @@ class Connection:
         print(msg.decode("utf-8"))
 
 
+    
 
 def main():
-    print("before initiation")
-    server = Server(2232)
+    # print("before initiation")
+    server_port = input('Choose server port: ')
+    server = Server(int(server_port))
 
     startGame = False
     while not startGame:
@@ -199,11 +202,10 @@ def main():
         print(server.tournament.players)
         act = input('Options: start - start the game, ref - refresh the count: ')
         if act == 'start':
-            print('Initializing Torunament')
             server.tournament.generateMatchColor()  # this is to predefine color of player for each match
-            print(server.tournament.matchingColor)
+            
             server.sendTournamentFile()
-            server.tournament.handleGameFile("testGameFile.json")
+            #server.tournament.handleGameFile("testGameFile.json")
             #server.tournament.handleGameFile("testGameFile.txt")
             break
         elif act == 'ref':
