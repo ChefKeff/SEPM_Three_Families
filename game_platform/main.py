@@ -110,7 +110,20 @@ def join_game(game):
     if difficulty is not None:
         name = difficulty + "-" + name
     addr = '127.0.0.1'
-    port = int(input('connect to port: '))
+
+    port = input('connect to port: ')
+    
+
+    ### This part checks if the inputted port is valid, esle asks for a valid one 
+    def check_if_port_is_valid(port):
+        try:
+            port = int(port)
+            if port > 0 and port < 65535:
+                return True
+        except:
+            return False
+    while not check_if_port_is_valid(port):
+        port = input(f'The port {port} is not a valid port. Try again. \n')
 
     client = Client.Client(addr, port, name)
     game.stop_game()
