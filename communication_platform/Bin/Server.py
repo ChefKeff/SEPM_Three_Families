@@ -202,6 +202,20 @@ class Connection:
 def main():
     # print("before initiation")
     server_port = input('Choose server port: ')
+
+
+    #workaround to avoid crashing when an invalid port is inputted 
+    def check_if_port_valid(server_input):
+        try:
+            server_input = int(server_input)
+            if server_input > 0 and server_input < 65535:
+                return True
+        except:
+            return False
+
+    while not check_if_port_valid(server_port):
+        server_port = input('That is not a valid port. Please choose a number from 1 to 65535!\n')
+
     server = Server(int(server_port))
 
     startGame = False
