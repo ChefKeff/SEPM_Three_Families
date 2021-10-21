@@ -28,7 +28,7 @@ class Client:
         ### This part checks if the inputted port is valid, esle asks for a valid one
         def check_connection_to_port(serverPort):
             try:
-                self.s.connect((socket.gethostname(),int(serverPort))
+                self.s.connect((socket.gethostname(),int(serverPort)))
                 return True
             except:
                 return False
