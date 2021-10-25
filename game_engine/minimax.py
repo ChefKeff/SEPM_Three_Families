@@ -33,6 +33,8 @@ def determine_move(difficulty: str, worst_board: dict(dict(dict())), best_board:
 def generate_move():
     """ Return the move to make given the board read by read_game_state """
     board = read_game_state()
+    print(board['GAMEDONE'])
+
     worst_board, best_board = find_best_move(board)
     move = determine_move(board['difficulty'], worst_board, best_board)
     return move

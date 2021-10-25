@@ -11,8 +11,8 @@ def read_game_state():
     game_struct = {}
     node_info = {}
     #print("game data", game_data)
-    print("tplayer:", game_data['TPLAYER'], "tcolor:", game_data['TPCOLOUR'])
-    print("fplayer:", game_data['FPLAYER'], "fcolor:", game_data['FPCOLOUR'])
+    #print("tplayer:", game_data['TPLAYER'], "tcolor:", game_data['TPCOLOUR'])
+    #print("fplayer:", game_data['FPLAYER'], "fcolor:", game_data['FPCOLOUR'])
     game_struct = {
         'fileType': game_data['fileType'],
         'GAMEDONE': game_data['GAMEDONE'],
