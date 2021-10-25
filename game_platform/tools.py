@@ -184,6 +184,14 @@ def notification(message="", choices=None, w_count=-1, b_count=-1, pieces_in_han
     '''
     #if w_count != -1 and b_count != -1 and pieces_in_hand != -1 and turns != -1:
         #print_piece_count(w_count, b_count, pieces_in_hand, turns)
+    if turns >= 22:
+        if w_count < 3:
+            ''' BLACK WON '''
+            return 'b_won'
+        if b_count < 3:
+            ''' WHITE WON '''
+            return 'w_won'
+    
     print_boxed_message(message, choices, [] , True, w_count, b_count, pieces_in_hand, turns, game)
     answer = input()
     return answer

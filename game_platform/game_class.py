@@ -117,7 +117,7 @@ class Game:
         data['maxTurns'] = self.max_turns # TODO: Should this also exist in game file ?
         data['firstMoveDone'] = self.firstMoveDone
         data['GAMEDONE'] = 1 if self.game_done else 0
-        # TODO: These I'm unsure of:
+        # TODO: These I'm unsure of:f
         data['TPLAYER'] = self.black_player['name'] if self.whose_turn == 'white' else self.white_player['name']
         data['FPLAYER'] = self.white_player['name'] if self.whose_turn == 'white' else self.black_player['name']
         data['TPCOLOUR'] = self.black_player['color_single'] if self.whose_turn == 'white' else self.white_player['color_single']
@@ -326,6 +326,18 @@ class Game:
             self.board_to_print = board_design('cyberpunk')
         elif answer == 'normal':
             self.board_to_print = board_design('default')
+        elif answer == 'w_won':
+            clear_screen()
+            print_ascii('white-victory.txt')
+            response = boxed_output("Press <Enter> to exit game")
+            if response == 'Exit':
+                sys.exit()
+        elif answer == 'b_won':
+            clear_screen()
+            print_ascii('black-victory.txt')
+            response = boxed_output("Press <Enter> to exit game")
+            if response == 'Exit':
+                sys.exit()
         else:
             return answer
 
@@ -508,6 +520,7 @@ class Game:
                 self.white_player['placements'] += 1 #TODO: might have to change this
             else:
                 self.black_player['placements'] += 1 #TODO: might have to change this
+
         elif (self.whose_turn == "black" and self.black_player['ai_or_online'] and self.black_player['online_ai']) \
              or (self.whose_turn == "white" and self.white_player['ai_or_online'] and self.white_player['online_ai']):
             # Send board to game_engine
