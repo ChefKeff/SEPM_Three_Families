@@ -6,6 +6,8 @@ the methods controlling the game logic and order.
 '''
 import sys
 import time
+from json import JSONDecodeError
+
 sys.path.insert(0, '../')
 import json
 from game_engine.generateOutputFile import generate_move_create_output
@@ -494,7 +496,14 @@ class Game:
             listening = True
             while listening:
                 with open('../game_platform_input_file.json', 'r', encoding='utf-8') as file:
-                    game_state = json.load(file)
+                    tag = True
+                    while tag:
+                        try:
+                            game_state = json.load(file)
+                            tag = False
+                        except JSONDecodeError:
+                            print("catch Decode error!")
+                            continue
                     #print("game state IIIIII", game_state)
                     if self.current_player['name'] == game_state['TPLAYER'] and game_state['firstMoveDone']:
                         #print("GAME STATE IN IF", game_state)

@@ -16,9 +16,8 @@ def generate_move_create_output(file_name:str="../game_platform_input_file.json"
     """
     move = generate_move()
     move = change_comm_params(move)
-    json_object = json.dumps(move)
     with open(file_name, 'w') as output_file:
-        output_file.write(json_object)
+        json.dump(move, output_file)
     
 
 if __name__ == '__main__':
