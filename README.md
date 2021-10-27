@@ -3,6 +3,7 @@ Combining :-)
 
 In case you don't have python & pip:
   https://www.wikihow.com/Install-Python
+  
 In case you don't have all the library required:
   1. Open a terminal.
   2. Type "pip instal <library_name>"
