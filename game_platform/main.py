@@ -137,9 +137,9 @@ def join_game(game):
         try:
             with open('tournamentFile.json', 'r', encoding='utf-8') as file:
                 tournament = json.load(file)
-            print("whiling")
+            print("Waiting to begin a match")
             if name in tournament['NEXTPLAYERS']:
-                print("iffing")
+                print("Starting a match soon")
                 color = 'white' if tournament['NEXTPLAYERS'][name] == 'W' else 'black'
                 opponent_color = 'black' if tournament['NEXTPLAYERS'][name] == 'W' else 'white'
                 opponent_name = get_key(opponent_color[0].upper(), tournament['NEXTPLAYERS'])
@@ -158,7 +158,6 @@ def join_game(game):
                 else:
                     game.setup_player(opponent_color, opponent_name, True, 'easy')
                 game.set_current_player(color)
-                print("in here doing stuff")
                 # To json
                 
                 game.to_json()
@@ -218,6 +217,8 @@ def main():
     # Get the board structure from file
     board_structure = get_board_structure('board.json')
 
+    print('GAME STARTED')
+
     # Initiate the game with the board_structure
     game = Game(board_structure)
 
@@ -226,6 +227,7 @@ def main():
         start_screen(game)
 
         while game.game_running:
+
             # Stage 1
             game.place_pieces_phase()
 

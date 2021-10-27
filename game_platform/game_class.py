@@ -31,6 +31,7 @@ class Game:
 
     def __init__(self, board_structure):
         # Set up game logic
+        self.winner = None
         self.game_done = False
         self.game_score = 0
         self.game_running = False
@@ -132,6 +133,9 @@ class Game:
         data['onhandEnginePieces'] = self.pieces_in_hand - t_player['placements'] #outputFile['onhandEnginePieces'] if outputFile['onhandEnginePieces'] != 11 else 11
         data['totalPiecesPerPlayer'] = self.pieces_in_hand
         data['engineThrees'] = self.engineThrees
+
+        # marking the winner
+        data['winner'] = self.winner
 
         # Create a lexicon for the board in order to translate e.g. 10 -> [2, 0]
         list_of_coordinates = []
@@ -322,22 +326,35 @@ class Game:
         elif answer == "quit":
             clear_screen()
             sys.exit()
+
         elif answer == 'cyberpunk':
             self.board_to_print = board_design('cyberpunk')
         elif answer == 'normal':
             self.board_to_print = board_design('default')
+
+
         elif answer == 'w_won':
+            self.game_done = True
+            self.stop_game()
+            self.winner = 'w'
             clear_screen()
             print_ascii('white-victory.txt')
-            response = boxed_output("Press <Enter> to exit game")
-            if response == 'Exit':
+            response = boxed_output("Enter anything to exit game")
+            if response:
                 sys.exit()
+
         elif answer == 'b_won':
+            self.game_done = True
+            self.stop_game()
+            self.winner = 'b'
             clear_screen()
             print_ascii('black-victory.txt')
-            response = boxed_output("Press <Enter> to exit game")
-            if response == 'Exit':
+            response = boxed_output("Enter anything to exit game")
+            if response:
                 sys.exit()
+        
+
+
         else:
             return answer
 
@@ -579,7 +596,7 @@ class Game:
         Method for the place pieces phase which should keep going
         until everyone has placed 11 pieces each.
         '''
-        while self.pieces_in_hand not in (self.white_player['placements'],  self.black_player['placements']):
+        while self.pieces_in_hand not in (self.white_player['placements'],  self.black_player['placements']) and self.game_running:
             # print board
             clear_screen()
             self.print_board()

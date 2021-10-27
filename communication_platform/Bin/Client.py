@@ -73,6 +73,23 @@ class Client:
         #fileContent = data
         if data['fileType'] == "GAMEFILE":
             print('Received a gamefile!')
+
+            # the game has ended, one player notified
+            if data['GAMEDONE'] == '1':
+                winner = data['winner']
+                print(f'Game over - {winner} won')
+                # sending the notification to the other player
+                data['GAMEDONE'] == '2'
+                with open('game_platform_input_file.json', 'w') as output_file:
+                    output_file.write(json.dumps(data))
+
+            # both players notified
+            elif data['GAMEDONE'] == '2':
+                winner = data['winner']
+                print(f'Game over - {winner} won')
+
+
+
             # Add functionality here.
             with open('game_platform_input_file.json', 'w') as output_file:
                 output_file.write(json.dumps(data))

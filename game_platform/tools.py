@@ -105,7 +105,10 @@ def boxed_output(message=""):
     print('┏' + '━'*52 + '┓')
     print('┃  ' + message + ' '*(50-len(message)) + '┃')
     print('┗' + '━'*52 + '┛')
-
+    if message == "Press <Enter> to exit game":
+        response = input()
+        if input:
+            return 'exit'
     # Sleep in order to have time to show the error message
     time.sleep(1.5)
 
