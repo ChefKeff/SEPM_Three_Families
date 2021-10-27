@@ -7,6 +7,7 @@ In case you don't have python & pip:
 In case you don't have all the library required:
   1. Open a terminal.
   2. Type "pip instal <library_name>"
+
 Here are names of all the "non default" libraries used in our product:
   1. threading
   2. socket
