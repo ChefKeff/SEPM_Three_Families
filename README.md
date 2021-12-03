@@ -1,5 +1,8 @@
-# SEPM_Three_Families
-Combining :-)
+# Software Engineering and Project Management Project
+
+Group H, F and G
+
+This repo is for combining all our code! 👍
 
 In case you don't have python & pip:
   https://www.wikihow.com/Install-Python
